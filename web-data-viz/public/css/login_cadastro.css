@@ -27,12 +27,12 @@ body{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 55px;
+    padding: 3rem;
 }
 
 .titulo h1{
     color: white;
-    font-size: 48px;
+    font-size: 3rem;
     font-weight: 700;
     line-height: 1.2;
     margin-bottom: 20px;
@@ -50,7 +50,7 @@ body{
 
 .logo span{
     color: white;
-    font-size: 20px;
+    font-size: 1.25rem;
     font-weight: 600;
 }
 
@@ -59,7 +59,7 @@ body{
 }
 .titulo p{
     color: #A8B3C5;
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.5;
     opacity: 0.5;
 }
@@ -80,7 +80,7 @@ body{
     justify-content: center;
     align-items: center;
 
-    padding: 30px;
+    padding: 2rem;
 }
 
 .info_login{
@@ -98,8 +98,8 @@ body{
 }
 
 .info_login h2{
-    color: black;
-    font-size: 36px;
+    color: #031B3F;
+    font-size: 2.25rem;
     margin-bottom: 10px;
 }
 
@@ -108,18 +108,19 @@ body{
     margin-bottom: 35px;
 }
 
-.info_login label{
-    color: black;
+.info_login span{
+    color: #0b2d5f;
     font-size: 14px;
-    margin-top: 10px;
+    margin-top: 20px;
+    margin-bottom: 5px;
 }
 
 .info_login input{
     width: 100%;
-    height: 40px;
-    border: 1px solid #8a94a3;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    height: 2.8rem;
+    border: 1px solid #052350;
+    border-radius: 0.625rem;
+    margin-bottom: 0.625rem;
 }
 
 .info_login button{
@@ -138,6 +139,7 @@ body{
 .info_login button:hover{
     background-color: #e48b26;
     transition: 0.6s;
+    transform: translateY(-2px);
 }
 
 .ir_cadastro{
@@ -159,6 +161,92 @@ a:hover{
     color: #e48b26;
 }
 
+.celular{
+    display:none;
+}
+
 #div_erros_login {
   display: none
+}
+
+.info_login{
+    animation: aparecer 2s;
+}
+
+@keyframes aparecer{
+    from{
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to{
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 1024px){
+
+    .info_esquerda{
+        padding: 2rem;
+    }
+
+    .titulo h1{
+        font-size: 2.5rem;
+    }
+
+    .titulo{
+        max-width: 400px;
+    }
+
+}
+
+@media (max-width: 768px){
+
+    body{
+        flex-direction: column;
+    }
+
+    .esquerda{
+        display: none;
+    }
+
+    .login{
+        width: 100%;
+        min-height: 100vh;
+        padding: 1.5rem;
+    }
+
+    .info_login{
+        max-width: 100%;
+    }
+
+    .info_login h2{
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .subtitulo{
+        text-align: center;
+    }
+
+    .celular{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 70px;
+    }
+
+    .celular img{
+        width:60px;
+    }
+
+    .celular span{
+        margin: 0;
+        font-size:42px;
+        font-weight:bold;
+        color:#031B3F;
+        margin-bottom: 3px;
+    }
+
 }
