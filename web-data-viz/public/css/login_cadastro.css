@@ -169,21 +169,6 @@ a:hover{
   display: none
 }
 
-.info_login{
-    animation: aparecer 2s;
-}
-
-@keyframes aparecer{
-    from{
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to{
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 @media (max-width: 1024px){
 
     .info_esquerda{
