@@ -85,9 +85,6 @@
 
 <script>
 
-  // Array para armazenar empresas cadastradas para validação de código de ativação 
-  let listaEmpresasCadastradas = [];
-
   function cadastrar() {
     // aguardar();
 
@@ -106,7 +103,25 @@
     ) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
-        "(Mensagem de erro para todos os campos em branco)";
+        "Preencha todos os campos";
+
+      return false;
+    } else if( nomeVar.length < 3){
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "O nome deve ter ao menos 3 caracteres";
+
+      return false;
+    } else if(senhaVar.length < 6){
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "A senha deve ter ao menos 6 caracteres";
+
+      return false;
+    } else if(senhaVar != confirmacaoSenhaVar){
+      cardErro.style.display = "block";
+      mensagem_erro.innerHTML =
+        "As senhas não coincidem";
 
       return false;
     } else {
