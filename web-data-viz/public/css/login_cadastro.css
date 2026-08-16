@@ -165,8 +165,20 @@ a:hover{
     display:none;
 }
 
-#div_erros_login {
-  display: none
+#cardErro{
+    display: none;
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    background-color: #FFF1F1;
+    border: 1px solid #052350;
+    text-align: center;
+}
+
+#mensagem_erro{
+    color: #052350;
+    font-size: 14px;
 }
 
 @media (max-width: 1024px){
