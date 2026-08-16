@@ -377,6 +377,25 @@ body {
   color: #888888;
   margin: 0;
 }
+
+.benefits-wrapper{
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10%;
+  flex-wrap: wrap;
+  height: fit-content;
+  padding: 3rem 0;
+}
+
+.box-benefits{
+  border: 1px solid red;
+  height: 10rem;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 768px) {
   .links-grid {
     flex-direction: column;
