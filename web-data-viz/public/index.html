@@ -16,7 +16,7 @@
 
 </head>
 
-<body>
+<body onload="dynamicMetrics()">
   <div class="header">
     <div class="container-principal">
 
@@ -132,9 +132,10 @@
   </section>
 
   <section id="metrics">
+    <h2>Por que escolher a voltix?</h2>
     <div class="metrics-wrapper">
       <div class="box-metrics">
-        <p>#1</p>
+        <p id="dynamicRank">#1</p>
         <p>Em monitoramento de servidores de sla oq</p>
       </div>
       <div class="box-metrics">
