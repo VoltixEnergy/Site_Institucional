@@ -488,6 +488,45 @@ body {
   font-size: 1.2rem;
 }
 
+#rating{
+  width: 100vw;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ratingContentWrapper{
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bi-star-fill{
+ color: #fff129;
+ font-size: 1.4rem;
+}
+
+.rating{
+  border: 3px solid black;
+  border-radius: 1rem;
+  width: 30%;
+  padding: 0.5rem 0 0  0.5rem;
+}
+
+.profile{
+  display: flex;
+  width: 50%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profilePic img{
+  border-radius: 50%;
+  width: 6rem;
+}
+
 @media (max-width: 768px) {
   .links-grid {
     flex-direction: column;
