@@ -540,6 +540,42 @@ body {
   width: 6rem;
 }
 
+#contactUs {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#contactUs form {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  border: 1px solid black;
+}
+
+#contactUs form input {
+  width: 60%;
+  height: 3rem;
+  background-color: #ffffff00;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+#contactUs form textarea {
+  width: 60%;
+  height: 10rem;
+  background-color: #ffffff00;
+  border: 1px solid black;
+  margin-top: 3rem;
+  border-radius: 1rem;
+}
+
 @media (max-width: 768px) {
   .links-grid {
     flex-direction: column;
@@ -572,11 +608,11 @@ body {
     width: 90%;
   }
 
-  .rating p{
+  .rating p {
     font-size: 0.9rem;
   }
 
-  .rating h2{
+  .rating h2 {
     font-size: 1.1rem;
   }
 
@@ -584,20 +620,20 @@ body {
     margin-top: 0;
   }
 
-  .stars i{
+  .stars i {
     font-size: 1.1rem;
   }
 
-  .profile{
+  .profile {
     /* border: 1px solid black; */
     width: 60%;
   }
 
-  .profile img{
+  .profile img {
     width: 5rem;
   }
 
-  #rating h3{
+  #rating h3 {
     font-size: 1.3rem;
   }
 }
