@@ -26,6 +26,16 @@ body {
 
 }
 
+.container-solucao{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
+  padding: 0 7rem;
+}
+
 .header {
   height: var(--tamanho-header);
   display: flex;
@@ -204,6 +214,32 @@ body {
   gap: 30px;
   align-items: center;
   margin-top: 20px;
+  justify-content: center;
+}
+
+.boxes{
+  display: flex;
+  align-items: center;
+  /* border: 1px solid red; */
+  width: 100%;
+  justify-content: center;
+  gap: 5rem;
+  flex-wrap: wrap;
+  
+}
+
+#solucao{
+  width: 100vw;
+  margin: 5rem 0;
+}
+
+#solucao h2, #solucao h3{
+  padding-left: 1.5rem;
+  font-weight: bold;
+}
+
+#solucao h3{
+  color: #fb5a00;
 }
 
 .item-recurso {
@@ -230,25 +266,15 @@ body {
   align-items: center;
 }
 
-
-
 .social {
-  justify-content: center;
-  padding: 40px 0;
-  gap: 20px;
-}
-
-
-.social .container-principal .boxes {
   display: flex;
   justify-content: space-between;
   width: 100%;
   gap: 30px;
   flex-wrap: wrap;
 
+
 }
-
-
 
 .box {
   display: flex;
@@ -256,7 +282,7 @@ body {
   align-items: center;
   flex: 1;
   padding: 40px;
-
+  min-width: 20rem;
 }
 
 .coresbox {
@@ -554,6 +580,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  gap: 2rem ;
 }
 
 #contactUs form {
@@ -563,26 +590,36 @@ body {
   justify-content: center;
   height: fit-content;
   flex-direction: column;
-  background-color: #fff;
+  background-color: #000B86;
   border-radius: 1rem;
   border: 1px solid black;
+  padding: 1rem 0;
+  color: #fff;
+  font-weight: 600;
 }
 
-#contactUs form input {
-  width: 60%;
-  height: 3rem;
-  background-color: #ffffff00;
-  border: none;
-  border-bottom: 1px solid black;
+#contactUs form button{
+  margin-top: 2rem;
+  width: 15%;
+  border-radius: 0.5rem;
+  background-color: #fb5a00;
+  color: #fff;
+  font-weight: 700;
 }
 
-#contactUs form textarea {
-  width: 60%;
-  height: 10rem;
-  background-color: #ffffff00;
-  border: 1px solid black;
-  margin-top: 3rem;
-  border-radius: 1rem;
+.inputContact{
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputContact input, .inputContact textarea{
+  border-radius: 0.5rem;
+  background-color: #e2e1e1;
+}
+
+.inputContact textarea{
+  min-height: 10rem;
 }
 
 @media (max-width: 768px) {
@@ -644,5 +681,9 @@ body {
 
   #rating h3 {
     font-size: 1.3rem;
+  }
+
+  .boxes{
+    gap: 1rem;
   }
 }
