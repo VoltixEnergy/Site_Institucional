@@ -19,14 +19,19 @@ body {
 .container-principal {
   display: flex;
   width: 90%;
-  margin: auto;
-  max-width: 1200px;
+  /* max-width: 1200px; */
+  justify-content: center;
+  align-items: center;
+  /* border: 1px solid black; */
 
 }
 
 .header {
   height: var(--tamanho-header);
-  padding: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
 }
 
 .header .container {
@@ -39,19 +44,25 @@ body {
 
 
 .logoImg {
-  height: var(--tamanho--logo);
-  max-width: 100%;
+  width: 8rem;
 }
 
 .btnAcessar {
   background-color: #fb5a00;
   border-radius: 8px;
-  border: none;
+  border: 0.15rem solid #fb5a00;
   color: white;
-  padding: 8px;
+  padding: 0.3rem;
   ;
   white-space: nowrap;
   cursor: pointer;
+}
+
+.btnAcessar:hover {
+  background-color: #000b8600;
+  transform: translateY(-2px);
+  color: #000;
+  transition: 0.5s;
 }
 
 .btnAcessarOutro {
@@ -80,31 +91,29 @@ body {
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 40px;
+  gap: 6rem;
   flex: 1;
-  justify-content: center;
+  justify-content: center ;
   margin: 0;
   padding: 0;
   flex-wrap: wrap;
-  border: 1px solid black;
-  height: 3rem;
+  /* border: 1px solid black;  */
+  height: fit-content;
 }
 
 .menu-navbar a {
   text-decoration: none;
   color: #000b86;
-  font-size: 18px;
+  font-size: 1.1rem;
   transition: color 0.3s ease, transform 0.2s ease;
+  color: #000;
 }
 
 .menu-navbar a:hover {
   color: #fb5a00;
-}
-
-.btnAcessar:hover {
-  background-color: #000b8600;
-  transform: translateY(-2px);
-  border: 2px solid #fb5a00;
+  border-bottom: 1px solid #fb5a00;
+  transition: 0.2s;
+  transform: scale(1.1);
 }
 
 .btnnaosei:hover {
