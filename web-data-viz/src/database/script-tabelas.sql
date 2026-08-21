@@ -6,15 +6,46 @@
 comandos para mysql server
 */
 
-create database voltix;
-
+cCREATE DATABASE IF NOT EXISTS voltix;
 USE voltix;
 
-CREATE TABLE usuario (
-  idUsuario INT NOT NULL primary key auto_increment,
-  nome VARCHAR(45) NULL,
-  email VARCHAR(100) NULL,
-  senha VARCHAR(255) NULL
+CREATE TABLE IF NOT EXISTS empresa(
+    id_empresa INT PRIMARY KEY AUTO_INCREMENT,
+    cnpj CHAR(14) UNIQUE NOT NULL,
+    nome_fantasia VARCHAR(100) NOT NULL,
+    razao_social VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(64) NOT NULL
 );
 
-select * from usuario;
+CREATE TABLE IF NOT EXISTS usuario(
+    id_funcionario INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    nivel_permissao INT,
+    senha VARCHAR(64),
+    fk_empresa INT,
+    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
+);
+
+CREATE TABLE IF NOT EXISTS maquina (
+    id_maquina INT PRIMARY KEY AUTO_INCREMENT,
+    nome_maquina VARCHAR(100) NOT NULL,
+    sistema_operacional VARCHAR(50),
+    total_memoria_ram DECIMAL(5, 2) NOT NULL,
+    total_disco DECIMAL(7, 2) NOT NULL,    
+    fk_empresa INT NOT NULL,
+    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
+);
+
+CREATE TABLE IF NOT EXISTS leitura(
+    id_leitura INT PRIMARY KEY AUTO_INCREMENT,
+    uso_cpu DECIMAL(5, 2) NOT NULL,
+    frequencia_cpu DECIMAL(15, 2) NOT NULL,
+    uso_memoria_ram DECIMAL(5, 2) NOT NULL,
+    frequencia_memoria_ram DECIMAL(15, 2) NOT NULL,
+    uso_disco DECIMAL(5, 2) NOT NULL,
+    cadastrado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
+    fk_maquina INT NOT NULL,
+    FOREIGN KEY (fk_maquina) REFERENCES maquina(id_maquina)
+);
