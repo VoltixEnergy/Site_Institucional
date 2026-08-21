@@ -341,12 +341,16 @@ body {
   color: #ffffff;
   width: 100%;
   padding: 40px 0 20px 0;
+  display: flex;
+  justify-content: center;
 }
 
 .footer-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: center;
+  justify-content: space-evenly;
 }
 
 .links-grid {
@@ -622,7 +626,53 @@ body {
   min-height: 10rem;
 }
 
+.mobileMenuIcon, .mobileMenuIconExit{
+  font-size: 2rem;
+  display: none;
+  color: #000;
+}
+
+.mobileMenu{
+  display: none;
+}
+
+.mobileMenuIconExit{
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .mobileMenuIcon{
+  display: inline-block;
+}
+
+.header{
+  display: block;
+}
+
+.mobileMenu{
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  list-style-type: none;
+  gap: 1rem;
+}
+
+.mobileMenu li a{
+  color: #000;
+  text-decoration: none;
+}
+
+.menu-navbar, .btnAcessar{
+  display: none;
+}
+
+.container-principal{
+  justify-content: space-between;
+}
+
   .links-grid {
     flex-direction: column;
     gap: 20px;

@@ -16,10 +16,13 @@
 
 </head>
 
-<body onload="dynamicMetrics()">
+<body onload="">
+
   <div class="header">
     <div class="container-principal">
-      <img class="logoImg" src="assets/imgs/logo.png">
+      <div class="boxLogo">
+        <img class="logoImg" src="assets/imgs/logo.png">
+      </div>
       <ul class="menu-navbar">
         <li>
           <a href="#inicio">Inicial</a>
@@ -39,7 +42,30 @@
       </ul>
       <button type="submit" class="btnAcessar" onclick="window.location.href='cadastro.html'">Acessar
         plataforma</button>
+      <div class="mobileMenuIcon" id="mobileMenuIcon">
+        <i class="bi bi-grid-3x3-gap-fill"></i>
+      </div>
+      <div class="mobileMenuIconExit" id="mobileMenuIconExit">
+        <i class="bi bi-x-circle-fill"></i>
+      </div>
     </div>
+    <ul class="mobileMenu" id="mobileMenu">
+      <li>
+        <a href="#inicio">Inicial</a>
+      </li>
+
+      <li>
+        <a href="#solucao">Solução</a>
+      </li>
+
+      <li>
+        <a href="#sobrenos">Sobre nós</a>
+      </li>
+
+      <li>
+        <a href="#contato">Contato</a>
+      </li>
+    </ul>
   </div>
 
 
@@ -146,8 +172,8 @@
     <div class="monitoringContentWrapper">
       <div class="monitoringImagesWrapper">
         <figure>
-        <img src="./assets/imgs/pic1.jpg" alt="">
-        <img src="./assets/imgs/pic2.jpg" alt="">
+          <img src="./assets/imgs/pic1.jpg" alt="">
+          <img src="./assets/imgs/pic2.jpg" alt="">
         </figure>
       </div>
       <div class="monitoringTextWrapper">
@@ -258,7 +284,7 @@
   </section>
 
   <footer class="footer">
-    <div class="container-principal footer-container">
+    <div class="footer-container">
 
 
       <div class="links-grid">
@@ -307,3 +333,19 @@
 </body>
 
 </html>
+<script>
+  const menu = document.getElementById("mobileMenuIcon")
+  const div = document.getElementById("mobileMenu")
+  const exit = document.getElementById("mobileMenuIconExit")
+  menu.addEventListener("click", function () {
+    div.style.display = "flex"
+    exit.style.display = "inline-block"
+    menu.style.display = "none"
+  })
+
+  exit.addEventListener("click", function () {
+    div.style.display = "none"
+    exit.style.display = "none"
+    menu.style.display = "inline-block"
+  })
+</script>
