@@ -73,7 +73,7 @@
             </div>
                 <img src="../assets/imgs/icone_sair.png" class="sair_dash" onclick="window.location.href='../index.html'">
             </div>
-
+        
          </div>  
          
     </div>
@@ -101,6 +101,64 @@
 
     </div>
 
+    <div class="perfil_celular">
+
+        <div class="logo_celular" onclick="abrir_navbar()">
+            <img src="../assets/icon/Logo.png" alt="">
+        </div>
+
+        <div class="usuario_celular">
+            <div class="avatar_usuario">
+                BH
+            </div>
+        </div>
+
+    </div>
+
+    <div id="navbar_celular" class="navbar_celular">
+
+        <a href="dash.html">
+            <img src="../assets/imgs/icone_dashboard.png">
+        </a>
+
+        <a href="monitoramento.html">
+            <img src="../assets/imgs/icone_monitoramento.png">
+        </a>
+
+        <a href="consumo.html">
+            <img src="../assets/imgs/icone_consumo.png">
+        </a>
+
+        <a href="alerta.html">
+            <img src="../assets/imgs/icone_alertas.png">
+        </a>
+
+        <a href="relatorio.html">
+            <img src="../assets/imgs/icone_relatorios.png">
+        </a>
+
+        <a href="configuracao.html">
+            <img src="../assets/imgs/icone_configuracoes.png">
+        </a>
+
+        <a href="../index.html">
+            <img src="../assets/imgs/icone_sair.png">
+        </a>
+
+        <button class="fechar_navbar" onclick="abrir_navbar()">
+            <
+        </button>
+
+    </div>
+
 </body>
 
 </html>
+
+<script>
+
+function abrir_navbar() {
+    document.getElementById("navbar_celular").classList.toggle("ativo");
+}
+
+</script>

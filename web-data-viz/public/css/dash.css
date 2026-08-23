@@ -12,11 +12,10 @@ body{
 
 .navbar{
     width: 14%;
-    height: 100%;
+    height: 100vh;
+    overflow-y: auto;
     background-color: #0F172A;
     position: fixed;
-    left: 0;
-    top: 0;
     color: white;
     z-index: 999;
 }
@@ -24,7 +23,7 @@ body{
 .info_navbar{
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%;
 }
 
 .logo{
@@ -56,10 +55,10 @@ body{
 .botoes_navbar a.fora{
     text-decoration: none;
     color: white;
-    padding: 15px;
+    padding: 15px 10px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     transition: 0.5s;
     font-size: 1rem;
     border-radius: 7px;
@@ -212,7 +211,6 @@ body{
     margin-bottom: 18px;
 }
 
-
 .aguarde_breve {
     display: flex;
     align-items: center;
@@ -229,4 +227,149 @@ body{
     width: 15px;
     height: 15px;
     filter: none;
+}
+
+.perfil_celular{
+    display: none;
+}
+
+.navbar_celular{
+    display: none;
+}
+
+@media (max-width: 1024px){
+
+    .navbar{
+        width: 20%;
+    }
+
+    .em_breve{
+        margin-left: 20%;
+        width: 80%;
+    }
+
+    .logo span{
+        display: none;
+    }
+
+    .info_usuario{
+        display: none;
+    }
+
+    .botoes_navbar a.fora,
+    .botoes_navbar a.agora{
+        font-size: 0.8rem;
+        gap: 8px;
+        padding: 12px 8px;
+    }
+
+    .mensagem_em_breve h2{
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 768px){
+
+    .navbar{
+        display: none;
+    }
+
+    .perfil_celular{
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        background-color: #0F172A;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .logo_celular{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+    }
+
+    .logo_celular img{
+        width: 40px;
+    }
+
+    .logo_celular span{
+        color: white;
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .navbar_celular{
+        width: 100%;
+        height: 70px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        padding: 0 15px;
+        background-color: #0F172A;
+        z-index: 1001;
+        transform: translateX(-100%);
+        transition: transform 1s ease;
+    }
+
+    .navbar_celular.ativo{
+        transform: translateX(0);
+    }
+
+    .navbar_celular a{
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+        border-radius: 7px;
+    }
+
+    .navbar_celular a:hover{
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .navbar_celular a img{
+        width: 22px;
+        height: 22px;
+    }
+
+    .em_breve{
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .logo_celular img{
+    width: 40px;
+    }
+
+    .fechar_navbar{
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        border-radius: 7px;
+    }
+
+    .fechar_navbar:hover{
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #FF8C42;
+    }
 }
