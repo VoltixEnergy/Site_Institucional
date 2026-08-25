@@ -6,7 +6,7 @@
 comandos para mysql server
 */
 
-cCREATE DATABASE IF NOT EXISTS voltix;
+CREATE DATABASE IF NOT EXISTS voltix;
 USE voltix;
 
 CREATE TABLE IF NOT EXISTS empresa(
@@ -48,4 +48,10 @@ CREATE TABLE IF NOT EXISTS leitura(
     cadastrado_em DATETIME DEFAULT CURRENT_TIMESTAMP,
     fk_maquina INT NOT NULL,
     FOREIGN KEY (fk_maquina) REFERENCES maquina(id_maquina)
+);
+
+CREATE TABLE IF NOT EXISTS codigo_ativacao(
+    id_codigo INT PRIMARY KEY AUTO_INCREMENT,
+    codigo VARCHAR(64),
+    estado_codigo ENUM("ativado", "desativado")
 );

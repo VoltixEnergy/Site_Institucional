@@ -58,22 +58,34 @@
             <h2>Crie a conta da sua empresa</h2>
 
             <span class="subtitulo">Preencha os dados abaixo para começar.</span>
+          
+          <div class="cadastro_geral">
 
-            <span>Nome Comercial:</span><input id="nome_input" type="text" placeholder="Voltix">
+            <div class="coluna_cadastro1">
 
-            <span>Nome Jurídico:</span><input id="email_input" type="text" placeholder="Voltix Energy">
+              <span>Nome Comercial:</span><input id="nome_input" type="text" placeholder="Voltix">
 
-            <span>CNPJ:</span><input id="senha_input" type="password" placeholder="******">
+              <span>Nome Jurídico:</span><input id="email_input" type="text" placeholder="Voltix Energy">
 
-            <span>Email:</span><input id="email_input" type="text" placeholder="empresa@provedor.com">
+              <span>CNPJ:</span><input id="senha_input" type="password" placeholder="******">
 
-            <span>Senha:</span><input id="senha_input" type="password" placeholder="******">
+            </div>  
 
-            <span>Confirmação da Senha:</span><input id="confirmacao_senha_input" type="password" placeholder="******">
+            <div class="coluna_cadastro2">
+
+              <span>Email:</span><input id="email_input" type="text" placeholder="empresa@provedor.com">
+
+              <span>Senha:</span><input id="senha_input" type="password" placeholder="******">
+
+              <span>Confirmação da Senha:</span><input id="confirmacao_senha_input" type="password" placeholder="******">
+
+            </div>
+
+          </div>
 
             <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
 
-            <a href="cadastro.html" class="ir_cadastro">A sua empresa já tem uma conta? Cadastre o seu funcionário</a>
+            <a href="login.html" class="ir_cadastro">Já tem conta? Faça login</a>
 
             <div id="cardErro">
               <span id="mensagem_erro"></span>
