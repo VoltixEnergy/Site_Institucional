@@ -48,7 +48,7 @@ body {
 
 
 .logoImg {
-  width: 8rem;
+  width: 4rem;
 }
 
 .btnAcessar {
@@ -261,6 +261,7 @@ body {
 #solucao{
   width: 100vw;
   margin: 5rem 0;
+  padding: 3rem 0;
 }
 
 #solucao h2, #solucao h3{
@@ -490,6 +491,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  padding: 4rem 0;
 }
 
 .monitoringContentWrapper {
