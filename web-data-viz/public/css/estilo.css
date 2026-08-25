@@ -636,19 +636,27 @@ body {
 
 .questions summary{
   font-size: 1.5rem;
-  background-color: #dbd9d9;
+  background-color: #fff;
   display: flex;
   padding-left: 2rem;
   height: 5rem;
   align-items: center;
   font-weight: bold;
-  border-left: 1rem solid #ccc;
+  border-left: 1rem solid #fb5a00;
+  box-shadow: 5px 4px 4px #999999;
+  transition: 1s;
+}
+
+.questions summary:hover{
+  scale: 1.05;
+  transition: 0.15s;
 }
 
 .questions p{
-  background-color: #dbd9d9;
+  background-color: #fff;
   padding: 2rem 1rem;
-  border-left: 1rem solid #ccc;
+  border-left: 1rem solid #fb5a00;
+  box-shadow: 5px 4px 4px #999999;
 }
 /* FIM FAQ */
 
