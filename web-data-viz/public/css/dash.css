@@ -174,7 +174,7 @@ body{
     justify-content: center;
     text-align: center;
     color: white;
-    margin-top: -55vh;
+    margin-top: -70vh;
     z-index: 999;
 }
 
@@ -283,7 +283,7 @@ body{
         padding: 0 20px;
         background-color: #0F172A;
         position: fixed;
-        top: 0;
+        bottom: 0;
         left: 0;
         z-index: 1000;
     }
@@ -312,7 +312,7 @@ body{
         align-items: center;
         justify-content: center;
         position: fixed;
-        top: 0;
+        bottom: 0;
         left: 0;
         padding: 0 15px;
         background-color: #0F172A;
