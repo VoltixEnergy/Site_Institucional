@@ -164,6 +164,20 @@ a:hover{
     display:none;
 }
 
+
+.coluna_cadastro1,
+.coluna_cadastro2{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.cadastro_geral{
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
 #cardErro{
     display: none;
     width: 100%;
