@@ -149,35 +149,24 @@ body{
     opacity: 1;
 }
 
-.em_breve {
+.em_breve{
     margin-left: 14%;
     width: 86%;
     height: 100vh;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    background-color: #0F172A;
+    justify-content: center;
+    background-color: #000;
 }
 
-
-.em_breve img {
-    width: 100%;
-    height: 100vh;
-    filter: blur(4px) brightness(0.5);
-}
-
-
-.mensagem_em_breve {
+.mensagem_em_breve{
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    margin-top: -70vh;
-    z-index: 999;
 }
-
 
 .icone_breve {
     width: 70px;
