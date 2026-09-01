@@ -121,6 +121,23 @@ function autenticarCodigo(req, res) {
     }
 
 }
+
+function buscarUsuarioPorEmpresa(req, res) {
+ console.log("controller")
+  var idEmpresa = req.params.idEmpresa;
+  console.log(idEmpresa)
+  usuarioModel.buscarUsuarioPorEmpresa(idEmpresa).then((resultado) => {
+    if (resultado.length > 0) {
+      res.status(200).json(resultado);
+    } else {
+      res.status(204).json([]);
+    }
+  }).catch(function (erro) {
+    console.log(erro);
+    console.log("Houve um erro ao buscar os funcionarios: ", erro.sqlMessage);
+    res.status(500).json(erro.sqlMessage);
+  });
+}
 function adicionarCodigo(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
     var codigo = req.body.codigoServer;
@@ -153,5 +170,6 @@ module.exports = {
     autenticar,
     cadastrar,
     autenticarCodigo,
+    buscarUsuarioPorEmpresa,
     adicionarCodigo
 }

@@ -26,7 +26,7 @@
     <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="buscarUsuarios()">
 
     <div class="navbar">
 
@@ -68,23 +68,16 @@
          
     </div>
 
-    <div class="em_breve">
+    <div class="content">
 
-        <div class="mensagem_em_breve">
+        <div class="searchBar">
 
-            <div class="icone_breve">
-                <img src="../assets/imgs/icone_cadeado.png">
+        </div>
+        <div class="users">
+            <div class="user">
+                <p id="userAvatar"></p>
+                <p id="userName"></p>
             </div>
-
-            <h2>Em breve!</h2>
-
-            <span>Esta funcionalidade estará disponível em breve.</span>
-
-            <div class="aguarde_breve">
-                <img src="../assets/imgs/icone_tempo.png">
-                Aguarde novidades
-            </div>
-
         </div>
 
     </div>
@@ -123,7 +116,7 @@
 
 
         <button class="fechar_navbar" onclick="abrir_navbar()">
-            <
+            
         </button>
 
     </div>
@@ -136,6 +129,33 @@
 
 function abrir_navbar() {
     document.getElementById("navbar_celular").classList.toggle("ativo");
+}
+
+function buscarUsuarios(){
+    var idEmpresa = 1
+    console.log("Listando funcionarios da empresa!")
+    fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`,{
+        method: "GET"
+    })
+    .then(function (resposta) {
+            console.log(resposta)
+            console.log("ESTOU NO THEN DO entrar()!")
+            if (resposta.ok) {
+                console.log(resposta);
+
+            } else {
+
+                console.log("Houve um erro ao tentar listar usuários!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
 }
 
 </script>
