@@ -82,7 +82,7 @@
 <script>
 
 
-    function validarCodigo() {
+    async function validarCodigo() {
         // aguardar();
 
         var codigoVar = ipt1.value + ipt2.value + ipt3.value + ipt4.value + ipt5.value + ipt6.value;
@@ -101,7 +101,7 @@
 
         // botao_cadastrar.innerHTML = '<img src="./assets/imgs/aguarde-orange.gif" width="25">';
 
-        fetch("/usuarios/autenticarCodigo", {
+        await fetch("/usuarios/autenticarCodigo", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -111,10 +111,11 @@
             })
         })
         .then(function (resposta) {
+            
             console.log("ESTOU NO THEN DO entrar()!")
             if (resposta.ok) {
                 console.log(resposta);
-
+                
                 setTimeout(function () {
                         window.location = "./cadastro_empresa.html";
                     }, 1000); // apenas para exibir o loading

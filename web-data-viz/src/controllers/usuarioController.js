@@ -100,6 +100,10 @@ function autenticarCodigo(req, res) {
 
                     if (resultadoAutenticarCodigo.length == 1) {
                         console.log(resultadoAutenticarCodigo);
+                        res.json({
+                                        nome: resultadoAutenticarCodigo[0],
+                                        codigo: resultadoAutenticarCodigo[1],
+                                    });
                     } else if (resultadoAutenticarCodigo.length == 0) {
                         res.status(403).send("Código inválido!");
                     } else {
