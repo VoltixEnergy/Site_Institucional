@@ -540,18 +540,19 @@ body {
 
 .monitoringContentWrapper {
   /* border: 1px solid red; */
-  width: 85%;
+  width: 90%;
   display: flex;
   flex-wrap: wrap;
   height: fit-content;
   align-items: center;
-  justify-content: center;;  
+  justify-content: center;
+  gap: 2rem;  
 }
 
 .monitoringImagesWrapper {
-  min-width: 20rem;
+  min-width: 25rem;
   /* border: 1px solid black; */
-  width: 50%;
+  width: 40%;
 }
 
 .monitoringImagesWrapper figure {
