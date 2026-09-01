@@ -46,7 +46,6 @@ body {
 
 }
 
-
 .logoImg {
   width: 4rem;
 }
@@ -266,7 +265,15 @@ body {
   justify-content: center;
   gap: 5rem;
   flex-wrap: wrap;
-  
+}
+
+.box {
+    transition: 0.2s;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
 }
 
 #solucao{
@@ -502,6 +509,15 @@ body {
   font-weight: bold;
 }
 
+.box-metrics {
+    transition: 0.2s;
+}
+
+.box-metrics:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
 #metrics h2 {
   display: flex;
   width: 100%;
@@ -529,7 +545,7 @@ body {
   flex-wrap: wrap;
   height: fit-content;
   align-items: center;
-  justify-content: center;
+  justify-content: center;;  
 }
 
 .monitoringImagesWrapper {
