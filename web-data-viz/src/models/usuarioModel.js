@@ -31,8 +31,18 @@ function autenticarCodigo(codigo) {
     return database.executar(instrucaoSql);
 }
 
+function buscarUsuarioPorEmpresa(idEmpresa) {
+    console.log("model")
+    console.log(idEmpresa)
+    var instrucaoSql = `SELECT * FROM usuario WHERE fk_empresa = ${idEmpresa}`;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
     cadastrar,
-    autenticarCodigo
+    autenticarCodigo,
+    buscarUsuarioPorEmpresa
 };
