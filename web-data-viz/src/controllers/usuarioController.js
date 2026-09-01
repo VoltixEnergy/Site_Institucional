@@ -101,8 +101,9 @@ function autenticarCodigo(req, res) {
                     if (resultadoAutenticarCodigo.length == 1) {
                         console.log(resultadoAutenticarCodigo);
                         res.json({
-                                        nome: resultadoAutenticarCodigo[0],
-                                        codigo: resultadoAutenticarCodigo[1],
+                                        id: resultadoAutenticarCodigo[0].id_codigo,
+                                        codigo: resultadoAutenticarCodigo[0].codigo,
+                                        status: resultadoAutenticarCodigo[0].estado_codigo,
                                     });
                     } else if (resultadoAutenticarCodigo.length == 0) {
                         res.status(403).send("Código inválido!");
