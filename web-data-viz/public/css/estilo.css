@@ -69,6 +69,11 @@ body {
   transition: 0.5s;
 }
 
+.botao_inicio {
+  display: flex;
+  gap: 20px;
+}
+
 .btnAcessarOutro {
   color: white;
   background: transparent;
@@ -211,6 +216,10 @@ body {
   justify-content: center;
 }
 
+.container-recursos i{
+  margin-bottom: 20px;
+}
+
 .item-recurso {
 
   display: flex;
@@ -264,13 +273,29 @@ body {
   padding: 3rem 0;
 }
 
+.imagem_solucao{
+  display: flex;
+  gap: 12.5px;
+}
+
+.imagem_solucao i{
+  margin-bottom: 12px;
+}
+
 #solucao h2, #solucao h3{
   padding-left: 1.5rem;
   font-weight: bold;
 }
 
+#solucao h2{
+  margin-top: 3vh;
+  font-size: 2rem;
+  margin-bottom: 5vh;
+}
+
 #solucao h3{
   color: #fb5a00;
+  font-size: 3rem;
 }
 
 .social {
@@ -398,7 +423,7 @@ body {
 
 .divisor-rodape {
   border: 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-top: 3 px solid rgba(255, 255, 255, 0.15);
   margin: 10px 0;
   width: 100%;
 }
@@ -479,8 +504,9 @@ body {
   display: flex;
   width: 100%;
   padding-left: 1.5rem;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
+  color: #0F172A;
 }
 /* FIM MÉTRICAS */
 
