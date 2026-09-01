@@ -111,6 +111,8 @@ body {
   font-size: 1.1rem;
   transition: color 0.3s ease, transform 0.2s ease;
   color: #000;
+  font-weight: 500;
+  font-size: 1.2rem;
 }
 
 .menu-navbar a:hover {
@@ -679,6 +681,10 @@ body {
   font-size: 2rem;
   display: none;
   color: #000;
+}
+
+.mobileMenuIcon:hover, .mobileMenuIconExit:hover{
+  scale: 1.1px;
 }
 
 .mobileMenu{

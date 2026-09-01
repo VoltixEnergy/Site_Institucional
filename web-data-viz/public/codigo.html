@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Voltix | Login</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/login_cadastro.css">
+    <link rel="icon" href="./assets/icon/Logo.ico">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+</head>
+
+<body>
+
+    <div class="esquerda">
+
+        <div class="info_esquerda">
+
+            <div class="logo">
+                <img src="./assets/icon/Logo.png" alt="logo_voltix">
+                <span>Voltix</span>
+            </div>
+
+            <div class="titulo">
+                <h1>Energia sob controle, decisão com dados.</h1>
+
+                <p>
+                    Consumo em tempo real, alertas inteligentes e
+                    indicadores de eficiência. Tudo em uma única
+                    plataforma.
+                </p>
+            </div>
+
+            <span class="copyright">
+                © 2026 Voltix. Todos os direitos reservados.
+            </span>
+
+        </div>
+
+    </div>
+
+    <div class="login">
+
+        <div class="info_login">
+
+            <div class="celular">
+                <img src="./assets/icon/Logo_escura.png" alt="">
+                <span>Voltix</span>
+            </div>
+
+            <a href="index.html" class="voltar_home">← Voltar ao site</a>
+
+            <h2>Insira o código que fornecemos para cadastrar a sua empresa!</h2>
+            <span>Código:</span>
+            <div class="inputs-whapper">
+                <input type="text" maxlength="1" id="ipt1">
+                <input type="text" maxlength="1" id="ipt2">
+                <input type="text" maxlength="1" id="ipt3">
+                <input type="text" maxlength="1" id="ipt4">
+                <input type="text" maxlength="1" id="ipt5">
+                <input type="text" maxlength="1" id="ipt6">
+            </div>
+            <button id="botao_entrar" onclick="validarCodigo()">Validar</button>
+            <div id="cardErro">
+                <span id="mensagem_erro"></span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>
+
+<script>
+
+
+    function validarCodigo() {
+        // aguardar();
+
+        var codigoVar = ipt1.value + ipt2.value + ipt3.value + ipt4.value + ipt5.value + ipt6.value;
+        console.log(codigoVar)
+        
+
+        if (codigoVar.length < 6) {
+            cardErro.style.display = "block"
+            mensagem_erro.innerHTML = "Preencha todos os campos";
+            // finalizarAguardar();
+            return false;
+        }
+        else {
+            // setInterval(sumirMensagem, 3000)
+        }
+
+        // botao_cadastrar.innerHTML = '<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+
+        fetch("/usuarios/autenticarCodigo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                codigoServer: codigoVar,
+            })
+        })
+        .then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+            if (resposta.ok) {
+                console.log(resposta);
+
+                setTimeout(function () {
+                        window.location = "./cadastro_empresa.html";
+                    }, 1000); // apenas para exibir o loading
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+    }
+
+    function sumirMensagem() {
+        cardErro.style.display = "none"
+    }
+    // source: https://www.youtube.com/shorts/zolDnL_FAjQ
+    let input = [...document.querySelectorAll('input')]
+    input.forEach(element => {
+        element.addEventListener('keyup', () => {
+            if (input.indexOf(element) + 1 != input.length) {
+                input[input.indexOf(element) + 1].focus()
+            }
+        })
+    })
+
+</script>

@@ -22,7 +22,17 @@ function cadastrar(nome, email, senha) {
     return database.executar(instrucaoSql);
 }
 
+function autenticarCodigo(codigo) {
+    console.log("ACESSEI O CODIGO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
+    var instrucaoSql = `
+        SELECT codigo, estado_codigo FROM codigo_ativacao WHERE codigo = '${codigo}';
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    autenticarCodigo
 };

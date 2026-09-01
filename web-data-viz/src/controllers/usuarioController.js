@@ -85,7 +85,40 @@ function cadastrar(req, res) {
     }
 }
 
+function autenticarCodigo(req, res) {
+    var codigo = req.body.codigoServer;
+
+    if (codigo == undefined) {
+        res.status(400).send("Seu codigo está undefined!");
+    }else {
+
+        usuarioModel.autenticarCodigo(codigo)
+            .then(
+                function (resultadoAutenticarCodigo) {
+                    console.log(`\nResultados encontrados: ${resultadoAutenticarCodigo.length}`);
+                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticarCodigo)}`); // transforma JSON em String
+
+                    if (resultadoAutenticarCodigo.length == 1) {
+                        console.log(resultadoAutenticarCodigo);
+                    } else if (resultadoAutenticarCodigo.length == 0) {
+                        res.status(403).send("Código inválido!");
+                    } else {
+                        res.status(403).send("Mais de um usuário com o mesmo login e senha!???");
+                    }
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log("\nHouve um erro ao validar o código! Erro: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+
+}
+
 module.exports = {
     autenticar,
-    cadastrar
+    cadastrar,
+    autenticarCodigo
 }
