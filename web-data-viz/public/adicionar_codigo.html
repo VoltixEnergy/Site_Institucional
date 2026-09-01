@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Voltix | Codigo</title>
+
+    <script src="./js/sessao.js"></script>
+
+    <link rel="stylesheet" href="./css/login_cadastro.css" />
+    <link rel="icon" href="./assets/icon/Logo.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+</head>
+
+<body>
+
+</body>
+<script>
+    function gerarCodigo() {
+        let codigo = ""
+        let vetorPossibilidades = [
+            ["a", "b", "c", "d", "e", "f",
+                "g", "h", "i", "j", "k", "l",
+                "m", "n", "o", "p", "q", "r",
+                "s", "t", "u", "v", "w", "x",
+                "y", "z"],
+            ["A", "B", "C", "D", "e", "F", "G", "H", "I", "J", "K",
+                "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                "W", "X", "Y", "Z"],
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]]
+        for (let i = 0; i < 6; i++) {
+            let ternario = Math.floor(Math.random() * 3);
+            if (ternario == 0) {
+                codigo += vetorPossibilidades[0][Math.floor(Math.random() * 26)]
+            } else if (ternario == 1) {
+                codigo += vetorPossibilidades[1][Math.floor(Math.random() * 26)]
+            } else {
+                codigo += vetorPossibilidades[2][Math.floor(Math.random() * 10)]
+            }
+        }
+        return codigo
+    }
+
+    function cadastrarCodigo() {
+        fetch("/usuarios/adicionarCodigo", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                codigoServer: gerarCodigo()
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    console.log("Novo código adicionado.")
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro do código!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                // finalizarAguardar();
+            });
+
+        return false;
+    }
+    
+
+</script>

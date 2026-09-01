@@ -101,10 +101,10 @@ function autenticarCodigo(req, res) {
                     if (resultadoAutenticarCodigo.length == 1) {
                         console.log(resultadoAutenticarCodigo);
                         res.json({
-                                        id: resultadoAutenticarCodigo[0].id_codigo,
-                                        codigo: resultadoAutenticarCodigo[0].codigo,
-                                        status: resultadoAutenticarCodigo[0].estado_codigo,
-                                    });
+                                id: resultadoAutenticarCodigo[0].id_codigo,
+                                codigo: resultadoAutenticarCodigo[0].codigo,
+                                status: resultadoAutenticarCodigo[0].estado_codigo,
+                            });
                     } else if (resultadoAutenticarCodigo.length == 0) {
                         res.status(403).send("Código inválido!");
                     } else {
@@ -121,9 +121,37 @@ function autenticarCodigo(req, res) {
     }
 
 }
+function adicionarCodigo(req, res) {
+    // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
+    var codigo = req.body.codigoServer;
+
+    // Faça as validações dos valores
+    if (codigo == undefined) {
+        res.status(400).send("Seu codigo está undefined!");
+    } else {
+
+        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+        usuarioModel.adicionarCodigo(codigo)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro do código! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
 
 module.exports = {
     autenticar,
     cadastrar,
-    autenticarCodigo
+    autenticarCodigo,
+    adicionarCodigo
 }

@@ -30,9 +30,27 @@ function cadastrar(req, res) {
     if (resultado.length > 0) {
       res
         .status(401)
-        .json({ mensagem: `a empresa com o cnpj ${cnpj} já existe` });
+        .json({ mensagem: `A empresa com o cnpj ${cnpj} já existe` });
     } else {
       empresaModel.cadastrar(razaoSocial, cnpj).then((resultado) => {
+        res.status(201).json(resultado);
+      });
+    }
+  });
+}
+
+function cadastrarEmpresa(req, res) {
+  var cnpj = req.body.cnpjServer;
+  var nomeFantasia = req.body.nomeComServer;
+  var razaoSocial = req.body.nomeJurServer;
+
+  empresaModel.buscarPorCnpj(cnpj).then((resultado) => {
+    if (resultado.length > 0) {
+      res
+        .status(401)
+        .json({ mensagem: `a empresa com o cnpj ${cnpj} já existe` });
+    } else {
+      empresaModel.cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial).then((resultado) => {
         res.status(201).json(resultado);
       });
     }
@@ -44,4 +62,5 @@ module.exports = {
   buscarPorId,
   cadastrar,
   listar,
+  cadastrarEmpresa
 };

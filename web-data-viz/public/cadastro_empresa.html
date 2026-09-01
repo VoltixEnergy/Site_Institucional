@@ -63,11 +63,11 @@
 
             <div class="coluna_cadastro1">
 
-              <span>Nome Comercial:</span><input id="nome_input" type="text" placeholder="Voltix">
+              <span>Nome Comercial:</span><input id="nomeCom_input" type="text" placeholder="Voltix">
 
-              <span>Nome Jurídico:</span><input id="email_input" type="text" placeholder="Voltix Energy">
+              <span>Nome Jurídico:</span><input id="nomeJur_input" type="text" placeholder="Voltix Energy">
 
-              <span>CNPJ:</span><input id="senha_input" type="password" placeholder="******">
+              <span>CNPJ:</span><input id="cnpj_input" type="text" placeholder="">
 
             </div>  
 
@@ -106,48 +106,50 @@
 
     //Recupere o valor da nova input pelo nome do id
     // Agora vá para o método fetch logo abaixo
-    var nomeVar = nome_input.value;
+    var nomeComVar = nomeCom_input.value;
+    var nomeJurVar = nomeJur_input.value;
     var emailVar = email_input.value;
+    var cnpjVar = cnpj_input.value;
     var senhaVar = senha_input.value;
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
 
     // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == ""
-    ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "Preencha todos os campos";
+    // if (
+    //   nomeVar == "" ||
+    //   emailVar == "" ||
+    //   senhaVar == ""
+    // ) {
+    //   cardErro.style.display = "block";
+    //   mensagem_erro.innerHTML =
+    //     "Preencha todos os campos";
 
-      return false;
-    } else if( nomeVar.length < 3){
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "O nome deve ter ao menos 3 caracteres";
+    //   return false;
+    // } else if( nomeVar.length < 3){
+    //   cardErro.style.display = "block";
+    //   mensagem_erro.innerHTML =
+    //     "O nome deve ter ao menos 3 caracteres";
 
-      return false;
-    } else if(senhaVar.length < 6){
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "A senha deve ter ao menos 6 caracteres";
+    //   return false;
+    // } else if(senhaVar.length < 6){
+    //   cardErro.style.display = "block";
+    //   mensagem_erro.innerHTML =
+    //     "A senha deve ter ao menos 6 caracteres";
 
-      return false;
-    } else if(senhaVar != confirmacaoSenhaVar){
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "As senhas não coincidem";
+    //   return false;
+    // } else if(senhaVar != confirmacaoSenhaVar){
+    //   cardErro.style.display = "block";
+    //   mensagem_erro.innerHTML =
+    //     "As senhas não coincidem";
 
-      return false;
-    } else {
-      setInterval(sumirMensagem, 5000);
-    }
+    //   return false;
+    // } else {
+    //   setInterval(sumirMensagem, 5000);
+    // }
 
     botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
 
     // Enviando o valor da nova input
-    fetch("/usuarios/cadastrar", {
+    fetch("/empresas/cadastrarEmpresa", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -155,9 +157,12 @@
       body: JSON.stringify({
         // crie um atributo que recebe o valor recuperado aqui
         // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeVar,
+        nomeComServer: nomeComVar,
+        nomeJurServer: nomeJurVar,
         emailServer: emailVar,
-        senhaServer: senhaVar
+        senhaServer: senhaVar,
+        cnpjServer: cnpjVar
+
       }),
     })
       .then(function (resposta) {

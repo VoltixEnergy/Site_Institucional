@@ -36,6 +36,12 @@ CREATE TABLE IF NOT EXISTS maquina (
     FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
 );
 
+CREATE TABLE IF NOT EXISTS componente(
+id_componente INT PRIMARY KEY AUTO_INCREMENT,
+nome_componente VARCHAR(15),
+    unidade_medida VARCHAR(3)
+);
+
 CREATE TABLE IF NOT EXISTS leitura(
     id_leitura INT PRIMARY KEY AUTO_INCREMENT,
     horario_leitura DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -46,19 +52,13 @@ CREATE TABLE IF NOT EXISTS leitura(
 );
 
 CREATE TABLE IF NOT EXISTS codigo_ativacao(
-    id_codigo INT PRIMARY KEY AUTO_INCREMENT,
+id_codigo INT PRIMARY KEY AUTO_INCREMENT,
     codigo VARCHAR(64),
     estado_codigo ENUM("ativado", "desativado")
 );
 
-CREATE TABLE IF NOT EXISTS componente(
-    id_componente INT PRIMARY KEY AUTO_INCREMENT,
-    nome_componente VARCHAR(15),
-    unidade_medida VARCHAR(3)
-);
-
 CREATE TABLE IF NOT EXISTS maquina_componente(
-    id_maquina_componente INT PRIMARY KEY AUTO_INCREMENT,
+id_maquina_componente INT PRIMARY KEY AUTO_INCREMENT,
     fk_maquina INT,
     FOREIGN KEY (fk_maquina) REFERENCES maquina(id_maquina),
     fk_componente INT,
