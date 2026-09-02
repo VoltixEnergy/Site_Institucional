@@ -56,6 +56,9 @@ function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
+    var cpf = req.body.cpfServer;
+    var nivelPermissao = req.body.nivelPermissaoServer;
+    var fkEmpresa = req.body.fkEmpresaServer;
 
     // Faça as validações dos valores
     if (nome == undefined) {
@@ -67,22 +70,31 @@ function cadastrar(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, senha)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
-            );
+        usuarioModel.buscarPorCpf(cpf).then((resultado) => {
+            if (resultado.length > 0) {
+                res
+                    .status(401)
+                    .json({ mensagem: `O usuário com o CPF ${cpf} já existe` });
+            } else {
+                usuarioModel.cadastrar(nome, email, senha, cpf, nivelPermissao, fkEmpresa)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
+                );
+            }
+        });
     }
+
 }
 
 function autenticarCodigo(req, res) {
@@ -90,7 +102,7 @@ function autenticarCodigo(req, res) {
 
     if (codigo == undefined) {
         res.status(400).send("Seu codigo está undefined!");
-    }else {
+    } else {
 
         usuarioModel.autenticarCodigo(codigo)
             .then(
@@ -101,10 +113,10 @@ function autenticarCodigo(req, res) {
                     if (resultadoAutenticarCodigo.length == 1) {
                         console.log(resultadoAutenticarCodigo);
                         res.json({
-                                id: resultadoAutenticarCodigo[0].id_codigo,
-                                codigo: resultadoAutenticarCodigo[0].codigo,
-                                status: resultadoAutenticarCodigo[0].estado_codigo,
-                            });
+                            id: resultadoAutenticarCodigo[0].id_codigo,
+                            codigo: resultadoAutenticarCodigo[0].codigo,
+                            status: resultadoAutenticarCodigo[0].estado_codigo,
+                        });
                     } else if (resultadoAutenticarCodigo.length == 0) {
                         res.status(403).send("Código inválido!");
                     } else {
@@ -123,20 +135,20 @@ function autenticarCodigo(req, res) {
 }
 
 function buscarUsuarioPorEmpresa(req, res) {
- console.log("controller")
-  var idEmpresa = req.params.idEmpresa;
-  console.log(idEmpresa)
-  usuarioModel.buscarUsuarioPorEmpresa(idEmpresa).then((resultado) => {
-    if (resultado.length > 0) {
-      res.status(200).json(resultado);
-    } else {
-      res.status(204).json([]);
-    }
-  }).catch(function (erro) {
-    console.log(erro);
-    console.log("Houve um erro ao buscar os funcionarios: ", erro.sqlMessage);
-    res.status(500).json(erro.sqlMessage);
-  });
+    console.log("controller")
+    var idEmpresa = req.params.idEmpresa;
+    console.log(idEmpresa)
+    usuarioModel.buscarUsuarioPorEmpresa(idEmpresa).then((resultado) => {
+        if (resultado.length > 0) {
+            res.status(200).json(resultado);
+        } else {
+            res.status(204).json([]);
+        }
+    }).catch(function (erro) {
+        console.log(erro);
+        console.log("Houve um erro ao buscar os funcionarios: ", erro.sqlMessage);
+        res.status(500).json(erro.sqlMessage);
+    });
 }
 function adicionarCodigo(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
