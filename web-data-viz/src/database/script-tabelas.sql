@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS empresa(
 
 CREATE TABLE IF NOT EXISTS usuario(
     id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    cpf CHAR(11) UNIQUE NOT NULL,
     nome VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL,
     nivel_permissao INT,
