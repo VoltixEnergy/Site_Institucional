@@ -178,10 +178,31 @@ function adicionarCodigo(req, res) {
     }
 }
 
+function editarNome(req, res) {
+    var novoNome = req.body.novoNome;
+    var idusuario = req.params.idUsuario;
+
+    usuarioModel.editarNome(novoNome, idusuario)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao editar o nome: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+}
+
 module.exports = {
     autenticar,
     cadastrar,
     autenticarCodigo,
     buscarUsuarioPorEmpresa,
-    adicionarCodigo
+    adicionarCodigo,
+    editarNome
 }

@@ -158,4 +158,42 @@ function buscarUsuarios(){
         })
 }
 
+function editarNome(novoNome, idUsuario){
+    fetch("/usuarios/editarNome/:idUsuario", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                novoNomeServer: novoNome,
+                idUsuarioServer: idUsuario
+            })
+        }).then(function (resposta) {
+            console.log("ESTOU NO THEN DO entrar()!")
+
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar atualizar os dados!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    finalizarAguardar(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+
+        return false;
+}
+
 </script>

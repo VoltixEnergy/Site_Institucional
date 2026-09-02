@@ -23,4 +23,8 @@ router.get("/buscarUsuarioPorEmpresa/:idEmpresa", function (req, res) {
     usuarioController.buscarUsuarioPorEmpresa(req, res);
 });
 
+router.put("/editarNome/:idUsuario", function (req, res) {
+    usuarioController.editarNome(req, res);
+});
+
 module.exports = router;
