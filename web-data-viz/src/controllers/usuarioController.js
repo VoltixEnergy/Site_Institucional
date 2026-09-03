@@ -180,7 +180,7 @@ function adicionarCodigo(req, res) {
 
 function editarNome(req, res) {
     var novoNome = req.body.novoNome;
-    var idusuario = req.params.idUsuario;
+    var idusuario = req.body.idUsuario;
 
     usuarioModel.editarNome(novoNome, idusuario)
         .then(
