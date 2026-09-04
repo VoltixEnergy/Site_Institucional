@@ -516,7 +516,6 @@ body {
   align-items: center;
   justify-content: center;
   gap: 4rem;
-  flex-wrap: wrap;
   padding: 0;
 }
 
@@ -932,6 +931,7 @@ body {
 
 .content {
   width: 86%;
+  min-height: 100vh;
   background-color: #1e2536;
   height: 100vh;
   max-height: fit-content;
@@ -1067,4 +1067,9 @@ body {
 
 .mudarNome img{
   width: 1.5rem;
+}
+
+.metrics-container {
+  display: flex;
+  flex-direction: column;
 }
