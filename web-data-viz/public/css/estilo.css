@@ -503,16 +503,21 @@ body {
   background-image: url('../assets/imgs/login_cadastro.png');
   color: white;
   padding: 5rem 0;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
 .metrics-container {
-  width: 85%;
-  margin: 0 auto;
+  width: 90%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 4rem;
+  flex-wrap: wrap;
+  padding: 0;
 }
 
 .metrics-text {
@@ -687,8 +692,9 @@ body {
   border: 2px solid rgb(37, 37, 37);
   border-radius: 1rem;
   width: 30%;
-  padding: 0.5rem 0 0 1rem;
+  padding: 0.5rem 1rem;
   background-color: #fff;
+  height: 20rem;
 }
 
 .profile {
@@ -696,11 +702,16 @@ body {
   width: 50%;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .profilePic img {
   border-radius: 50%;
   width: 6rem;
+}
+
+.profileName{
+  width: 100rem;
 }
 
 #contactUs {
