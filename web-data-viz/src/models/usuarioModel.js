@@ -67,6 +67,17 @@ function editarNome(novoNome, idUsuario) {
     return database.executar(instrucaoSql);
 }
 
+function deletarUsuario(idUsuario) {
+    console.log("ACESSEI O USUARIO MODEL function deletar(): ", idUsuario);
+    
+    var instrucaoSql = `
+        DELETE FROM usuario WHERE id_usuario = ${idUsuario};
+    `;
+    
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
     autenticar,
     cadastrar,
@@ -74,5 +85,6 @@ module.exports = {
     buscarUsuarioPorEmpresa,
     autenticarCodigo,
     adicionarCodigo,
-    editarNome
+    editarNome,
+    deletarUsuario
 };
