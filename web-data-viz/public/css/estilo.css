@@ -517,6 +517,7 @@ body {
   justify-content: center;
   gap: 4rem;
   padding: 0;
+  flex-direction: row;
 }
 
 .metrics-text {
@@ -1067,9 +1068,4 @@ body {
 
 .mudarNome img{
   width: 1.5rem;
-}
-
-.metrics-container {
-  display: flex;
-  flex-direction: column;
 }
