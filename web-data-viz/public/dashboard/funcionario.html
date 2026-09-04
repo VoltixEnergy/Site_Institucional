@@ -71,10 +71,10 @@
     </div>
 
     <div class="content">
-
         <div class="searchBar">
             <input type="text">
         </div>
+
         <div class="users" id="usersBox">
             <!-- <div class="user">
                 <p id="userAvatar">asd</p>
@@ -82,10 +82,19 @@
             </div> -->
         </div>
         <div id="editor">
-            <button id="sairEditor" onclick="sairEditor()">Sair</button>
-            <span>Digite o novo nome:</span><input type="text" id="novoNome">
-            <button id="mudarNome" onclick="mudarNome()">Mudar Nome</button>
+            <div class="topButtons">
+                <button id="sairEditor" onclick="sairEditor()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
+            </div>
+            <div class="midInputs">
+                <span>Digite o novo nome:</span><input type="text" id="novoNome">
+            </div>
+            <div class="functionsButtons">
+                <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
+                <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
+            </div>
+
         </div>
+
     </div>
 
     <div class="perfil_celular">
@@ -167,9 +176,11 @@
                 json.forEach(item => {
                     document.getElementById("usersBox").innerHTML +=
                         `<div class="user">
-                            <p id="userAvatar">${item.nome[0]+item.nome[1]}</p>
+                            <div class="infosUser">
+                            <p id="userAvatar">${item.nome[0] + item.nome[1]}</p>
                             <p id="userName">${item.nome}</p>
-                            <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})">mudarNome</button>
+                            </div>
+                            <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})"><img src="../assets/imgs/edit.png"></button>
                         </div>`
                 });
             }).catch(function (erro) {
@@ -192,7 +203,7 @@
 
             if (resposta.ok) {
                 console.log(resposta);
-
+                window.location.reload()
                 resposta.json().then(json => {
                     console.log(json);
 
@@ -217,19 +228,22 @@
 
     let idUsuarioEditar = null
     // const mudarNomeDiv = document.getElementById("mudarNome")
+    // const editorWrapper = document.getElementById("editorWrapper")
     const editor = document.getElementById("editor")
 
-    function abrirEditor(id){
+    function abrirEditor(id) {
         editor.style.display = "flex"
+        // editorWrapper.style.display = "flex"
         idUsuarioEditar = id
     }
 
-    function sairEditor(){
+    function sairEditor() {
         editor.style.display = "none"
+        // editorWrapper.style.display = "none"
         idUsuarioEditar = null
     }
 
-    function mudarNome(){
+    function mudarNome() {
         novoNome = novoNome.value
         editarNome(novoNome, idUsuarioEditar)
     }
