@@ -16,24 +16,32 @@ function autenticar(req, res) {
                 function (resultadoAutenticar) {
                     console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`);
                     console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`); // transforma JSON em String
-
+                    console.log(resultadoAutenticar[0])
                     if (resultadoAutenticar.length == 1) {
                         console.log(resultadoAutenticar);
 
-                        aquarioModel.buscarAquariosPorEmpresa(resultadoAutenticar[0].empresaId)
-                            .then((resultadoAquarios) => {
-                                if (resultadoAquarios.length > 0) {
+                        usuarioModel.buscarUsuarioPorEmpresa(resultadoAutenticar[0].fk_empresa)
+                            .then((resultadoFuncionarios) => {
+                                if (resultadoFuncionarios.length > 0) {
                                     res.json({
-                                        id: resultadoAutenticar[0].id,
+                                        id: resultadoAutenticar[0].id_usuario,
                                         email: resultadoAutenticar[0].email,
                                         nome: resultadoAutenticar[0].nome,
-                                        senha: resultadoAutenticar[0].senha,
-                                        aquarios: resultadoAquarios
+                                        // senha: resultadoAutenticar[0].senha,
+                                        empresa: resultadoAutenticar[0].fk_empresa,
+                                        funcionarios: resultadoFuncionarios
                                     });
                                 } else {
-                                    res.status(204).json({ aquarios: [] });
+                                    res.status(204).json({ funcionarios: [] });
                                 }
                             })
+                        // res.json({
+                        //     id: resultadoAutenticar[0].id,
+                        //     email: resultadoAutenticar[0].email,
+                        //     nome: resultadoAutenticar[0].nome,
+                        //     senha: resultadoAutenticar[0].senha,
+                        //     empresa: resultadoAutenticar[0].fk_empresa
+                        // });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
                     } else {
@@ -77,20 +85,20 @@ function cadastrar(req, res) {
                     .json({ mensagem: `O usuário com o CPF ${cpf} já existe` });
             } else {
                 usuarioModel.cadastrar(nome, email, senha, cpf, nivelPermissao, fkEmpresa)
-                .then(
-                    function (resultado) {
-                        res.json(resultado);
-                    }
-                ).catch(
-                    function (erro) {
-                        console.log(erro);
-                        console.log(
-                            "\nHouve um erro ao realizar o cadastro! Erro: ",
-                            erro.sqlMessage
-                        );
-                        res.status(500).json(erro.sqlMessage);
-                    }
-                );
+                    .then(
+                        function (resultado) {
+                            res.json(resultado);
+                        }
+                    ).catch(
+                        function (erro) {
+                            console.log(erro);
+                            console.log(
+                                "\nHouve um erro ao realizar o cadastro! Erro: ",
+                                erro.sqlMessage
+                            );
+                            res.status(500).json(erro.sqlMessage);
+                        }
+                    );
             }
         });
     }
@@ -198,24 +206,24 @@ function editarNome(req, res) {
 
 }
 
- function deletarUsuario(req, res) {
+function deletarUsuario(req, res) {
     var idUsuario = req.params.idUsuario;
 
     usuarioModel.deletarUsuario(idUsuario)
-    .then(
-        function(resultado) {
-            res.json(resultado);
-        }
-    )
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        )
 
-    .catch(
-        function(erro){
-            console.log(erro);
-            console.log("Houve um erro ao deletar o usuário: ", erro.sqlMessage);
-            res.status(500).json(erro.sqlMessage);
-        }
-    );
-} 
+        .catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao deletar o usuário: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
 
 module.exports = {
     autenticar,

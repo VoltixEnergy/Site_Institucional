@@ -72,7 +72,8 @@
 
     <div class="content">
         <div class="searchBar">
-            <input type="text">
+            <p>Funcionários</p>
+            <button>+</button>
         </div>
 
         <div class="users" id="usersBox">
@@ -93,6 +94,19 @@
                 <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
             </div>
 
+        </div>
+        <div id="addUser">
+            Crie uma nova conta para um usuário
+            <div class="group">
+                <span>Nome</span><input type="text" id="iptNome">
+                <span>Email</span> <input type="text" id="iptEmail">
+                <span>CPF</span> <input type="text" id="iptCpf">
+            </div>
+            <div class="group">
+                <span>Senha</span> <input type="text" id="iptSenha">
+                <span>Confirme a Senha</span> <input id="iptReSenha">
+            </div>
+            <button>Cadastrar</button>
         </div>
 
     </div>
@@ -147,45 +161,45 @@
     }
 
     function buscarUsuarios() {
-        var idEmpresa = 1
-        console.log("Listando funcionarios da empresa!")
-        fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
-            method: "GET"
-        })
-            .then(function (resposta) {
-                console.log(resposta)
-                console.log("ESTOU NO THEN DO entrar()!")
-                if (resposta.ok) {
-                    console.log(resposta);
-                    return resposta.json()
-                } else {
+        // var idEmpresa = 1
+        // console.log("Listando funcionarios da empresa!")
+        // fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
+        //     method: "GET"
+        // })
+        //     .then(function (resposta) {
+        //         console.log(resposta)
+        //         console.log("ESTOU NO THEN DO entrar()!")
+        //         if (resposta.ok) {
+        //             console.log(resposta);
+        //             return resposta.json()
+        //         } else {
 
-                    console.log("Houve um erro ao tentar listar usuários!");
+        //             console.log("Houve um erro ao tentar listar usuários!");
 
-                    resposta.text().then(texto => {
-                        console.error(texto);
-                        finalizarAguardar(texto);
-                    });
-                }
+        //             resposta.text().then(texto => {
+        //                 console.error(texto);
+        //                 finalizarAguardar(texto);
+        //             });
+        //         }
 
-            })
-            .then(function (json) {
+        //     })
+        //     .then(function (json) {
 
-                console.log(json);
+        //         console.log(json);
 
-                json.forEach(item => {
-                    document.getElementById("usersBox").innerHTML +=
-                        `<div class="user">
+        JSON.parse(sessionStorage.FUNCIONARIOS).forEach(item => {
+            document.getElementById("usersBox").innerHTML +=
+                `<div class="user">
                             <div class="infosUser">
                             <p id="userAvatar">${item.nome[0] + item.nome[1]}</p>
                             <p id="userName">${item.nome}</p>
                             </div>
                             <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})"><img src="../assets/imgs/edit.png"></button>
                         </div>`
-                });
-            }).catch(function (erro) {
-                console.log(erro);
-            })
+        });
+        // }).catch(function (erro) {
+        //     console.log(erro);
+        // })
     }
 
     function editarNome(novoNome, idUsuario) {
@@ -203,6 +217,17 @@
 
             if (resposta.ok) {
                 console.log(resposta);
+                let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
+                for (let i = 0; i < funcionarios.length; i++) {
+
+                    if (funcionarios[i].id_usuario == idUsuario) {
+
+                        funcionarios[i].nome = novoNome;
+
+                    }
+                }
+                sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
+
                 window.location.reload()
                 resposta.json().then(json => {
                     console.log(json);
@@ -226,6 +251,7 @@
         return false;
     }
 
+
     let idUsuarioEditar = null
     // const mudarNomeDiv = document.getElementById("mudarNome")
     // const editorWrapper = document.getElementById("editorWrapper")
@@ -247,28 +273,128 @@
         novoNome = novoNome.value
         editarNome(novoNome, idUsuarioEditar)
     }
-    function deletarUsuario(){
-    var idUsuario = idUsuarioEditar; 
-    
-    if (idUsuario == null) {
-        alert("Nenhum usuário selecionado!");
-        return;
+    function deletarUsuario() {
+        var idUsuario = idUsuarioEditar;
+
+        if (idUsuario == null) {
+            alert("Nenhum usuário selecionado!");
+            return;
+        }
+
+        fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    alert("Conta deletada com sucesso!");
+                    let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
+                    for (let i = 0; i < funcionarios.length; i++) {
+
+                        if (funcionarios[i].id_usuario == idUsuario) {
+
+                            funcionarios.splice(i, 1);
+
+                        }
+                    }
+                    sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
+                    window.location.reload();
+                } else {
+                    response.json().then(erro => alert(erro.erro || "Erro ao deletar"));
+                }
+            })
+            .catch(erro => console.error("Erro na requisição:", erro));
     }
 
-    fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert("Conta deletada com sucesso!");
-            window.location.reload(); 
+    function cadastrar() {
+        // aguardar();
+
+        //Recupere o valor da nova input pelo nome do id
+        // Agora vá para o método fetch logo abaixo
+        var nomeVar = inputNome.value;
+        var emailVar = inputEmail.value;
+        var senhaVar = inputSenha.value;
+        var confirmacaoSenhaVar = inputReSenha.value;
+        var cpfVar = inputCpf.value;
+        var nivelPermissaoServer = 1;
+        var fkEmpresaServer = sessionStorage.ID_EMPRESA;
+        // Verificando se há algum campo em branco
+        if (
+            nomeVar == "" ||
+            emailVar == "" ||
+            senhaVar == ""
+        ) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "Preencha todos os campos";
+
+            return false;
+        } else if (nomeVar.length < 3) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "O nome deve ter ao menos 3 caracteres";
+
+            return false;
+        } else if (senhaVar.length < 6) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "A senha deve ter ao menos 6 caracteres";
+
+            return false;
+        } else if (senhaVar != confirmacaoSenhaVar) {
+            cardErro.style.display = "block";
+            mensagem_erro.innerHTML =
+                "As senhas não coincidem";
+
+            return false;
         } else {
-            response.json().then(erro => alert(erro.erro || "Erro ao deletar"));
+            setInterval(sumirMensagem, 5000);
         }
-    })
-    .catch(erro => console.error("Erro na requisição:", erro));
-}
+
+        // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+
+        // Enviando o valor da nova input
+        fetch("/usuarios/cadastrar", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                // crie um atributo que recebe o valor recuperado aqui
+                // Agora vá para o arquivo routes/usuario.js
+                nomeServer: nomeVar,
+                emailServer: emailVar,
+                senhaServer: senhaVar,
+                cpfServer: cpfVar,
+                nivelPermissaoServer: nivelPermissaoVar,
+                fkEmpresaServer: fkEmpresaVar
+            }),
+        })
+            .then(function (resposta) {
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    cardErro.style.display = "block";
+
+                    mensagem_erro.innerHTML =
+                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+                    setTimeout(() => {
+                        window.location = "login.html";
+                    }, "2000");
+
+                    limparFormulario();
+                } else {
+                    throw "Houve um erro ao tentar realizar o cadastro!";
+                }
+            })
+            .catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+                // finalizarAguardar();
+            });
+
+        return false;
+    }
 </script>
