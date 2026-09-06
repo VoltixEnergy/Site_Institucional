@@ -73,7 +73,7 @@
     <div class="content">
         <div class="searchBar">
             <p>Funcionários</p>
-            <button>+</button>
+            <button onclick="abrirAddUser()">+</button>
         </div>
 
         <div class="users" id="usersBox">
@@ -82,9 +82,12 @@
                 <p id="userName">asd</p>
             </div> -->
         </div>
+
+    <div class="geral" id="geral_editor">
+
         <div id="editor">
             <div class="topButtons">
-                <button id="sairEditor" onclick="sairEditor()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
+                <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
             </div>
             <div class="midInputs">
                 <span>Digite o novo nome:</span><input type="text" id="novoNome">
@@ -93,10 +96,19 @@
                 <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
                 <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
             </div>
-
         </div>
+    </div>
+
+    <div class="geral" id="geral_addUser">
+
         <div id="addUser">
-            Crie uma nova conta para um usuário
+
+            <div class="topButtons">
+                <button class="sair" onclick="sairAddUser()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
+            </div>
+
+            <span>Crie uma nova conta para um usuário</span>
+
             <div class="group">
                 <span>Nome</span><input type="text" id="iptNome">
                 <span>Email</span> <input type="text" id="iptEmail">
@@ -258,15 +270,21 @@
     const editor = document.getElementById("editor")
 
     function abrirEditor(id) {
-        editor.style.display = "flex"
-        // editorWrapper.style.display = "flex"
-        idUsuarioEditar = id
+        document.getElementById("geral_editor").style.display = "flex";
+        idUsuarioEditar = id;
     }
 
     function sairEditor() {
-        editor.style.display = "none"
-        // editorWrapper.style.display = "none"
-        idUsuarioEditar = null
+        document.getElementById("geral_editor").style.display = "none";
+        idUsuarioEditar = null;
+    }
+
+    function abrirAddUser() {
+        document.getElementById("geral_addUser").style.display = "flex";
+    }
+
+    function sairAddUser() {
+        document.getElementById("geral_addUser").style.display = "none";
     }
 
     function mudarNome() {
