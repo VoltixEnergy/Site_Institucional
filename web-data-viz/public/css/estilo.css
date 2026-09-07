@@ -830,6 +830,29 @@ body {
 }
 
 @media (max-width: 768px) {
+
+  .Textos{
+    margin-top: 5rem;
+  }
+
+  .metrics-container{
+    flex-wrap: wrap;
+  }
+
+  .metrics-text{
+    width: 80%;
+  }
+
+  .metrics-cards{
+    width: 80%;
+  }
+  .linha{
+    width: 100%;
+    font-size: 0.5rem;
+  }
+  .logoSpan{
+    display: none;
+  }
   .mobileMenuIcon {
     display: inline-block;
   }
