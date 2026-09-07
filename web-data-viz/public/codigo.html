@@ -9,6 +9,7 @@
     <title>Voltix | Login</title>
 
     <script src="./js/sessao.js"></script>
+    <script src="./js/gerarCodigo.js"></script>
 
     <link rel="stylesheet" href="./css/login_cadastro.css">
     <link rel="icon" href="./assets/icon/Logo.ico">
@@ -65,6 +66,8 @@
                 <input type="text" maxlength="1" id="ipt5">
                 <input type="text" maxlength="1" id="ipt6">
             </div>
+            <button type="button" id="botao_gerar_codigo" onclick="exibirCodigoGerado()">Gerar código</button>
+            <div id="codigo_gerado" aria-live="polite"></div>
             <button id="botao_entrar" onclick="validarCodigo()">Validar</button>
             <div id="cardErro">
                 <span id="mensagem_erro"></span>
@@ -81,13 +84,53 @@
 
 <script>
 
+    async function exibirCodigoGerado() {
+        const codigo = gerarCodigo();
+        const botao = document.getElementById("botao_gerar_codigo");
+        const mensagem = document.getElementById("codigo_gerado");
+        const cardErro = document.getElementById("cardErro");
+        const mensagemErro = document.getElementById("mensagem_erro");
+
+        botao.disabled = true;
+        cardErro.style.display = "none";
+        mensagem.textContent = "Cadastrando código...";
+
+        try {
+            const resposta = await fetch("/usuarios/adicionarCodigo", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    codigoServer: codigo
+                })
+            });
+
+            if (!resposta.ok) {
+                const erro = await resposta.text();
+                throw new Error(erro || "Não foi possível cadastrar o código.");
+            }
+
+            codigo.split("").forEach((caractere, indice) => {
+                document.getElementById(`ipt${indice + 1}`).value = caractere;
+            });
+            mensagem.textContent = `Código cadastrado: ${codigo}`;
+        } catch (erro) {
+            console.error("Erro ao cadastrar código:", erro);
+            mensagem.textContent = "Não foi possível cadastrar o código.";
+            mensagemErro.textContent = erro.message;
+            cardErro.style.display = "block";
+        } finally {
+            botao.disabled = false;
+        }
+    }
 
     async function validarCodigo() {
         // aguardar();
 
         var codigoVar = ipt1.value + ipt2.value + ipt3.value + ipt4.value + ipt5.value + ipt6.value;
         console.log(codigoVar)
-        
+
 
         if (codigoVar.length < 6) {
             cardErro.style.display = "block"
@@ -110,32 +153,32 @@
                 codigoServer: codigoVar,
             })
         })
-        .then(function (resposta) {
-            
-            console.log("ESTOU NO THEN DO entrar()!")
-            if (resposta.ok) {
-                console.log(resposta);
-                setTimeout(function () {
+            .then(function (resposta) {
+
+                console.log("ESTOU NO THEN DO entrar()!")
+                if (resposta.ok) {
+                    console.log(resposta);
+                    setTimeout(function () {
                         window.location = "./cadastro_empresa.html";
                     }, 1000); // apenas para exibir o loading
 
-            } else {
+                } else {
 
-                console.log("Houve um erro ao autenticar o código!");
-                cardErro.style.display = "block"
-                mensagem_erro.innerHTML = "Código inválido";
-                setTimeout(function () {
-                    sumirMensagem();
-                }, 4000);
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
-                });
-            }
+                    console.log("Houve um erro ao autenticar o código!");
+                    cardErro.style.display = "block"
+                    mensagem_erro.innerHTML = "Código inválido";
+                    setTimeout(function () {
+                        sumirMensagem();
+                    }, 4000);
+                    resposta.text().then(texto => {
+                        console.error(texto);
+                        finalizarAguardar(texto);
+                    });
+                }
 
-        }).catch(function (erro) {
-            console.log(erro);
-        })
+            }).catch(function (erro) {
+                console.log(erro);
+            })
 
         return false;
     }

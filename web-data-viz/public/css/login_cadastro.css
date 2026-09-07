@@ -1,22 +1,22 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
 }
 
-body{
+body {
     min-height: 100vh;
     display: flex;
 }
 
 /*Lado esquerdo*/
 
-.esquerda{
+.esquerda {
     width: 50%;
 }
 
-.info_esquerda{
+.info_esquerda {
     width: 100%;
     min-height: 100vh;
     background-image: url('../assets/imgs/login_cadastro.png');
@@ -29,7 +29,7 @@ body{
     padding: 3rem;
 }
 
-.titulo h1{
+.titulo h1 {
     color: white;
     font-size: 3rem;
     font-weight: 700;
@@ -37,33 +37,34 @@ body{
     margin-bottom: 20px;
 }
 
-.logo{
+.logo {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.logo img{
+.logo img {
     max-width: 45px;
 }
 
-.logo span{
+.logo span {
     color: white;
     font-size: 1.25rem;
     font-weight: 600;
 }
 
-.titulo{
+.titulo {
     max-width: 500px;
 }
-.titulo p{
+
+.titulo p {
     color: #A8B3C5;
     font-size: 1rem;
     line-height: 1.5;
     opacity: 0.5;
 }
 
-.copyright{
+.copyright {
     color: #A8B3C5;
     font-size: 12px;
     opacity: 0.2;
@@ -71,7 +72,7 @@ body{
 
 /*Login*/
 
-.login{
+.login {
     width: 50%;
     min-height: 100vh;
 
@@ -82,7 +83,7 @@ body{
     padding: 2rem;
 }
 
-.info_login{
+.info_login {
     width: 100%;
     max-width: 420px;
 
@@ -90,31 +91,31 @@ body{
     flex-direction: column;
 }
 
-.voltar_home{
+.voltar_home {
     text-decoration: none;
     color: #64748B;
     margin-bottom: 20px;
 }
 
-.info_login h2{
+.info_login h2 {
     color: #031B3F;
     font-size: 2.25rem;
     margin-bottom: 10px;
 }
 
-.subtitulo{
+.subtitulo {
     color: #64748B;
     margin-bottom: 35px;
 }
 
-.info_login span{
+.info_login span {
     color: #0b2d5f;
     font-size: 14px;
     margin-top: 20px;
     margin-bottom: 5px;
 }
 
-.info_login input{
+.info_login input {
     width: 100%;
     height: 2.8rem;
     border: 1px solid #052350;
@@ -122,7 +123,7 @@ body{
     margin-bottom: 0.625rem;
 }
 
-.info_login button{
+.info_login button {
     width: 100%;
     height: 38px;
     border: none;
@@ -135,50 +136,50 @@ body{
     margin-top: 25px;
 }
 
-.info_login button:hover{
+.info_login button:hover {
     background-color: #e48b26;
     transition: 0.6s;
     transform: translateY(-2px);
 }
 
-.ir_cadastro{
+.ir_cadastro {
     text-align: center;
     text-decoration: none;
     color: #FF6B00;
     margin-top: 20px;
 }
 
-.info_login input{
+.info_login input {
     padding-left: 10px;
 }
 
-a{
+a {
     transition: 0.6s;
 }
 
-a:hover{
+a:hover {
     color: #e48b26;
 }
 
-.celular{
-    display:none;
+.celular {
+    display: none;
 }
 
 
 .coluna_cadastro1,
-.coluna_cadastro2{
+.coluna_cadastro2 {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.cadastro_geral{
+.cadastro_geral {
     display: flex;
     gap: 20px;
     width: 100%;
 }
 
-#cardErro{
+#cardErro {
     display: none;
     width: 100%;
     margin-top: 20px;
@@ -189,12 +190,12 @@ a:hover{
     text-align: center;
 }
 
-#mensagem_erro{
+#mensagem_erro {
     color: #052350;
     font-size: 14px;
 }
 
-.inputs-whapper{
+.inputs-whapper {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -202,82 +203,100 @@ a:hover{
     height: fit-content
 }
 
-.inputs-whapper input{
+.inputs-whapper input {
     height: 4rem;
     font-size: 3rem;
 }
 
-.cadastro_geral{
+#botao_gerar_codigo {
+    background-color: #052350;
+    margin-top: 15px;
+}
+
+#botao_gerar_codigo:hover {
+    background-color: #0b2d5f;
+}
+
+#codigo_gerado {
+    min-height: 22px;
+    color: #0b2d5f;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 12px;
+}
+
+.cadastro_geral {
     display: flex;
     gap: 20px;
     width: 100%;
 }
 
 .coluna_cadastro1,
-.coluna_cadastro2{
+.coluna_cadastro2 {
     flex: 1;
     display: flex;
     flex-direction: column;
 }
 
-.info_login input{
+.info_login input {
     width: 100%;
     height: 2.8rem;
     border-radius: 10px;
     padding: 0 12px;
 }
 
-.info_login input::placeholder{
+.info_login input::placeholder {
     color: #64748B;
     font-size: 14px;
 }
 
-@media (max-width: 1024px){
+@media (max-width: 1024px) {
 
-    .info_esquerda{
+    .info_esquerda {
         padding: 2rem;
     }
 
-    .titulo h1{
+    .titulo h1 {
         font-size: 2.5rem;
     }
 
-    .titulo{
+    .titulo {
         max-width: 400px;
     }
 
 }
 
-@media (max-width: 768px){
+@media (max-width: 768px) {
 
-    body{
+    body {
         flex-direction: column;
     }
 
-    .esquerda{
+    .esquerda {
         display: none;
     }
 
-    .login{
+    .login {
         width: 100%;
         min-height: 100vh;
         padding: 1.5rem;
     }
 
-    .info_login{
+    .info_login {
         max-width: 100%;
     }
 
-    .info_login h2{
+    .info_login h2 {
         font-size: 2rem;
         text-align: center;
     }
 
-    .subtitulo{
+    .subtitulo {
         text-align: center;
     }
 
-    .celular{
+    .celular {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -285,15 +304,15 @@ a:hover{
         margin-bottom: 70px;
     }
 
-    .celular img{
-        width:60px;
+    .celular img {
+        width: 60px;
     }
 
-    .celular span{
+    .celular span {
         margin: 0;
-        font-size:42px;
-        font-weight:bold;
-        color:#031B3F;
+        font-size: 42px;
+        font-weight: bold;
+        color: #031B3F;
         margin-bottom: 3px;
     }
 
