@@ -115,15 +115,18 @@
             console.log("ESTOU NO THEN DO entrar()!")
             if (resposta.ok) {
                 console.log(resposta);
-                
                 setTimeout(function () {
                         window.location = "./cadastro_empresa.html";
                     }, 1000); // apenas para exibir o loading
 
             } else {
 
-                console.log("Houve um erro ao tentar realizar o login!");
-
+                console.log("Houve um erro ao autenticar o código!");
+                cardErro.style.display = "block"
+                mensagem_erro.innerHTML = "Código inválido";
+                setTimeout(function () {
+                    sumirMensagem();
+                }, 4000);
                 resposta.text().then(texto => {
                     console.error(texto);
                     finalizarAguardar(texto);

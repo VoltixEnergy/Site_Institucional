@@ -17,16 +17,16 @@
 
 <body>
 
-    <div class = "esquerda">
+    <div class="esquerda">
 
-        <div class = "info_esquerda">
+        <div class="info_esquerda">
 
             <div class="logo">
-                <img src = "./assets/icon/Logo.png" alt="logo_voltix">
+                <img src="./assets/icon/Logo.png" alt="logo_voltix">
                 <span>Voltix</span>
             </div>
 
-            <div class = "titulo">
+            <div class="titulo">
                 <h1>Energia sob controle, decisão com dados.</h1>
 
                 <p>
@@ -44,9 +44,9 @@
 
     </div>
 
-    <div class = "login">
+    <div class="login">
 
-        <div class = "info_login">
+        <div class="info_login">
 
             <div class="celular">
                 <img src="./assets/icon/Logo_escura.png" alt="">
@@ -68,7 +68,7 @@
             <a href="codigo.html" class="ir_cadastro">Primeiro acesso? Valide o código aqui!</a>
 
             <div id="cardErro">
-              <span id="mensagem_erro"></span>
+                <span id="mensagem_erro"></span>
             </div>
             <div id="div_aguardar"></div>
 
@@ -93,6 +93,9 @@
         if (emailVar == "" || senhaVar == "") {
             cardErro.style.display = "block"
             mensagem_erro.innerHTML = "Preencha todos os campos";
+            setTimeout(function () {
+                    sumirMensagem();
+                }, 4000);
             finalizarAguardar();
             return false;
         }
@@ -138,7 +141,11 @@
             } else {
 
                 console.log("Houve um erro ao tentar realizar o login!");
-
+                cardErro.style.display = "block"
+                mensagem_erro.innerHTML = "usuário não encontrado";
+                setTimeout(function () {
+                    sumirMensagem();
+                }, 4000);
                 resposta.text().then(texto => {
                     console.error(texto);
                     finalizarAguardar(texto);
