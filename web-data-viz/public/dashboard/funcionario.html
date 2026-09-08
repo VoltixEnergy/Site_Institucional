@@ -207,12 +207,18 @@
         //         console.log(json);
 
         JSON.parse(sessionStorage.FUNCIONARIOS).forEach(item => {
+            let nomeCargo = "Func"
+            if(item.nivel_permissao == 0){
+                nomeCargo = "Admin"
+            }
             document.getElementById("usersBox").innerHTML +=
                 `<div class="user">
                             <div class="infosUser">
                             <p id="userAvatar">${item.nome[0] + item.nome[1]}</p>
                             <p id="userName">${item.nome}</p>
+                            
                             </div>
+                            <p id="userCargo" style = "border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
                             <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})"><img src="../assets/imgs/edit.png"></button>
                         </div>`
         });
