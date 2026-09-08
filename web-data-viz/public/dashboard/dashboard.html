@@ -50,17 +50,16 @@
 
             <div class="usuario_navbar">
 
-            <div class="avatar_usuario">
-                BH
-            </div>
+                <div class="avatar_usuario" id="avatarUsuario"></div>
 
-            <div class="info_usuario">
+                <div class="info_usuario">
+
+                    <span class="nome_usuario" id="nomeUsuario"></span>
+                    <br>
+                    <span class="email_usuario" id="emailUsuario"></span>
+
+                </div>
                 
-                <span class="nome_usuario">Bruno Henrique</span>
-                <br>
-                <span class="email_usuario">bruno@voltix.com.br</span>
-
-            </div>
                 <img src="../assets/imgs/icone_sair.png" class="sair_dash" onclick="window.location.href='../index.html'">
             </div>
 
@@ -96,9 +95,7 @@
         </div>
 
         <div class="usuario_celular">
-            <div class="avatar_usuario">
-                BH
-            </div>
+            <div class="avatar_usuario" id="avatarUsuario_celular"></div>
         </div>
 
     </div>
@@ -132,6 +129,15 @@
 </html>
 
 <script>
+
+let nome = sessionStorage.NOME_USUARIO;
+let email = sessionStorage.EMAIL_USUARIO;
+
+document.getElementById("nomeUsuario").innerHTML = nome;
+document.getElementById("emailUsuario").innerHTML = email;
+document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+
 
 function abrir_navbar() {
     document.getElementById("navbar_celular").classList.toggle("ativo");
