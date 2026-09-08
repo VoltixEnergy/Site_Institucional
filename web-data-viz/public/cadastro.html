@@ -115,7 +115,7 @@
     var confirmacaoSenhaVar = confirmacao_senha_input.value;
     var cpfVar = cpf_input.value;
     var nivelPermissaoServer = 0;
-    var fkEmpresaServer = 0;
+    var fkEmpresaServer = sessionStorage.ID_EMPRESA;
     // Verificando se há algum campo em branco
     if (
       nomeVar == "" ||
@@ -150,7 +150,7 @@
     }
 
     botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
-
+    console.log("FGHJKGFDS: " + fkEmpresaServer)
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
       method: "POST",

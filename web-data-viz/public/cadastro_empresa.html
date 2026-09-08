@@ -16,62 +16,62 @@
 </head>
 
 <body>
-  
-  <div class = "esquerda">
 
-        <div class = "info_esquerda">
+  <div class="esquerda">
 
-            <div class="logo">
-                <img src = "./assets/icon/Logo.png" alt="logo_voltix">
-                <span>Voltix</span>
-            </div>
+    <div class="info_esquerda">
 
-            <div class = "titulo">
-                <h1>Energia sob controle, decisão com dados.</h1>
+      <div class="logo">
+        <img src="./assets/icon/Logo.png" alt="logo_voltix">
+        <span>Voltix</span>
+      </div>
 
-                <p>
-                    Consumo em tempo real, alertas inteligentes e
-                    indicadores de eficiência. Tudo em uma única
-                    plataforma.
-                </p>
-            </div>
+      <div class="titulo">
+        <h1>Energia sob controle, decisão com dados.</h1>
 
-            <span class="copyright">
-                © 2026 Voltix. Todos os direitos reservados.
-            </span>
+        <p>
+          Consumo em tempo real, alertas inteligentes e
+          indicadores de eficiência. Tudo em uma única
+          plataforma.
+        </p>
+      </div>
 
-        </div>
+      <span class="copyright">
+        © 2026 Voltix. Todos os direitos reservados.
+      </span>
 
     </div>
 
-    <div class = "login">
+  </div>
 
-        <div class = "info_login">
+  <div class="login">
 
-          <div class="celular">
-                <img src="./assets/icon/Logo_escura.png" alt="">
-                <span>Voltix</span>
-            </div>
+    <div class="info_login">
 
-            <a href="index.html" class="voltar_home">← Voltar ao site</a>
+      <div class="celular">
+        <img src="./assets/icon/Logo_escura.png" alt="">
+        <span>Voltix</span>
+      </div>
 
-            <h2>Crie a conta da sua empresa</h2>
+      <a href="index.html" class="voltar_home">← Voltar ao site</a>
 
-            <span class="subtitulo">Preencha os dados abaixo para começar.</span>
-          
-          <div class="cadastro_geral">
+      <h2>Crie a conta da sua empresa</h2>
 
-            <div class="coluna_cadastro1">
+      <span class="subtitulo">Preencha os dados abaixo para começar.</span>
 
-              <span>Nome Comercial:</span><input id="nomeCom_input" type="text" placeholder="Voltix">
+      <div class="cadastro_geral">
 
-              <span>Nome Jurídico:</span><input id="nomeJur_input" type="text" placeholder="Voltix Energy">
+        <div class="coluna_cadastro1">
 
-              <span>CNPJ:</span><input id="cnpj_input" type="text" placeholder="00.000.000/0000-00">
+          <span>Nome Comercial:</span><input id="nomeCom_input" type="text" placeholder="Voltix">
 
-            </div>  
+          <span>Nome Jurídico:</span><input id="nomeJur_input" type="text" placeholder="Voltix Energy">
 
-            <!-- <div class="coluna_cadastro2">
+          <span>CNPJ:</span><input id="cnpj_input" type="text" placeholder="00.000.000/0000-00">
+
+        </div>
+
+        <!-- <div class="coluna_cadastro2">
 
               <span>Email:</span><input id="email_input" type="text" placeholder="empresa@provedor.com">
 
@@ -81,19 +81,19 @@
 
             </div> -->
 
-          </div>
+      </div>
 
-            <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
+      <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
 
-            <a href="login.html" class="ir_cadastro">Já tem conta? Faça login</a>
+      <a href="login.html" class="ir_cadastro">Já tem conta? Faça login</a>
 
-            <div id="cardErro">
-              <span id="mensagem_erro"></span>
-            </div>
-
-        </div>
+      <div id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
 
     </div>
+
+  </div>
 
 </body>
 
@@ -146,7 +146,7 @@
     //   setInterval(sumirMensagem, 5000);
     // }
 
-    botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+    botao_cadastrar.innerHTML = '<img src="./assets/imgs/aguarde-orange.gif" width="25">';
 
     // Enviando o valor da nova input
     fetch("/empresas/cadastrarEmpresa", {
@@ -169,6 +169,15 @@
         console.log("resposta: ", resposta);
 
         if (resposta.ok) {
+          resposta.json().then(json => {
+            console.log(json);
+            console.log(JSON.stringify(json));
+            sessionStorage.ID_EMPRESA = json.insertId;
+            setTimeout(function () {
+              window.location = "/cadastro.html";
+            }, 1000); // apenas para exibir o loading
+
+          });
           cardErro.style.display = "block";
           console.log(resposta.insertId)
           mensagem_erro.innerHTML =
