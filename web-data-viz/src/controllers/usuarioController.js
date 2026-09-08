@@ -58,6 +58,30 @@ function autenticar(req, res) {
     }
 
 }
+function buscarUsuarioPorCPF(req, res) {
+
+    if (resultado.length > 0) {
+        res
+            .status(401)
+            .json({ mensagem: `O usuário com o CPF ${cpf} já existe` });
+    } else {
+        usuarioModel.cadastrar(nome, email, senha, cpf, nivelPermissao, fkEmpresa)
+            .then(
+                function (resultado) {
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log(
+                        "\nHouve um erro ao realizar o cadastro! Erro: ",
+                        erro.sqlMessage
+                    );
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+};
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
@@ -78,7 +102,7 @@ function cadastrar(req, res) {
     } else {
 
         // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.buscarPorCpf(cpf).then((resultado) => {
+        usuarioModel.buscarUsuarioPorCPF(cpf).then((resultado) => {
             if (resultado.length > 0) {
                 res
                     .status(401)
@@ -232,5 +256,6 @@ module.exports = {
     buscarUsuarioPorEmpresa,
     adicionarCodigo,
     editarNome,
-    deletarUsuario
+    deletarUsuario,
+    buscarUsuarioPorCPF
 }

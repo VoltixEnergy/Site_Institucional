@@ -64,23 +64,23 @@
               <div class="coluna_cadastro1">
 
                   <span>Nome:</span>
-                  <input type="text" placeholder="Digite seu nome">
+                  <input type="text" placeholder="Digite seu nome" id="nome_input">
 
                   <span>Email:</span>
-                  <input type="email" placeholder="meuemail@provedor.com">
+                  <input type="email" placeholder="meuemail@provedor.com" id="email_input">
 
                   <span>CPF:</span>
-                  <input type="text" placeholder="000.000.000-00">
+                  <input type="text" placeholder="000.000.000-00" id="cpf_input">
 
               </div>
 
               <div class="coluna_cadastro2">
 
                   <span>Senha:</span>
-                  <input type="password" placeholder="******">
+                  <input type="password" placeholder="******" id="senha_input">
 
                   <span>Confirmar Senha:</span>
-                  <input type="password" placeholder="******">
+                  <input type="password" placeholder="******" id="confirmacao_senha_input">
 
               </div>
 
@@ -164,8 +164,8 @@
         emailServer: emailVar,
         senhaServer: senhaVar,
         cpfServer: cpfVar,
-        nivelPermissaoServer: nivelPermissaoVar,
-        fkEmpresaServer: fkEmpresaVar
+        nivelPermissaoServer: nivelPermissaoServer,
+        fkEmpresaServer: fkEmpresaServer
       }),
     })
       .then(function (resposta) {

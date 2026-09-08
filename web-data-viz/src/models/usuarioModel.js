@@ -22,7 +22,7 @@ function cadastrar(nome, email, senha, cpf, nivelPermissao = 1, fkEmpresa) {
     return database.executar(instrucaoSql);
 }
 
-function buscarUusarioPorCpf(cpf){
+function buscarUsuarioPorCPF(cpf){
     var instrucaoSql = `
         SELECT * FROM usuario WHERE cpf = '${cpf}'
     `
@@ -86,5 +86,6 @@ module.exports = {
     autenticarCodigo,
     adicionarCodigo,
     editarNome,
-    deletarUsuario
+    deletarUsuario,
+    buscarUsuarioPorCPF
 };

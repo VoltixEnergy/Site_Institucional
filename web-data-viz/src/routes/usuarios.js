@@ -29,6 +29,10 @@ router.put("/editarNome/:idUsuario", function (req, res) {
 
 router.delete("/deletarUsuario/:idUsuario", function(req, res){
     usuarioController.deletarUsuario(req, res)
-})
+});
+
+router.get("/buscarUsuarioPorCPF/:cpf", function(req, res){
+    usuarioController.buscarUsuarioPorCPF(req, res)
+});
 
 module.exports = router;
