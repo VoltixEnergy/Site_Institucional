@@ -28,6 +28,16 @@ function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
     var instrucaoSql = `
         INSERT INTO empresa (cnpj, nome_fantasia, razao_social) VALUES ('${cnpj}', '${nomeFantasia}', '${razaoSocial}');
     `
+  
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    
+    return database.executar(instrucaoSql);
+}
+
+function desativarCodigo(codigo){
+    var instrucaoSql = `
+      UPDATE codigo_ativacao SET estado_codigo = "desativado" WHERE codigo = "${codigo}"
+    `
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     return database.executar(instrucaoSql);
 }
@@ -37,5 +47,6 @@ module.exports = {
   buscarPorId, 
   cadastrar, 
   listar, 
-  cadastrarEmpresa
+  cadastrarEmpresa,
+  desativarCodigo
 };

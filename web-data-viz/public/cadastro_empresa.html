@@ -178,12 +178,26 @@
             }, 1000); // apenas para exibir o loading
 
           });
-          cardErro.style.display = "block";
-          console.log(resposta.insertId)
-          mensagem_erro.innerHTML =
-            "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
-          setTimeout(() => {
+          fetch("/empresas/desativarCodigo", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              // crie um atributo que recebe o valor recuperado aqui
+              // Agora vá para o arquivo routes/usuario.js
+              codigoServer: sessionStorage.CODIGO_ATIVACAO
+            })
+          });
+
+
+          cardErro.style.display = "block";
+            console.log(resposta.insertId)
+          mensagem_erro.innerHTML =
+              "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+
+            setTimeout(() => {
             window.location = "cadastro.html";
           }, "2000");
 

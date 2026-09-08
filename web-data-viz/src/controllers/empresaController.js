@@ -57,10 +57,19 @@ function cadastrarEmpresa(req, res) {
   });
 }
 
+function desativarCodigo(req, res){
+  var codigo = req.body.codigoServer;
+
+  empresaModel.desativarCodigo(codigo).then((resultado) => {
+    res.status(201).json(resultado);
+  })
+}
+
 module.exports = {
   buscarPorCnpj,
   buscarPorId,
   cadastrar,
   listar,
-  cadastrarEmpresa
+  cadastrarEmpresa,
+  desativarCodigo
 };

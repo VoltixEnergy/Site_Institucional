@@ -91,6 +91,8 @@
         const cardErro = document.getElementById("cardErro");
         const mensagemErro = document.getElementById("mensagem_erro");
 
+        sessionStorage.CODIGO_ATIVACAO = codigo;
+
         botao.disabled = true;
         cardErro.style.display = "none";
         mensagem.textContent = "Cadastrando código...";

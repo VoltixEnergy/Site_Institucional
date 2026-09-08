@@ -8,6 +8,10 @@ router.post("/cadastrarEmpresa", function (req, res) {
     empresaController.cadastrarEmpresa(req, res);
 })
 
+router.post("/desativarCodigo", function (req, res) {
+    empresaController.desativarCodigo(req, res);
+})
+
 router.get("/buscar", function (req, res) {
     empresaController.buscarPorCnpj(req, res);
 });
