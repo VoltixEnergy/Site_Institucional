@@ -83,84 +83,86 @@
             </div> -->
         </div>
 
-    <div class="geral" id="geral_editor">
+        <div class="geral" id="geral_editor">
 
-        <div id="editor">
-            <div class="topButtons">
-                <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
-            </div>
-            <div class="midInputs">
-                <span>Digite o novo nome:</span><input type="text" id="novoNome">
-            </div>
-            <div class="functionsButtons">
-                <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
-                <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="geral" id="geral_addUser">
-
-        <div id="addUser">
-
-            <div class="topButtons">
-                <button class="sair" onclick="sairAddUser()"><img src="../assets/imgs/icone_sair.png" alt=""></button>
-            </div>
-
-            <span>Crie uma nova conta para um usuário</span>
-
-            <div class="group">
-                <span>Nome</span><input type="text" id="iptNome">
-                <span>Email</span> <input type="text" id="iptEmail">
-                <span>CPF</span> <input type="text" id="iptCpf">
-            </div>
-            <div class="group">
-                <span>Senha</span> <input type="text" id="iptSenha">
-                <span>Confirme a Senha</span> <input id="iptReSenha">
-            </div>
-            <button>Cadastrar</button>
-        </div>
-
-    </div>
-
-    <div class="perfil_celular">
-
-        <div class="logo_celular" onclick="abrir_navbar()">
-            <img src="../assets/icon/Logo.png" alt="">
-        </div>
-
-        <div class="usuario_celular">
-            <div class="avatar_usuario">
-                BH
+            <div id="editor">
+                <div class="topButtons">
+                    <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../assets/imgs/icone_sair.png"
+                            alt=""></button>
+                </div>
+                <div class="midInputs">
+                    <span>Digite o novo nome:</span><input type="text" id="novoNome">
+                </div>
+                <div class="functionsButtons">
+                    <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
+                    <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
+                </div>
             </div>
         </div>
 
-    </div>
+        <div class="geral" id="geral_addUser">
 
-    <div id="navbar_celular" class="navbar_celular">
+            <div id="addUser">
 
-        <a href="dashboard.html">
-            <img src="../assets/imgs/icone_dashboard.png">
-        </a>
+                <div class="topButtons">
+                    <button class="sair" onclick="sairAddUser()"><img src="../assets/imgs/icone_sair.png"
+                            alt=""></button>
+                </div>
 
-        <a href="funcionario.html">
-            <img src="../assets/imgs/icone_funcionario.png">
-        </a>
+                <span>Crie uma nova conta para um usuário</span>
 
-        <a href="servidor.html">
-            <img src="../assets/imgs/icone_servidor.png">
-        </a>
+                <div class="group">
+                    <span>Nome</span><input type="text" id="iptNome">
+                    <span>Email</span> <input type="text" id="iptEmail">
+                    <span>CPF</span> <input type="text" id="iptCpf">
+                </div>
+                <div class="group">
+                    <span>Senha</span> <input type="text" id="iptSenha">
+                    <span>Confirme a Senha</span> <input id="iptReSenha">
+                </div>
+                <button onclick="cadastrar()">Cadastrar</button>
+            </div>
 
-        <a href="../index.html">
-            <img src="../assets/imgs/icone_sair.png">
-        </a>
+        </div>
+
+        <div class="perfil_celular">
+
+            <div class="logo_celular" onclick="abrir_navbar()">
+                <img src="../assets/icon/Logo.png" alt="">
+            </div>
+
+            <div class="usuario_celular">
+                <div class="avatar_usuario">
+                    BH
+                </div>
+            </div>
+
+        </div>
+
+        <div id="navbar_celular" class="navbar_celular">
+
+            <a href="dashboard.html">
+                <img src="../assets/imgs/icone_dashboard.png">
+            </a>
+
+            <a href="funcionario.html">
+                <img src="../assets/imgs/icone_funcionario.png">
+            </a>
+
+            <a href="servidor.html">
+                <img src="../assets/imgs/icone_servidor.png">
+            </a>
+
+            <a href="../index.html">
+                <img src="../assets/imgs/icone_sair.png">
+            </a>
 
 
-        <button class="fechar_navbar" onclick="abrir_navbar()">
+            <button class="fechar_navbar" onclick="abrir_navbar()">
 
-        </button>
+            </button>
 
-    </div>
+        </div>
 
 </body>
 
@@ -313,7 +315,7 @@
 
                         if (funcionarios[i].id_usuario == idUsuario) {
 
-                            funcionarios.splice(i, 1);git 
+                            funcionarios.splice(i, 1); git
 
                         }
                     }
@@ -331,13 +333,13 @@
 
         //Recupere o valor da nova input pelo nome do id
         // Agora vá para o método fetch logo abaixo
-        var nomeVar = inputNome.value;
-        var emailVar = inputEmail.value;
-        var senhaVar = inputSenha.value;
-        var confirmacaoSenhaVar = inputReSenha.value;
-        var cpfVar = inputCpf.value;
-        var nivelPermissaoServer = 1;
-        var fkEmpresaServer = sessionStorage.ID_EMPRESA;
+        var nomeVar = iptNome.value;
+        var emailVar = iptEmail.value;
+        var senhaVar = iptSenha.value;
+        var confirmacaoSenhaVar = iptReSenha.value;
+        var cpfVar = iptCpf.value;
+        var nivelPermissaoVar = 1;
+        var fkEmpresaVar = sessionStorage.ID_EMPRESA;
         // Verificando se há algum campo em branco
         if (
             nomeVar == "" ||
@@ -368,7 +370,7 @@
 
             return false;
         } else {
-            setInterval(sumirMensagem, 5000);
+            // setInterval(sumirMensagem, 5000);
         }
 
         // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
@@ -394,14 +396,18 @@
                 console.log("resposta: ", resposta);
 
                 if (resposta.ok) {
-                    cardErro.style.display = "block";
+                    // cardErro.style.display = "block";
 
-                    mensagem_erro.innerHTML =
-                        "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+                    // mensagem_erro.innerHTML =
+                    //     "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
-                    setTimeout(() => {
-                        window.location = "login.html";
-                    }, "2000");
+
+                    let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
+                    funcionarios.push({ "id_usuario": resposta.insertId, "nome": nomeVar, "email": emailVar, "nivel_permissao": nivelPermissaoVar })
+                    sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
+                    window.location.reload()
+                    document.getElementById('geral_addUser').style.display = "none"
+
 
                     limparFormulario();
                 } else {
