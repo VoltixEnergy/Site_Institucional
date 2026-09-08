@@ -167,13 +167,13 @@
 
 <script>
 
-let nome = sessionStorage.NOME_USUARIO;
-let email = sessionStorage.EMAIL_USUARIO;
+    let nome = sessionStorage.NOME_USUARIO;
+    let email = sessionStorage.EMAIL_USUARIO;
 
-document.getElementById("nomeUsuario").innerHTML = nome;
-document.getElementById("emailUsuario").innerHTML = email;
-document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+    document.getElementById("nomeUsuario").innerHTML = nome;
+    document.getElementById("emailUsuario").innerHTML = email;
+    document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+    document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
 
     function abrir_navbar() {
         document.getElementById("navbar_celular").classList.toggle("ativo");
@@ -319,8 +319,7 @@ document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase
                     for (let i = 0; i < funcionarios.length; i++) {
 
                         if (funcionarios[i].id_usuario == idUsuario) {
-
-                            funcionarios.splice(i, 1); git
+                            funcionarios.splice(i, 1); 
 
                         }
                     }
@@ -406,15 +405,18 @@ document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase
                     // mensagem_erro.innerHTML =
                     //     "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
-
-                    let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-                    funcionarios.push({ "id_usuario": resposta.insertId, "nome": nomeVar, "email": emailVar, "nivel_permissao": nivelPermissaoVar })
-                    sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-                    window.location.reload()
-                    document.getElementById('geral_addUser').style.display = "none"
-
+                    resposta.json().then(json => {
+                        console.log(json);
+                        console.log(JSON.stringify(json));
+                        let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
+                        funcionarios.push({ "id_usuario": json.insertId, "nome": nomeVar, "email": emailVar, "nivel_permissao": nivelPermissaoVar })
+                        sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
+                        window.location.reload()
+                        document.getElementById('geral_addUser').style.display = "none"
+                    });
 
                     limparFormulario();
+
                 } else {
                     throw "Houve um erro ao tentar realizar o cadastro!";
                 }
