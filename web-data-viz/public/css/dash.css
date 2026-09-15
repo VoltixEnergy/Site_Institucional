@@ -5,6 +5,8 @@
     font-family: 'Inter', sans-serif;
 }
 
+/* INÍCIO SIDE BAR DASHBOARD AND "EM BREVE" */
+
 body{
     min-height: 100vh;
     background-color: white;
@@ -364,3 +366,5 @@ body{
 
     
 }
+
+/* FIM SIDE BAR DASHBOARD AND "EM BREVE" */

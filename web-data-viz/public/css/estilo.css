@@ -953,6 +953,8 @@ body {
 
 /* FIM MEDIA QUERYS */
 
+
+/* INÍCIO TELA DASH FUNCIONÁRIOS */
 .content {
   width: 86%;
   min-height: 100vh;
@@ -1209,3 +1211,5 @@ body {
   padding: 2px;
   border-radius: 1rem;
 } */
+
+/* FIM TELA DASH FUNCIONÁRIOS */
