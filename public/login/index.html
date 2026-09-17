@@ -8,10 +8,10 @@
 
     <title>Voltix | Login</title>
 
-    <script src="./js/sessao.js"></script>
+    <script src="../js/sessao.js"></script>
 
-    <link rel="stylesheet" href="./css/login_cadastro.css">
-    <link rel="icon" href="./assets/icon/Logo.ico">
+    <link rel="stylesheet" href="../css/login_cadastro.css">
+    <link rel="icon" href="../assets/icon/Logo.ico">
     <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
@@ -22,7 +22,7 @@
         <div class="info_esquerda">
 
             <div class="logo">
-                <img src="./assets/icon/Logo.png" alt="logo_voltix">
+                <img src="../assets/icon/Logo.png" alt="logo_voltix">
                 <span>Voltix</span>
             </div>
 
@@ -131,9 +131,9 @@
                     sessionStorage.ID_USUARIO = json.id;
                     sessionStorage.ID_EMPRESA = json.empresa;
                     sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
-                    window.location = "./dashboard/dashboard.html";
+                    window.location = "../dashboard/dashboard.html";
                     setTimeout(function () {
-                        window.location = "./dashboard/cards.html";
+                        window.location = "../dashboard/cards.html";
                     }, 1000); // apenas para exibir o loading
 
                 });

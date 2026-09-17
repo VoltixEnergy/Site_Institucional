@@ -8,10 +8,10 @@
 
   <title>Voltix | Cadastro da Empresa</title>
 
-  <script src="./js/sessao.js"></script>
+  <script src="../js/sessao.js"></script>
 
-  <link rel="stylesheet" href="./css/login_cadastro.css" />
-  <link rel="icon" href="./assets/icon/Logo.ico" />
+  <link rel="stylesheet" href="../css/login_cadastro.css" />
+  <link rel="icon" href="../assets/icon/Logo.ico" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
@@ -22,7 +22,7 @@
     <div class="info_esquerda">
 
       <div class="logo">
-        <img src="./assets/icon/Logo.png" alt="logo_voltix">
+        <img src="../assets/icon/Logo.png" alt="logo_voltix">
         <span>Voltix</span>
       </div>
 
@@ -49,7 +49,7 @@
     <div class="info_login">
 
       <div class="celular">
-        <img src="./assets/icon/Logo_escura.png" alt="">
+        <img src="../assets/icon/Logo_escura.png" alt="">
         <span>Voltix</span>
       </div>
 
@@ -85,7 +85,7 @@
 
       <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
 
-      <a href="login.html" class="ir_cadastro">Já tem conta? Faça login</a>
+      <a href="login/index.html" class="ir_cadastro">Já tem conta? Faça login</a>
 
       <div id="cardErro">
         <span id="mensagem_erro"></span>
@@ -146,7 +146,7 @@
     //   setInterval(sumirMensagem, 5000);
     // }
 
-    botao_cadastrar.innerHTML = '<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+    botao_cadastrar.innerHTML = '<img src="../assets/imgs/aguarde-orange.gif" width="25">';
 
     // Enviando o valor da nova input
     fetch("/empresas/cadastrarEmpresa", {
@@ -174,7 +174,7 @@
             console.log(JSON.stringify(json));
             sessionStorage.ID_EMPRESA = json.insertId;
             setTimeout(function () {
-              window.location = "/cadastro.html";
+              window.location = "/cadastro";
             }, 1000); // apenas para exibir o loading
 
           });
@@ -198,7 +198,7 @@
               "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
             setTimeout(() => {
-            window.location = "cadastro.html";
+            window.location = "/cadastro";
           }, "2000");
 
           limparFormulario();

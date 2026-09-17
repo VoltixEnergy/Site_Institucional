@@ -8,10 +8,10 @@
 
   <title>Voltix | Cadastro</title>
 
-  <script src="./js/sessao.js"></script>
+  <script src="../js/sessao.js"></script>
 
-  <link rel="stylesheet" href="./css/login_cadastro.css" />
-  <link rel="icon" href="./assets/icon/Logo.ico" />
+  <link rel="stylesheet" href="../css/login_cadastro.css" />
+  <link rel="icon" href="../assets/icon/Logo.ico" />
   <link rel="preconnect" href="https://fonts.gstatic.com" />
 </head>
 
@@ -22,7 +22,7 @@
         <div class = "info_esquerda">
 
             <div class="logo">
-                <img src = "./assets/icon/Logo.png" alt="logo_voltix">
+                <img src = "../assets/icon/Logo.png" alt="logo_voltix">
                 <span>Voltix</span>
             </div>
 
@@ -49,7 +49,7 @@
         <div class = "info_login">
 
           <div class="celular">
-                <img src="./assets/icon/Logo_escura.png" alt="">
+                <img src="../assets/icon/Logo_escura.png" alt="">
                 <span>Voltix</span>
             </div>
 
@@ -88,7 +88,7 @@
 
             <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
 
-            <a href="login.html" class="ir_cadastro">Já tem uma conta? Faça login!</a>
+            <a href="../login/" class="ir_cadastro">Já tem uma conta? Faça login!</a>
 
             <div id="cardErro">
               <span id="mensagem_erro"></span>
@@ -149,7 +149,7 @@
       setInterval(sumirMensagem, 5000);
     }
 
-    botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+    botao_cadastrar.innerHTML ='<img src="../assets/imgs/aguarde-orange.gif" width="25">';
     console.log("FGHJKGFDS: " + fkEmpresaServer)
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {
@@ -178,7 +178,7 @@
             "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
 
           setTimeout(() => {
-            window.location = "login.html";
+            window.location = "../login";
           }, "2000");
 
           limparFormulario();
