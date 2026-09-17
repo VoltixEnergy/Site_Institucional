@@ -57,7 +57,7 @@ function cadastrarEmpresa(req, res) {
   });
 }
 
-function desativarCodigo(req, res){
+function desativarCodigo(req, res) {
   var codigo = req.body.codigoServer;
 
   empresaModel.desativarCodigo(codigo).then((resultado) => {

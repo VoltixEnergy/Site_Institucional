@@ -16,87 +16,87 @@
 </head>
 
 <body>
-  
-  <div class = "esquerda">
 
-        <div class = "info_esquerda">
+  <div class="esquerda">
 
-            <div class="logo">
-                <img src = "../assets/icon/Logo.png" alt="logo_voltix">
-                <span>Voltix</span>
-            </div>
+    <div class="info_esquerda">
 
-            <div class = "titulo">
-                <h1>Energia sob controle, decisão com dados.</h1>
+      <div class="logo">
+        <img src="../assets/icon/Logo.png" alt="logo_voltix">
+        <span>Voltix</span>
+      </div>
 
-                <p>
-                    Consumo em tempo real, alertas inteligentes e
-                    indicadores de eficiência. Tudo em uma única
-                    plataforma.
-                </p>
-            </div>
+      <div class="titulo">
+        <h1>Energia sob controle, decisão com dados.</h1>
 
-            <span class="copyright">
-                © 2026 Voltix. Todos os direitos reservados.
-            </span>
+        <p>
+          Consumo em tempo real, alertas inteligentes e
+          indicadores de eficiência. Tudo em uma única
+          plataforma.
+        </p>
+      </div>
 
-        </div>
+      <span class="copyright">
+        © 2026 Voltix. Todos os direitos reservados.
+      </span>
 
     </div>
 
-    <div class = "login">
+  </div>
 
-        <div class = "info_login">
+  <div class="login">
 
-          <div class="celular">
-                <img src="../assets/icon/Logo_escura.png" alt="">
-                <span>Voltix</span>
-            </div>
+    <div class="info_login">
 
-            <a href="index.html" class="voltar_home">← Voltar ao site</a>
+      <div class="celular">
+        <img src="../assets/icon/Logo_escura.png" alt="">
+        <span>Voltix</span>
+      </div>
 
-            <h2>Crie a conta do primeiro usuário da empresa!</h2>
+      <a href="index.html" class="voltar_home">← Voltar ao site</a>
 
-            <span class="subtitulo">Preencha os dados abaixo para começar.</span>
+      <h2>Crie a conta do primeiro usuário da empresa!</h2>
 
-            <div class="cadastro_geral">
+      <span class="subtitulo">Preencha os dados abaixo para começar.</span>
 
-              <div class="coluna_cadastro1">
+      <div class="cadastro_geral">
 
-                  <span>Nome:</span>
-                  <input type="text" placeholder="Digite seu nome" id="nome_input">
+        <div class="coluna_cadastro1">
 
-                  <span>Email:</span>
-                  <input type="email" placeholder="meuemail@provedor.com" id="email_input">
+          <span>Nome:</span>
+          <input type="text" placeholder="Digite seu nome" id="nome_input">
 
-                  <span>CPF:</span>
-                  <input type="text" placeholder="000.000.000-00" id="cpf_input">
+          <span>Email:</span>
+          <input type="email" placeholder="meuemail@provedor.com" id="email_input">
 
-              </div>
-
-              <div class="coluna_cadastro2">
-
-                  <span>Senha:</span>
-                  <input type="password" placeholder="******" id="senha_input">
-
-                  <span>Confirmar Senha:</span>
-                  <input type="password" placeholder="******" id="confirmacao_senha_input">
-
-              </div>
-
-          </div>
-
-            <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
-
-            <a href="../login/" class="ir_cadastro">Já tem uma conta? Faça login!</a>
-
-            <div id="cardErro">
-              <span id="mensagem_erro"></span>
-            </div>
+          <span>CPF:</span>
+          <input type="text" placeholder="000.000.000-00" id="cpf_input">
 
         </div>
 
+        <div class="coluna_cadastro2">
+
+          <span>Senha:</span>
+          <input type="password" placeholder="******" id="senha_input">
+
+          <span>Confirmar Senha:</span>
+          <input type="password" placeholder="******" id="confirmacao_senha_input">
+
+        </div>
+
+      </div>
+
+      <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
+
+      <a href="../login/" class="ir_cadastro">Já tem uma conta? Faça login!</a>
+
+      <div id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
+
     </div>
+
+  </div>
 
 </body>
 
@@ -127,19 +127,19 @@
         "Preencha todos os campos";
 
       return false;
-    } else if( nomeVar.length < 3){
+    } else if (nomeVar.length < 3) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
         "O nome deve ter ao menos 3 caracteres";
 
       return false;
-    } else if(senhaVar.length < 6){
+    } else if (senhaVar.length < 6) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
         "A senha deve ter ao menos 6 caracteres";
 
       return false;
-    } else if(senhaVar != confirmacaoSenhaVar){
+    } else if (senhaVar != confirmacaoSenhaVar) {
       cardErro.style.display = "block";
       mensagem_erro.innerHTML =
         "As senhas não coincidem";
@@ -149,7 +149,7 @@
       setInterval(sumirMensagem, 5000);
     }
 
-    botao_cadastrar.innerHTML ='<img src="../assets/imgs/aguarde-orange.gif" width="25">';
+    botao_cadastrar.innerHTML = '<img src="../assets/imgs/aguarde-orange.gif" width="25">';
     console.log("FGHJKGFDS: " + fkEmpresaServer)
     // Enviando o valor da nova input
     fetch("/usuarios/cadastrar", {

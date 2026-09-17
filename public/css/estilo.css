@@ -710,7 +710,7 @@ body {
   width: 6rem;
 }
 
-.profileName{
+.profileName {
   width: 100rem;
 }
 
@@ -831,28 +831,31 @@ body {
 
 @media (max-width: 768px) {
 
-  .Textos{
+  .Textos {
     margin-top: 5rem;
   }
 
-  .metrics-container{
+  .metrics-container {
     flex-wrap: wrap;
   }
 
-  .metrics-text{
+  .metrics-text {
     width: 80%;
   }
 
-  .metrics-cards{
+  .metrics-cards {
     width: 80%;
   }
-  .linha{
+
+  .linha {
     width: 100%;
     font-size: 0.5rem;
   }
-  .logoSpan{
+
+  .logoSpan {
     display: none;
   }
+
   .mobileMenuIcon {
     display: inline-block;
   }
@@ -967,7 +970,7 @@ body {
   margin-left: 14%;
 }
 
-.searchBar{
+.searchBar {
   width: 70%;
   display: flex;
   align-items: center;
@@ -975,13 +978,13 @@ body {
   padding-top: 3rem;
 }
 
-.searchBar p{
+.searchBar p {
   font-size: 2.5rem;
   color: white;
   font-weight: 600;
 }
 
-.searchBar button{
+.searchBar button {
   width: 3.5rem;
   height: 3.5rem;
   font-size: 2rem;
@@ -997,12 +1000,12 @@ body {
 }
 
 .searchBar button:hover {
-    background-color: #ff741f;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
+  background-color: #ff741f;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.45);
 }
 
-#usersBox{
+#usersBox {
   width: 80%;
   background-color: #0f172a;
   border-radius: 1rem;
@@ -1014,7 +1017,7 @@ body {
   padding: 2rem 0;
 }
 
-.user{
+.user {
   width: 90%;
   background-color: #1e2536;
   border-radius: 1rem;
@@ -1031,14 +1034,14 @@ body {
   padding: 0 2rem;
 }
 
-.infosUser{
+.infosUser {
   display: flex;
   gap: 2rem;
   justify-content: center;
   align-items: center;
 }
 
-#userAvatar{
+#userAvatar {
   width: 4rem;
   height: 4rem;
   border-radius: 50%;
@@ -1049,7 +1052,7 @@ body {
   justify-content: center;
 }
 
-#editor{
+#editor {
   width: 40%;
   height: 20rem;
   z-index: 10;
@@ -1065,7 +1068,7 @@ body {
   gap: 1rem;
 }
 
-#addUser{
+#addUser {
   width: 60%;
   height: 25rem;
   z-index: 10;
@@ -1082,49 +1085,49 @@ body {
 }
 
 #editor input,
-#addUser input{
-    width: 70%;
-    height: 3rem;
-    box-sizing: border-box;
-    background-color: #0f172a;
-    color: white;
-    border: 2px solid #3b465c;
-    border-radius: 0.7rem;
-    font-size: 1rem;
+#addUser input {
+  width: 70%;
+  height: 3rem;
+  box-sizing: border-box;
+  background-color: #0f172a;
+  color: white;
+  border: 2px solid #3b465c;
+  border-radius: 0.7rem;
+  font-size: 1rem;
 }
 
-#addUser button:last-child:not(:first-child){
-    padding: 0.7rem 2rem;
-    border: none;
-    border-radius: 0.6rem;
-    background-color: #fb5a00;
-    color: white;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: 0.7s;
+#addUser button:last-child:not(:first-child) {
+  padding: 0.7rem 2rem;
+  border: none;
+  border-radius: 0.6rem;
+  background-color: #fb5a00;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.7s;
 }
 
-#addUser button:last-child:not(:first-child):hover{
-    background-color: #ff741f;
-    transform: translateY(-2px);
+#addUser button:last-child:not(:first-child):hover {
+  background-color: #ff741f;
+  transform: translateY(-2px);
 }
 
-.sair{
+.sair {
   cursor: pointer;
 }
 
 .geral {
-    position: fixed;
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.678);
+  position: fixed;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.678);
 }
 
-.group{
+.group {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -1132,18 +1135,18 @@ body {
   gap: 1rem;
 }
 
-.topButtons button{
+.topButtons button {
   background-color: #ffffff00;
   border: none;
 }
 
-.topButtons{
+.topButtons {
   display: flex;
   width: 100%;
   height: fit-content;
 }
 
-.midInputs{
+.midInputs {
   display: flex;
   width: 100%;
   height: fit-content;
@@ -1153,7 +1156,7 @@ body {
   flex-direction: column;
 }
 
-.functionsButtons{
+.functionsButtons {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1161,7 +1164,7 @@ body {
   gap: 2rem;
 }
 
-.functionsButtons button{
+.functionsButtons button {
   padding: 0.7rem 1.5rem;
   border: none;
   border-radius: 0.6rem;
@@ -1172,29 +1175,29 @@ body {
 }
 
 .functionsButtons button:first-child {
-    background-color: #0f172a;
+  background-color: #0f172a;
 }
 
 .functionsButtons button:first-child:hover {
-    background-color: #ff741f;
-    transform: translateY(-2px);
+  background-color: #ff741f;
+  transform: translateY(-2px);
 }
 
 .functionsButtons button:last-child {
-    background-color: red;
+  background-color: red;
 }
 
 .functionsButtons button:last-child:hover {
-    background-color: red;
-    transform: translateY(-2px);
+  background-color: red;
+  transform: translateY(-2px);
 }
 
-#editor input{
+#editor input {
   width: 70%;
   height: 3rem;
 }
 
-.mudarNome{
+.mudarNome {
   width: fit-content;
   height: fit-content;
   background-color: #ffffff00;
@@ -1202,7 +1205,7 @@ body {
   cursor: pointer;
 }
 
-.mudarNome img{
+.mudarNome img {
   width: 1.5rem;
 }
 

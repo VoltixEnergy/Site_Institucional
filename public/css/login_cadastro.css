@@ -1,323 +1,323 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
-    min-height: 100vh;
-    display: flex;
+  min-height: 100vh;
+  display: flex;
 }
 
 /*Lado esquerdo*/
 
 .esquerda {
-    width: 50%;
+  width: 50%;
 }
 
 .info_esquerda {
-    width: 100%;
-    min-height: 100vh;
-    background-image: url('../assets/imgs/login_cadastro.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem;
+  width: 100%;
+  min-height: 100vh;
+  background-image: url('../assets/imgs/login_cadastro.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
 }
 
 .titulo h1 {
-    color: white;
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 1.2;
-    margin-bottom: 20px;
+  color: white;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 20px;
 }
 
 .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .logo img {
-    max-width: 45px;
+  max-width: 45px;
 }
 
 .logo span {
-    color: white;
-    font-size: 1.25rem;
-    font-weight: 600;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .titulo {
-    max-width: 500px;
+  max-width: 500px;
 }
 
 .titulo p {
-    color: #A8B3C5;
-    font-size: 1rem;
-    line-height: 1.5;
-    opacity: 0.5;
+  color: #A8B3C5;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.5;
 }
 
 .copyright {
-    color: #A8B3C5;
-    font-size: 12px;
-    opacity: 0.2;
+  color: #A8B3C5;
+  font-size: 12px;
+  opacity: 0.2;
 }
 
 /*Login*/
 
 .login {
-    width: 50%;
-    min-height: 100vh;
+  width: 50%;
+  min-height: 100vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    padding: 2rem;
+  padding: 2rem;
 }
 
 .info_login {
-    width: 100%;
-    max-width: 420px;
+  width: 100%;
+  max-width: 420px;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .voltar_home {
-    text-decoration: none;
-    color: #64748B;
-    margin-bottom: 20px;
+  text-decoration: none;
+  color: #64748B;
+  margin-bottom: 20px;
 }
 
 .info_login h2 {
-    color: #031B3F;
-    font-size: 2.25rem;
-    margin-bottom: 10px;
+  color: #031B3F;
+  font-size: 2.25rem;
+  margin-bottom: 10px;
 }
 
 .subtitulo {
-    color: #64748B;
-    margin-bottom: 35px;
+  color: #64748B;
+  margin-bottom: 35px;
 }
 
 .info_login span {
-    color: #0b2d5f;
-    font-size: 14px;
-    margin-top: 20px;
-    margin-bottom: 5px;
+  color: #0b2d5f;
+  font-size: 14px;
+  margin-top: 20px;
+  margin-bottom: 5px;
 }
 
 .info_login input {
-    width: 100%;
-    height: 2.8rem;
-    border: 1px solid #052350;
-    border-radius: 0.625rem;
-    margin-bottom: 0.625rem;
+  width: 100%;
+  height: 2.8rem;
+  border: 1px solid #052350;
+  border-radius: 0.625rem;
+  margin-bottom: 0.625rem;
 }
 
 .info_login button {
-    width: 100%;
-    height: 38px;
-    border: none;
-    border-radius: 10px;
-    background-color: #FF6B00;
-    color: white;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 25px;
+  width: 100%;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background-color: #FF6B00;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 25px;
 }
 
 .info_login button:hover {
-    background-color: #e48b26;
-    transition: 0.6s;
-    transform: translateY(-2px);
+  background-color: #e48b26;
+  transition: 0.6s;
+  transform: translateY(-2px);
 }
 
 .ir_cadastro {
-    text-align: center;
-    text-decoration: none;
-    color: #FF6B00;
-    margin-top: 20px;
+  text-align: center;
+  text-decoration: none;
+  color: #FF6B00;
+  margin-top: 20px;
 }
 
 .info_login input {
-    padding-left: 10px;
+  padding-left: 10px;
 }
 
 a {
-    transition: 0.6s;
+  transition: 0.6s;
 }
 
 a:hover {
-    color: #e48b26;
+  color: #e48b26;
 }
 
 .celular {
-    display: none;
+  display: none;
 }
 
 
 .coluna_cadastro1,
 .coluna_cadastro2 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .cadastro_geral {
-    display: flex;
-    gap: 20px;
-    width: 100%;
+  display: flex;
+  gap: 20px;
+  width: 100%;
 }
 
 #cardErro {
-    display: none;
-    width: 100%;
-    margin-top: 20px;
-    padding: 12px 15px;
-    border-radius: 10px;
-    background-color: #FFF1F1;
-    border: 1px solid #052350;
-    text-align: center;
+  display: none;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px 15px;
+  border-radius: 10px;
+  background-color: #FFF1F1;
+  border: 1px solid #052350;
+  text-align: center;
 }
 
 #mensagem_erro {
-    color: #052350;
-    font-size: 14px;
+  color: #052350;
+  font-size: 14px;
 }
 
 .inputs-whapper {
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 1rem;
-    height: fit-content
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 1rem;
+  height: fit-content
 }
 
 .inputs-whapper input {
-    height: 4rem;
-    font-size: 2rem;
-    color: #052350;
-    text-align: center;
-    font-weight: bold;
-    font-family: arial, sans-serif; 
+  height: 4rem;
+  font-size: 2rem;
+  color: #052350;
+  text-align: center;
+  font-weight: bold;
+  font-family: arial, sans-serif;
 }
 
 #botao_gerar_codigo {
-    background-color: #052350;
-    margin-top: 15px;
+  background-color: #052350;
+  margin-top: 15px;
 }
 
 #botao_gerar_codigo:hover {
-    background-color: #0b2d5f;
+  background-color: #0b2d5f;
 }
 
 #codigo_gerado {
-    min-height: 22px;
-    color: #0b2d5f;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    margin-top: 12px;
+  min-height: 22px;
+  color: #0b2d5f;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 12px;
 }
 
 .cadastro_geral {
-    display: flex;
-    gap: 20px;
-    width: 100%;
+  display: flex;
+  gap: 20px;
+  width: 100%;
 }
 
 .coluna_cadastro1,
 .coluna_cadastro2 {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .info_login input {
-    width: 100%;
-    height: 2.8rem;
-    border-radius: 10px;
-    padding: 0 12px;
+  width: 100%;
+  height: 2.8rem;
+  border-radius: 10px;
+  padding: 0 12px;
 }
 
 .info_login input::placeholder {
-    color: #64748B;
-    font-size: 14px;
+  color: #64748B;
+  font-size: 14px;
 }
 
 @media (max-width: 1024px) {
 
-    .info_esquerda {
-        padding: 2rem;
-    }
+  .info_esquerda {
+    padding: 2rem;
+  }
 
-    .titulo h1 {
-        font-size: 2.5rem;
-    }
+  .titulo h1 {
+    font-size: 2.5rem;
+  }
 
-    .titulo {
-        max-width: 400px;
-    }
+  .titulo {
+    max-width: 400px;
+  }
 
 }
 
 @media (max-width: 768px) {
 
-    body {
-        flex-direction: column;
-    }
+  body {
+    flex-direction: column;
+  }
 
-    .esquerda {
-        display: none;
-    }
+  .esquerda {
+    display: none;
+  }
 
-    .login {
-        width: 100%;
-        min-height: 100vh;
-        padding: 1.5rem;
-    }
+  .login {
+    width: 100%;
+    min-height: 100vh;
+    padding: 1.5rem;
+  }
 
-    .info_login {
-        max-width: 100%;
-    }
+  .info_login {
+    max-width: 100%;
+  }
 
-    .info_login h2 {
-        font-size: 2rem;
-        text-align: center;
-    }
+  .info_login h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
 
-    .subtitulo {
-        text-align: center;
-    }
+  .subtitulo {
+    text-align: center;
+  }
 
-    .celular {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 70px;
-    }
+  .celular {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 70px;
+  }
 
-    .celular img {
-        width: 60px;
-    }
+  .celular img {
+    width: 60px;
+  }
 
-    .celular span {
-        margin: 0;
-        font-size: 42px;
-        font-weight: bold;
-        color: #031B3F;
-        margin-bottom: 3px;
-    }
+  .celular span {
+    margin: 0;
+    font-size: 42px;
+    font-weight: bold;
+    color: #031B3F;
+    margin-bottom: 3px;
+  }
 
 }

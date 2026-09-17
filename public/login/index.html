@@ -2,79 +2,79 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Voltix | Login</title>
+  <title>Voltix | Login</title>
 
-    <script src="../js/sessao.js"></script>
+  <script src="../js/sessao.js"></script>
 
-    <link rel="stylesheet" href="../css/login_cadastro.css">
-    <link rel="icon" href="../assets/icon/Logo.ico">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="stylesheet" href="../css/login_cadastro.css">
+  <link rel="icon" href="../assets/icon/Logo.ico">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
 </head>
 
 <body>
 
-    <div class="esquerda">
+  <div class="esquerda">
 
-        <div class="info_esquerda">
+    <div class="info_esquerda">
 
-            <div class="logo">
-                <img src="../assets/icon/Logo.png" alt="logo_voltix">
-                <span>Voltix</span>
-            </div>
+      <div class="logo">
+        <img src="../assets/icon/Logo.png" alt="logo_voltix">
+        <span>Voltix</span>
+      </div>
 
-            <div class="titulo">
-                <h1>Energia sob controle, decisão com dados.</h1>
+      <div class="titulo">
+        <h1>Energia sob controle, decisão com dados.</h1>
 
-                <p>
-                    Consumo em tempo real, alertas inteligentes e
-                    indicadores de eficiência. Tudo em uma única
-                    plataforma.
-                </p>
-            </div>
+        <p>
+          Consumo em tempo real, alertas inteligentes e
+          indicadores de eficiência. Tudo em uma única
+          plataforma.
+        </p>
+      </div>
 
-            <span class="copyright">
-                © 2026 Voltix. Todos os direitos reservados.
-            </span>
-
-        </div>
+      <span class="copyright">
+        © 2026 Voltix. Todos os direitos reservados.
+      </span>
 
     </div>
 
-    <div class="login">
+  </div>
 
-        <div class="info_login">
+  <div class="login">
 
-            <div class="celular">
-                <img src="./assets/icon/Logo_escura.png" alt="">
-                <span>Voltix</span>
-            </div>
+    <div class="info_login">
 
-            <a href="index.html" class="voltar_home">← Voltar ao site</a>
+      <div class="celular">
+        <img src="./assets/icon/Logo_escura.png" alt="">
+        <span>Voltix</span>
+      </div>
 
-            <h2>Bem-vindo de volta</h2>
+      <a href="index.html" class="voltar_home">← Voltar ao site</a>
 
-            <span class="subtitulo">Entre com suas credenciais para acessar a plataforma.</span>
+      <h2>Bem-vindo de volta</h2>
 
-            <span>E-mail:</span><input id="email_input" type="text" placeholder="meuemail@provedor.com">
+      <span class="subtitulo">Entre com suas credenciais para acessar a plataforma.</span>
 
-            <span>Senha:</span><input id="senha_input" type="password" placeholder="******">
+      <span>E-mail:</span><input id="email_input" type="text" placeholder="meuemail@provedor.com">
 
-            <button id="botao_entrar" onclick="entrar()">Entrar</button>
+      <span>Senha:</span><input id="senha_input" type="password" placeholder="******">
 
-            <a href="codigo.html" class="ir_cadastro">Primeiro acesso? Valide o código aqui!</a>
+      <button id="botao_entrar" onclick="entrar()">Entrar</button>
 
-            <div id="cardErro">
-                <span id="mensagem_erro"></span>
-            </div>
-            <div id="div_aguardar"></div>
+      <a href="codigo.html" class="ir_cadastro">Primeiro acesso? Valide o código aqui!</a>
 
-        </div>
+      <div id="cardErro">
+        <span id="mensagem_erro"></span>
+      </div>
+      <div id="div_aguardar"></div>
 
     </div>
+
+  </div>
 
 
 </body>
@@ -84,83 +84,83 @@
 <script>
 
 
-    function entrar() {
-        aguardar();
+  function entrar() {
+    aguardar();
 
-        var emailVar = email_input.value;
-        var senhaVar = senha_input.value;
+    var emailVar = email_input.value;
+    var senhaVar = senha_input.value;
 
-        if (emailVar == "" || senhaVar == "") {
-            cardErro.style.display = "block"
-            mensagem_erro.innerHTML = "Preencha todos os campos";
-            setTimeout(function () {
-                    sumirMensagem();
-                }, 4000);
-            finalizarAguardar();
-            return false;
-        }
-        else {
-            setInterval(sumirMensagem, 5000)
-        }
-
-        console.log("FORM LOGIN: ", emailVar);
-        console.log("FORM SENHA: ", senhaVar);
-
-        // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
-
-        fetch("/usuarios/autenticar", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emailServer: emailVar,
-                senhaServer: senhaVar
-            })
-        }).then(function (resposta) {
-            console.log("ESTOU NO THEN DO entrar()!")
-
-            if (resposta.ok) {
-                console.log(resposta);
-
-                resposta.json().then(json => {
-                    console.log(json);
-                    console.log(JSON.stringify(json));
-                    sessionStorage.EMAIL_USUARIO = json.email;
-                    sessionStorage.NOME_USUARIO = json.nome;
-                    sessionStorage.ID_USUARIO = json.id;
-                    sessionStorage.ID_EMPRESA = json.empresa;
-                    sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
-                    window.location = "../dashboard/dashboard.html";
-                    setTimeout(function () {
-                        window.location = "../dashboard/cards.html";
-                    }, 1000); // apenas para exibir o loading
-
-                });
-
-            } else {
-
-                console.log("Houve um erro ao tentar realizar o login!");
-                cardErro.style.display = "block"
-                mensagem_erro.innerHTML = "usuário não encontrado";
-                setTimeout(function () {
-                    sumirMensagem();
-                }, 4000);
-                resposta.text().then(texto => {
-                    console.error(texto);
-                    finalizarAguardar(texto);
-                });
-            }
-
-        }).catch(function (erro) {
-            console.log(erro);
-        })
-
-        return false;
+    if (emailVar == "" || senhaVar == "") {
+      cardErro.style.display = "block"
+      mensagem_erro.innerHTML = "Preencha todos os campos";
+      setTimeout(function () {
+        sumirMensagem();
+      }, 4000);
+      finalizarAguardar();
+      return false;
+    }
+    else {
+      setInterval(sumirMensagem, 5000)
     }
 
-    function sumirMensagem() {
-        cardErro.style.display = "none"
-    }
+    console.log("FORM LOGIN: ", emailVar);
+    console.log("FORM SENHA: ", senhaVar);
+
+    // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
+
+    fetch("/usuarios/autenticar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        emailServer: emailVar,
+        senhaServer: senhaVar
+      })
+    }).then(function (resposta) {
+      console.log("ESTOU NO THEN DO entrar()!")
+
+      if (resposta.ok) {
+        console.log(resposta);
+
+        resposta.json().then(json => {
+          console.log(json);
+          console.log(JSON.stringify(json));
+          sessionStorage.EMAIL_USUARIO = json.email;
+          sessionStorage.NOME_USUARIO = json.nome;
+          sessionStorage.ID_USUARIO = json.id;
+          sessionStorage.ID_EMPRESA = json.empresa;
+          sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
+          window.location = "../dashboard/dashboard.html";
+          setTimeout(function () {
+            window.location = "../dashboard/cards.html";
+          }, 1000); // apenas para exibir o loading
+
+        });
+
+      } else {
+
+        console.log("Houve um erro ao tentar realizar o login!");
+        cardErro.style.display = "block"
+        mensagem_erro.innerHTML = "usuário não encontrado";
+        setTimeout(function () {
+          sumirMensagem();
+        }, 4000);
+        resposta.text().then(texto => {
+          console.error(texto);
+          finalizarAguardar(texto);
+        });
+      }
+
+    }).catch(function (erro) {
+      console.log(erro);
+    })
+
+    return false;
+  }
+
+  function sumirMensagem() {
+    cardErro.style.display = "none"
+  }
 
 </script>

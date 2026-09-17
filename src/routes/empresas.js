@@ -5,15 +5,15 @@ var empresaController = require("../controllers/empresaController");
 
 //Recebendo os dados do html e direcionando para a função cadastrar de usuarioController.js
 router.post("/cadastrarEmpresa", function (req, res) {
-    empresaController.cadastrarEmpresa(req, res);
+  empresaController.cadastrarEmpresa(req, res);
 })
 
 router.post("/desativarCodigo", function (req, res) {
-    empresaController.desativarCodigo(req, res);
+  empresaController.desativarCodigo(req, res);
 })
 
 router.get("/buscar", function (req, res) {
-    empresaController.buscarPorCnpj(req, res);
+  empresaController.buscarPorCnpj(req, res);
 });
 
 router.get("/buscar/:id", function (req, res) {
