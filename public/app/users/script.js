@@ -33,7 +33,7 @@ function buscarUsuarios() {
     document.getElementById("usersBox").innerHTML +=
       `<div class="user">
                           <div class="infosUser">
-                          <p id="userAvatar">${item.nome[0] + item.nome[1]}</p>
+                          <p id="userAvatar">${item.nome[0].toUpperCase() + item.nome[1].toUpperCase()}</p>
                           <p id="userName">${item.nome}</p>
                           
                           </div>
