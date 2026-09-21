@@ -9,8 +9,8 @@
   <title>Voltix | Relatórios</title>
 
 
-  <link rel="stylesheet" href="../../css/dash.css">
-  <link rel="stylesheet" href="../../css/estilo.css" />
+  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
   <script src="./script.js"></script>
@@ -23,66 +23,58 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-  />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
 <body onload="buscarUsuarios(); carregarInformacoesUsuario()">
 
-  <div class="navbar">
-
-    <div class="info_navbar">
-
-      <div class="logo">
-        <img src="../../assets/icon/Logo.png"><span>Voltix</span>
-      </div>
-
-      <div class="botoes_navbar">
-
-        <a href="../" class="fora"><img src="../../assets/imgs/icone_dashboard.png"> Dashboard</a>
-
-
-        <a href="./" class="agora"><img src="../../assets/imgs/icone_funcionario.png">
-          Funcionários</a>
-
-
-        <a href="../servers" class="fora"><img src="../../assets/imgs/icone_servidor.png"> Servidores</a>
-
-      </div>
-
-      <div class="usuario_navbar">
-
-        <div class="avatar_usuario" id="avatarUsuario"></div>
-
-        <div class="info_usuario">
-
-          <span class="nome_usuario" id="nomeUsuario"></span>
-          <br>
-          <span class="email_usuario" id="emailUsuario"></span>
-
-        </div>
-
-        <img src="../../assets/imgs/icone_sair.png" class="sair_dash" onclick="window.location.href='../../index.html'">
-      </div>
-
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
     </div>
 
-  </div>
+    <nav class="navbar-items">
+      <a href="../" class="item">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
 
-  <div class="content">
-    <div class="searchBar">
-      <p>Funcionários</p>
+      <a href="./" class="item active">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+
+      <a href="../servers" class="item">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+
+  </aside>
+
+  <main class="content">
+    <header class="header">
+      <h1 class="title">Funcionários</h1>
       <button onclick="abrirAddUser()">+</button>
-    </div>
+    </header>
 
     <div class="users" id="usersBox">
       <!-- <div class="user">
-                <p id="userAvatar">asd</p>
-                <p id="userName">asd</p>
-            </div> -->
+          <p id="userAvatar">asd</p>
+          <p id="userName">asd</p>
+      </div> -->
     </div>
 
     <div class="geral" id="geral_editor">
@@ -126,7 +118,7 @@
 
     </div>
 
-    <div class="perfil_celular">
+    <!-- <div class="perfil_celular">
 
       <div class="logo_celular" onclick="abrir_navbar()">
         <img src="../../assets/icon/Logo.png" alt="">
@@ -136,9 +128,9 @@
         <div class="avatar_usuario" id="avatarUsuario_celular"></div>
       </div>
 
-    </div>
+    </div> -->
 
-    <div id="navbar_celular" class="navbar_celular">
+    <!-- <div id="navbar_celular" class="navbar_celular">
 
       <a href="../">
         <img src="../../assets/imgs/icone_dashboard.png">
@@ -159,9 +151,9 @@
 
       <button class="fechar_navbar" onclick="abrir_navbar()">
 
-      </button>
+      </button> -->
 
-    </div>
+  </main>
 
 </body>
 

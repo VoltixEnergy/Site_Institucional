@@ -1,1 +1,69 @@
-/* aqui deve ser separado o todas as estilizações relacionadas a página de gerenciamento de servidores */
+
+.em_breve {
+  margin-left: 14%;
+  width: 86%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000;
+}
+
+.mensagem_em_breve {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+.icone_breve {
+  width: 70px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-bottom: 15px;
+}
+
+
+.icone_breve img {
+  width: 30px;
+  height: 30px;
+  filter: none;
+}
+
+
+.mensagem_em_breve h2 {
+  font-size: 38px;
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+
+.mensagem_em_breve span {
+  font-size: 16px;
+  color: white;
+  margin-bottom: 18px;
+}
+
+.aguarde_breve {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: rgba(15, 23, 42, 0.75);
+  border-radius: 20px;
+  font-size: 13px;
+}
+
+
+.aguarde_breve img {
+  width: 15px;
+  height: 15px;
+  filter: none;
+}
