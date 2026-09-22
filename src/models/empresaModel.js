@@ -1,45 +1,45 @@
-var database = require("../database/config");
+const database = require("../database/config");
 
-function buscarPorId(id) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE id = '${id}'`;
+async function buscarPorId(id) {
+  const instrucaoSql = `SELECT * FROM empresa WHERE id = ?`;
 
-  return database.executar(instrucaoSql);
+  return await database.executar(instrucaoSql, [id]);
 }
 
-function listar() {
-  var instrucaoSql = `SELECT id, razao_social, cnpj, codigo_ativacao FROM empresa`;
+async function listar() {
+  const instrucaoSql = `SELECT id, razao_social, cnpj, codigo_ativacao FROM empresa`;
 
-  return database.executar(instrucaoSql);
+  return await database.executar(instrucaoSql);
 }
 
-function buscarPorCnpj(cnpj) {
-  var instrucaoSql = `SELECT * FROM empresa WHERE cnpj = '${cnpj}'`;
+async function buscarPorCnpj(cnpj) {
+  const instrucaoSql = `SELECT * FROM empresa WHERE cnpj = ?`;
 
-  return database.executar(instrucaoSql);
+  return await database.executar(instrucaoSql, [cnpj]);
 }
 
-function cadastrar(razaoSocial, cnpj) {
-  var instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES ('${razaoSocial}', '${cnpj}')`;
+async function cadastrar(razaoSocial, cnpj) {
+  const instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES (?, ?)`;
 
-  return database.executar(instrucaoSql);
+  return await database.executar(instrucaoSql, [razaoSocial, cnpj]);
 }
 
-function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
-    var instrucaoSql = `
-        INSERT INTO empresa (cnpj, nome_fantasia, razao_social) VALUES ('${cnpj}', '${nomeFantasia}', '${razaoSocial}');
+async function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
+    const instrucaoSql = `
+        INSERT INTO empresa (cnpj, nome_fantasia, razao_social) VALUES (?, ?, ?);
     `
   
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     
-    return database.executar(instrucaoSql);
+    return await database.executar(instrucaoSql, [cnpj, nomeFantasia, razaoSocial]);
 }
 
-function desativarCodigo(codigo){
-    var instrucaoSql = `
-      UPDATE codigo_ativacao SET estado_codigo = "desativado" WHERE codigo = "${codigo}"
+async function desativarCodigo(codigo){
+    const instrucaoSql = `
+      UPDATE codigo_ativacao SET estado_codigo = ? WHERE codigo = ?
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+    return await database.executar(instrucaoSql, ["desativado", codigo]);
 }
 
 module.exports = {
