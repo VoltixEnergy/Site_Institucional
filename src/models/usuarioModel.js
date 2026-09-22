@@ -1,91 +1,72 @@
-var database = require("../database/config")
+const database = require("../database/config")
 
-function autenticar(email, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
-    var instrucaoSql = `
-        SELECT id_usuario, nome, email, fk_empresa FROM usuario WHERE email = '${email}' AND senha = SHA2('${senha}', 256);
-    `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function autenticar(email, senha) {
+  const instrucaoSql = `
+    SELECT id_usuario, nome, email, fk_empresa FROM usuario WHERE email = ? AND senha = SHA2(?, 256)
+  `
+  return await database.executar(instrucaoSql, [email, senha])
 }
 
-// Coloque os mesmos parâmetros aqui. Vá para a var instrucaoSql
-function cadastrar(nome, email, senha, cpf, nivelPermissao = 1, fkEmpresa) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha);
-    
-    // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
-    //  e na ordem de inserção dos dados.
-    var instrucaoSql = `
-        INSERT INTO usuario (nome, email, senha, cpf, nivel_permissao, fk_empresa) VALUES ('${nome}', '${email}', SHA2('${senha}', 256), '${cpf}', '${nivelPermissao}', '${fkEmpresa}');
-    `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function cadastrar(nome, email, senha, cpf, nivelPermissao = 1, fkEmpresa) {
+  const instrucaoSql = `
+    INSERT INTO usuario (nome, email, senha, cpf, nivel_permissao, fk_empresa) VALUES (?, ?, SHA2(?, 256), ?, ?, ?)
+  `
+  return await database.executar(instrucaoSql, [nome, email, senha, cpf, nivelPermissao, fkEmpresa])
 }
 
-function buscarUsuarioPorCPF(cpf){
-    var instrucaoSql = `
-        SELECT * FROM usuario WHERE cpf = '${cpf}'
-    `
-    return database.executar(instrucaoSql);
+async function buscarUsuarioPorCPF(cpf) {
+  const instrucaoSql = `
+    SELECT * FROM usuario WHERE cpf = ?
+  `
+  return await database.executar(instrucaoSql, [cpf])
 }
 
-function autenticarCodigo(codigo) {
-    console.log("ACESSEI O CODIGO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ")
-    var instrucaoSqlSelect = `
-        SELECT id_codigo, codigo, estado_codigo FROM codigo_ativacao WHERE codigo = '${codigo}';
-    `;
-    var instrucaoSqlUpdate = `
-        UPDATE codigo_ativacao SET estado_codigo = 'desativado' WHERE codigo = '${codigo}'
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSqlSelect);
-    return database.executar(instrucaoSqlSelect, instrucaoSqlUpdate);
+async function autenticarCodigo(codigo) {
+  const instrucaoSqlSelect = `
+    SELECT id_codigo, codigo, estado_codigo FROM codigo_ativacao WHERE codigo = ?
+  `
+  const instrucaoSqlUpdate = `
+    UPDATE codigo_ativacao SET estado_codigo = 'desativado' WHERE codigo = ?
+  `
+
+  const resultadoSelect = await database.executar(instrucaoSqlSelect, [codigo])
+  await database.executar(instrucaoSqlUpdate, [codigo])
+  return resultadoSelect
 }
 
-function adicionarCodigo(codigo) {
-    var instrucaoSql = `
-        INSERT INTO codigo_ativacao (codigo, estado_codigo) VALUES ('${codigo}', 'ativado');
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function adicionarCodigo(codigo) {
+  const instrucaoSql = `
+    INSERT INTO codigo_ativacao (codigo, estado_codigo) VALUES (?, 'ativado')
+  `
+  return await database.executar(instrucaoSql, [codigo])
 }
 
-function buscarUsuarioPorEmpresa(idEmpresa) {
-    console.log("model")
-    console.log(idEmpresa)
-    var instrucaoSql = `SELECT id_usuario, nome, email, nivel_permissao FROM usuario WHERE fk_empresa = ${idEmpresa}`;
-
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function buscarUsuarioPorEmpresa(idEmpresa) {
+  const instrucaoSql = `SELECT id_usuario, nome, email, nivel_permissao FROM usuario WHERE fk_empresa = ?`
+  return await database.executar(instrucaoSql, [idEmpresa])
 }
 
-function editarNome(novoNome, idUsuario) {
-    console.log("ACESSEI O AVISO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function editar(): ", novoNome, idUsuario);
-    var instrucaoSql = `
-        UPDATE usuario SET nome = '${novoNome}' WHERE id_usuario = ${idUsuario};
-    `;
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function editarNome(novoNome, idUsuario) {
+  const instrucaoSql = `
+    UPDATE usuario SET nome = ? WHERE id_usuario = ?
+  `
+  return await database.executar(instrucaoSql, [novoNome, idUsuario])
 }
 
-function deletarUsuario(idUsuario) {
-    console.log("ACESSEI O USUARIO MODEL function deletar(): ", idUsuario);
-    
-    var instrucaoSql = `
-        DELETE FROM usuario WHERE id_usuario = ${idUsuario};
-    `;
-    
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+async function deletarUsuario(idUsuario) {
+  const instrucaoSql = `
+    DELETE FROM usuario WHERE id_usuario = ?
+  `
+  return await database.executar(instrucaoSql, [idUsuario])
 }
 
 module.exports = {
-    autenticar,
-    cadastrar,
-    autenticarCodigo,
-    buscarUsuarioPorEmpresa,
-    autenticarCodigo,
-    adicionarCodigo,
-    editarNome,
-    deletarUsuario,
-    buscarUsuarioPorCPF
-};
+  autenticar,
+  cadastrar,
+  autenticarCodigo,
+  buscarUsuarioPorEmpresa,
+  adicionarCodigo,
+  editarNome,
+  deletarUsuario,
+  buscarUsuarioPorCPF
+}
