@@ -18,6 +18,7 @@ const app = express();
 const indexRouter = require("./src/routes/index");
 const usuarioRouter = require("./src/routes/usuarios");
 const empresasRouter = require("./src/routes/empresas");
+const codigoRouter = require("./src/routes/codigo");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +29,7 @@ app.use(cors());
 app.use("/", indexRouter);
 app.use("/usuarios", usuarioRouter);
 app.use("/empresas", empresasRouter);
+app.use("/code", codigoRouter);
 
 app.listen(PORTA_APP, function () {
   console.log(`
