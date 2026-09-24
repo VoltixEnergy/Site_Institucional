@@ -7,38 +7,11 @@ async function autenticar(email, senha) {
   return await database.executar(instrucaoSql, [email, senha])
 }
 
-async function cadastrar(nome, email, senha, cpf, nivelPermissao = 1, fkEmpresa) {
+async function cadastrar(nome, email, senha, cargo, empresaId) {
   const instrucaoSql = `
-    INSERT INTO usuario (nome, email, senha, cpf, nivel_permissao, fk_empresa) VALUES (?, ?, SHA2(?, 256), ?, ?, ?)
+    INSERT INTO usuario (nome, email, senha, cargo, empresa_id) VALUES (?, ?, SHA2(?, 256), ?, ?)
   `
-  return await database.executar(instrucaoSql, [nome, email, senha, cpf, nivelPermissao, fkEmpresa])
-}
-
-async function buscarUsuarioPorCPF(cpf) {
-  const instrucaoSql = `
-    SELECT * FROM usuario WHERE cpf = ?
-  `
-  return await database.executar(instrucaoSql, [cpf])
-}
-
-async function autenticarCodigo(codigo) {
-  const instrucaoSqlSelect = `
-    SELECT id_codigo, codigo, estado_codigo FROM codigo_ativacao WHERE codigo = ?
-  `
-  const instrucaoSqlUpdate = `
-    UPDATE codigo_ativacao SET estado_codigo = 'desativado' WHERE codigo = ?
-  `
-
-  const resultadoSelect = await database.executar(instrucaoSqlSelect, [codigo])
-  await database.executar(instrucaoSqlUpdate, [codigo])
-  return resultadoSelect
-}
-
-async function adicionarCodigo(codigo) {
-  const instrucaoSql = `
-    INSERT INTO codigo_ativacao (codigo, estado_codigo) VALUES (?, 'ativado')
-  `
-  return await database.executar(instrucaoSql, [codigo])
+  return await database.executar(instrucaoSql, [nome, email, senha, cargo, empresaId])
 }
 
 async function buscarUsuarioPorEmpresa(idEmpresa) {
@@ -63,10 +36,7 @@ async function deletarUsuario(idUsuario) {
 module.exports = {
   autenticar,
   cadastrar,
-  autenticarCodigo,
   buscarUsuarioPorEmpresa,
-  adicionarCodigo,
   editarNome,
-  deletarUsuario,
-  buscarUsuarioPorCPF
+  deletarUsuario
 }
