@@ -1,4 +1,5 @@
 const usuarioModel = require("../models/usuarioModel");
+const codeModel = require("../models/codeModel")
 
 async function autenticar(req, res) {
   const { email, senha } = req.body
@@ -73,7 +74,7 @@ async function buscarUsuarioPorCPF(req, res) {
 }
 
 async function cadastrar(req, res) {
-  const { nome, email, senha, cpf, nivelPermissao, fkEmpresa } = req.body
+  const { nome, email, senha, codigo } = req.body
 
   const retorno = {
     mensagem: "",
@@ -88,32 +89,48 @@ async function cadastrar(req, res) {
     retorno.mensagem = "Email inválido."
     return res.status(400).json(retorno)
   }
+  const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
+  if (!isEmailValid) {
+    retorno.mensagem = "Informe um e-mail válido";
+      return res.status(400).json(retorno);
+  }
   if (!senha) {
     retorno.mensagem = "Senha inválida."
     return res.status(400).json(retorno)
   }
+  if (!codigo) {
+    retorno.mensagem = "Código de ativação inválido."
+    return res.status(400).json(retorno)
+  }
 
   try {
-    const usuarioExistente = await usuarioModel.buscarUsuarioPorCPF(cpf)
+    const codeResponse = await codeModel.getCompanyAndRoleByCode(codigo)
 
-    if (usuarioExistente.length > 0) {
-      retorno.mensagem = `O usuário já existe`
-      return res.status(400).json(retorno)
-    }
+    if (!codeResponse || codeResponse.length === 0) {
+        retorno.mensagem = "Seu código está inválido"
+        return res.status(401).json(retorno)
+      }
 
-    const resultado = await usuarioModel.cadastrar(nome, email, senha, cpf, nivelPermissao, fkEmpresa)
+    const resultado = await usuarioModel.cadastrar(nome, email, senha, codeResponse[0].cargo, codeResponse[0].empresa_id)
 
     if (resultado.affectedRows !== 1) {
       retorno.mensagem = "O usuário não foi cadastrado. Tente novamente mais tarde."
       return res.status(500).json(retorno)
     }
 
-    retorno.mensagem = "Usuário cadastrado com sucesso!"
+    const codeUpdateResponse = await codeModel.setCodeUsedByCode(codigo)
+
+    if (codeUpdateResponse.affectedRows !== 1) {
+      retorno.mensagem = "Não foi possível cadastrar o usuário. Tente novamente mais tarde"
+      res.status(500).json(retorno)
+    }
+
+    retorno.mensagem = "Cadastro realizado com sucesso! Faça login para prosseguir"
     retorno.dados = {
       id: resultado.insertId
     }
-
-    return res.status(200).json(retorno)
+    
+    return res.status(201).json(retorno)
   } catch (erro) {
     console.error(erro)
     retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
