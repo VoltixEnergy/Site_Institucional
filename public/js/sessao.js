@@ -34,3 +34,17 @@ function finalizarAguardar(texto) {
   }
 }
 
+function carregarInformacoesUsuario () {
+  let nome = sessionStorage.NOME_USUARIO;
+  let email = sessionStorage.EMAIL_USUARIO;
+  
+  document.getElementById("nomeUsuario").innerHTML = nome;
+  document.getElementById("emailUsuario").innerHTML = email;
+  document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+  document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+
+}
+
+function abrir_navbar() {
+  document.getElementById("navbar_celular").classList.toggle("ativo");
+}

@@ -9,10 +9,11 @@
   <title>Voltix | Relatórios</title>
 
 
-  <link rel="stylesheet" href="../../css/dash.css">
-  <link rel="stylesheet" href="../../css/estilo.css" />
+  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
+  <script src="./script.js"></script>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link
@@ -22,63 +23,58 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!--FONT AWESOME-->
-  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
-<body onload="buscarUsuarios()">
+<body onload="buscarUsuarios(); carregarInformacoesUsuario()">
 
-  <div class="navbar">
-
-    <div class="info_navbar">
-
-      <div class="logo">
-        <img src="../../assets/icon/Logo.png"><span>Voltix</span>
-      </div>
-
-      <div class="botoes_navbar">
-
-        <a href="dashboard.html" class="fora"><img src="../../assets/imgs/icone_dashboard.png"> Dashboard</a>
-
-
-        <a href="funcionario.html" class="agora"><img src="../../assets/imgs/icone_funcionario.png">
-          Funcionários</a>
-
-
-        <a href="servidor.html" class="fora"><img src="../../assets/imgs/icone_servidor.png"> Servidores</a>
-
-      </div>
-
-      <div class="usuario_navbar">
-
-        <div class="avatar_usuario" id="avatarUsuario"></div>
-
-        <div class="info_usuario">
-
-          <span class="nome_usuario" id="nomeUsuario"></span>
-          <br>
-          <span class="email_usuario" id="emailUsuario"></span>
-
-        </div>
-
-        <img src="../../assets/imgs/icone_sair.png" class="sair_dash" onclick="window.location.href='../../index.html'">
-      </div>
-
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
     </div>
 
-  </div>
+    <nav class="navbar-items">
+      <a href="../" class="item">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
 
-  <div class="content">
-    <div class="searchBar">
-      <p>Funcionários</p>
+      <a href="./" class="item active">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+
+      <a href="../servers" class="item">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+
+  </aside>
+
+  <main class="content">
+    <header class="header">
+      <h1 class="title">Funcionários</h1>
       <button onclick="abrirAddUser()">+</button>
-    </div>
+    </header>
 
     <div class="users" id="usersBox">
       <!-- <div class="user">
-                <p id="userAvatar">asd</p>
-                <p id="userName">asd</p>
-            </div> -->
+          <p id="userAvatar">asd</p>
+          <p id="userName">asd</p>
+      </div> -->
     </div>
 
     <div class="geral" id="geral_editor">
@@ -122,7 +118,7 @@
 
     </div>
 
-    <div class="perfil_celular">
+    <!-- <div class="perfil_celular">
 
       <div class="logo_celular" onclick="abrir_navbar()">
         <img src="../../assets/icon/Logo.png" alt="">
@@ -132,19 +128,19 @@
         <div class="avatar_usuario" id="avatarUsuario_celular"></div>
       </div>
 
-    </div>
+    </div> -->
 
-    <div id="navbar_celular" class="navbar_celular">
+    <!-- <div id="navbar_celular" class="navbar_celular">
 
-      <a href="dashboard.html">
+      <a href="../">
         <img src="../../assets/imgs/icone_dashboard.png">
       </a>
 
-      <a href="funcionario.html">
+      <a href="../users">
         <img src="../../assets/imgs/icone_funcionario.png">
       </a>
 
-      <a href="servidor.html">
+      <a href="../servers">
         <img src="../../assets/imgs/icone_servidor.png">
       </a>
 
@@ -155,281 +151,10 @@
 
       <button class="fechar_navbar" onclick="abrir_navbar()">
 
-      </button>
+      </button> -->
 
-    </div>
+  </main>
 
 </body>
 
 </html>
-
-<script>
-
-  let nome = sessionStorage.NOME_USUARIO;
-  let email = sessionStorage.EMAIL_USUARIO;
-
-  document.getElementById("nomeUsuario").innerHTML = nome;
-  document.getElementById("emailUsuario").innerHTML = email;
-  document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-  document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-
-  function abrir_navbar() {
-    document.getElementById("navbar_celular").classList.toggle("ativo");
-  }
-
-  function buscarUsuarios() {
-    // var idEmpresa = 1
-    // console.log("Listando funcionarios da empresa!")
-    // fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
-    //     method: "GET"
-    // })
-    //     .then(function (resposta) {
-    //         console.log(resposta)
-    //         console.log("ESTOU NO THEN DO entrar()!")
-    //         if (resposta.ok) {
-    //             console.log(resposta);
-    //             return resposta.json()
-    //         } else {
-
-    //             console.log("Houve um erro ao tentar listar usuários!");
-
-    //             resposta.text().then(texto => {
-    //                 console.error(texto);
-    //                 finalizarAguardar(texto);
-    //             });
-    //         }
-
-    //     })
-    //     .then(function (json) {
-
-    //         console.log(json);
-
-    JSON.parse(sessionStorage.FUNCIONARIOS).forEach(item => {
-      let nomeCargo = "Func"
-      if (item.nivel_permissao == 0) {
-        nomeCargo = "Admin"
-      }
-      document.getElementById("usersBox").innerHTML +=
-        `<div class="user">
-                            <div class="infosUser">
-                            <p id="userAvatar">${item.nome[0] + item.nome[1]}</p>
-                            <p id="userName">${item.nome}</p>
-                            
-                            </div>
-                            <p id="userCargo" style = "border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                            <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})"><img src="../../assets/imgs/edit.png"></button>
-                        </div>`
-    });
-    // }).catch(function (erro) {
-    //     console.log(erro);
-    // })
-  }
-
-  function editarNome(novoNome, idUsuario) {
-    fetch("/usuarios/editarNome/:idUsuario", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        novoNome: novoNome,
-        idUsuario: idUsuario
-      })
-    }).then(function (resposta) {
-      console.log("ESTOU NO THEN DO entrar()!")
-
-      if (resposta.ok) {
-        console.log(resposta);
-        let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-        for (let i = 0; i < funcionarios.length; i++) {
-
-          if (funcionarios[i].id_usuario == idUsuario) {
-
-            funcionarios[i].nome = novoNome;
-
-          }
-        }
-        sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-
-        window.location.reload()
-        resposta.json().then(json => {
-          console.log(json);
-
-        });
-
-      } else {
-
-        console.log("Houve um erro ao tentar atualizar os dados!");
-
-        resposta.text().then(texto => {
-          console.error(texto);
-          finalizarAguardar(texto);
-        });
-      }
-
-    }).catch(function (erro) {
-      console.log(erro);
-    })
-
-    return false;
-  }
-
-
-  let idUsuarioEditar = null
-  // const mudarNomeDiv = document.getElementById("mudarNome")
-  // const editorWrapper = document.getElementById("editorWrapper")
-  const editor = document.getElementById("editor")
-
-  function abrirEditor(id) {
-    document.getElementById("geral_editor").style.display = "flex";
-    idUsuarioEditar = id;
-  }
-
-  function sairEditor() {
-    document.getElementById("geral_editor").style.display = "none";
-    idUsuarioEditar = null;
-  }
-
-  function abrirAddUser() {
-    document.getElementById("geral_addUser").style.display = "flex";
-  }
-
-  function sairAddUser() {
-    document.getElementById("geral_addUser").style.display = "none";
-  }
-
-  function mudarNome() {
-    novoNome = novoNome.value
-    editarNome(novoNome, idUsuarioEditar)
-  }
-  function deletarUsuario() {
-    var idUsuario = idUsuarioEditar;
-
-    if (idUsuario == null) {
-      alert("Nenhum usuário selecionado!");
-      return;
-    }
-
-    fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(response => {
-        if (response.ok) {
-          alert("Conta deletada com sucesso!");
-          let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-          for (let i = 0; i < funcionarios.length; i++) {
-
-            if (funcionarios[i].id_usuario == idUsuario) {
-              funcionarios.splice(i, 1);
-
-            }
-          }
-          sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-          window.location.reload();
-        } else {
-          response.json().then(erro => alert(erro.erro || "Erro ao deletar"));
-        }
-      })
-      .catch(erro => console.error("Erro na requisição:", erro));
-  }
-
-  function cadastrar() {
-    // aguardar();
-
-    //Recupere o valor da nova input pelo nome do id
-    // Agora vá para o método fetch logo abaixo
-    var nomeVar = iptNome.value;
-    var emailVar = iptEmail.value;
-    var senhaVar = iptSenha.value;
-    var confirmacaoSenhaVar = iptReSenha.value;
-    var cpfVar = iptCpf.value;
-    var nivelPermissaoVar = 1;
-    var fkEmpresaVar = sessionStorage.ID_EMPRESA;
-    // Verificando se há algum campo em branco
-    if (
-      nomeVar == "" ||
-      emailVar == "" ||
-      senhaVar == ""
-    ) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "Preencha todos os campos";
-
-      return false;
-    } else if (nomeVar.length < 3) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "O nome deve ter ao menos 3 caracteres";
-
-      return false;
-    } else if (senhaVar.length < 6) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "A senha deve ter ao menos 6 caracteres";
-
-      return false;
-    } else if (senhaVar != confirmacaoSenhaVar) {
-      cardErro.style.display = "block";
-      mensagem_erro.innerHTML =
-        "As senhas não coincidem";
-
-      return false;
-    } else {
-      // setInterval(sumirMensagem, 5000);
-    }
-
-    // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
-
-    // Enviando o valor da nova input
-    fetch("/usuarios/cadastrar", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // crie um atributo que recebe o valor recuperado aqui
-        // Agora vá para o arquivo routes/usuario.js
-        nomeServer: nomeVar,
-        emailServer: emailVar,
-        senhaServer: senhaVar,
-        cpfServer: cpfVar,
-        nivelPermissaoServer: nivelPermissaoVar,
-        fkEmpresaServer: fkEmpresaVar
-      }),
-    })
-      .then(function (resposta) {
-        console.log("resposta: ", resposta);
-
-        if (resposta.ok) {
-          // cardErro.style.display = "block";
-
-          // mensagem_erro.innerHTML =
-          //     "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-          resposta.json().then(json => {
-            console.log(json);
-            console.log(JSON.stringify(json));
-            let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-            funcionarios.push({ "id_usuario": json.insertId, "nome": nomeVar, "email": emailVar, "nivel_permissao": nivelPermissaoVar })
-            sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-            window.location.reload()
-            document.getElementById('geral_addUser').style.display = "none"
-          });
-
-          limparFormulario();
-
-        } else {
-          throw "Houve um erro ao tentar realizar o cadastro!";
-        }
-      })
-      .catch(function (resposta) {
-        console.log(`#ERRO: ${resposta}`);
-        // finalizarAguardar();
-      });
-
-    return false;
-  }
-</script>

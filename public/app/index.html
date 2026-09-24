@@ -9,8 +9,8 @@
   <title>Voltix | Dashboard</title>
 
 
-  <link rel="stylesheet" href="./../css/dash.css">
-  <link rel="stylesheet" href="./../css/estilo.css" />
+  <link rel="stylesheet" href="../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
   <script src="../js/sessao.js"></script>
   <script src="./../js/alerta.js"></script>
 
@@ -22,50 +22,49 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!--FONT AWESOME-->
-  <script src="https://kit.fontawesome.com/9f7414eb10.js" crossorigin="anonymous"></script>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+  />
 </head>
 
-<body>
+<body onload="carregarInformacoesUsuario()">
 
-  <div class="navbar">
-
-    <div class="info_navbar">
-
-      <div class="logo">
-        <img src="../assets/icon/Logo.png"><span>Voltix</span>
-      </div>
-
-      <div class="botoes_navbar">
-
-        <a href="" class="agora"><img src="../assets/imgs/icone_dashboard.png"> Dashboard</a>
-
-
-        <a href="funcionario.html" class="fora"><img src="../assets/imgs/icone_funcionario.png"> Funcionários</a>
-
-
-        <a href="servidor.html" class="fora"><img src="../assets/imgs/icone_servidor.png"> Servidores</a>
-
-      </div>
-
-      <div class="usuario_navbar">
-
-        <div class="avatar_usuario" id="avatarUsuario"></div>
-
-        <div class="info_usuario">
-
-          <span class="nome_usuario" id="nomeUsuario"></span>
-          <br>
-          <span class="email_usuario" id="emailUsuario"></span>
-
-        </div>
-
-        <img src="../assets/imgs/icone_sair.png" class="sair_dash" onclick="window.location.href='../index.html'">
-      </div>
-
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
     </div>
 
-  </div>
+    <nav class="navbar-items">
+      <a href="./" class="item active">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
+
+      <a href="./users" class="item">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+
+      <a href="./servers" class="item">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+
+  </aside>
 
   <div class="em_breve">
 
@@ -88,7 +87,7 @@
 
   </div>
 
-  <div class="perfil_celular">
+  <!-- <div class="perfil_celular">
 
     <div class="logo_celular" onclick="abrir_navbar()">
       <img src="../assets/icon/Logo.png" alt="">
@@ -106,11 +105,11 @@
       <img src="../assets/imgs/icone_dashboard.png">
     </a>
 
-    <a href="funcionario.html">
+    <a href="./users">
       <img src="../assets/imgs/icone_funcionario.png">
     </a>
 
-    <a href="servidor.html">
+    <a href="./servers">
       <img src="../assets/imgs/icone_servidor.png">
     </a>
 
@@ -119,27 +118,10 @@
     </a>
 
     <button class="fechar_navbar" onclick="abrir_navbar()">
-      < </button>
+    </button>
 
-  </div>
+  </div> -->
 
 </body>
 
 </html>
-
-<script>
-
-  let nome = sessionStorage.NOME_USUARIO;
-  let email = sessionStorage.EMAIL_USUARIO;
-
-  document.getElementById("nomeUsuario").innerHTML = nome;
-  document.getElementById("emailUsuario").innerHTML = email;
-  document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-  document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-
-
-  function abrir_navbar() {
-    document.getElementById("navbar_celular").classList.toggle("ativo");
-  }
-
-</script>

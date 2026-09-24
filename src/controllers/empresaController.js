@@ -1,75 +1,161 @@
-var empresaModel = require("../models/empresaModel");
+const empresaModel = require("../models/empresaModel")
 
-function buscarPorCnpj(req, res) {
-  var cnpj = req.query.cnpj;
+async function buscarPorCnpj(req, res) {
+  const { cnpj } = req.query
 
-  empresaModel.buscarPorCnpj(cnpj).then((resultado) => {
-    res.status(200).json(resultado);
-  });
+  const retorno = { 
+    mensagem: "", 
+    dados: {} 
+  }
+
+  if (!cnpj) {
+    retorno.mensagem = "CNPJ inválido."
+    return res.status(400).json(retorno)
+  }
+
+  try {
+    const resultado = await empresaModel.buscarPorCnpj(cnpj)
+
+    retorno.dados = resultado
+    retorno.mensagem = resultado.length ? "" : "Nenhuma empresa encontrada."
+
+    return res.status(200).json(retorno)
+  } catch (e) {
+    console.error(e)
+    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(retorno)
+  }
 }
 
-function listar(req, res) {
-  empresaModel.listar().then((resultado) => {
-    res.status(200).json(resultado);
-  });
+async function listar(req, res) {
+  const retorno = { 
+    mensagem: "", 
+    dados: {} 
+  }
+
+  try {
+    const resultado = await empresaModel.listar()
+
+    retorno.dados = resultado
+
+    return res.status(200).json(retorno)
+  } catch (e) {
+    console.error(e)
+    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(retorno)
+  }
 }
 
-function buscarPorId(req, res) {
-  var id = req.params.id;
+async function buscarPorId(req, res) {
+  const { id } = req.params
 
-  empresaModel.buscarPorId(id).then((resultado) => {
-    res.status(200).json(resultado);
-  });
+  const retorno = { 
+    mensagem: "", 
+    dados: {}
+  }
+
+  if (!id) {
+    retorno.mensagem = "ID inválido."
+    return res.status(400).json(retorno)
+  }
+
+  try {
+    const resultado = await empresaModel.buscarPorId(id)
+
+    retorno.dados = resultado
+    retorno.mensagem = resultado.length ? "" : "Nenhuma empresa encontrada."
+
+    return res.status(200).json(retorno)
+  } catch (e) {
+    console.error(e)
+    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(retorno)
+  }
 }
 
-function cadastrar(req, res) {
-  var cnpj = req.body.cnpj;
-  var razaoSocial = req.body.razaoSocial;
+async function cadastrarEmpresa(req, res) {
+  const { cnpj, nomeFantasia, razaoSocial } = req.body
 
-  empresaModel.buscarPorCnpj(cnpj).then((resultado) => {
-    if (resultado.length > 0) {
-      res
-        .status(401)
-        .json({ mensagem: `A empresa com o cnpj ${cnpj} já existe` });
-    } else {
-      empresaModel.cadastrar(razaoSocial, cnpj).then((resultado) => {
-        res.status(201).json(resultado);
-      });
+  const retorno = { 
+    mensagem: "", 
+    dados: {} 
+  }
+
+  if (!cnpj) {
+    retorno.mensagem = "CNPJ inválido."
+    return res.status(400).json(retorno)
+  }
+  if (!nomeFantasia) {
+    retorno.mensagem = "Nome fantasia inválido."
+    return res.status(400).json(retorno)
+  }
+  if (!razaoSocial) {
+    retorno.mensagem = "Razão social inválido."
+    return res.status(400).json(retorno)
+  }
+
+  try {
+    const consultaCnpj = await empresaModel.buscarPorCnpj(cnpj)
+
+    if (consultaCnpj.length > 0) {
+      retorno.mensagem = "CNPJ inválido."
+      return res.status(400).json(retorno)
     }
-  });
-}
 
-function cadastrarEmpresa(req, res) {
-  var cnpj = req.body.cnpjServer;
-  var nomeFantasia = req.body.nomeComServer;
-  var razaoSocial = req.body.nomeJurServer;
-
-  empresaModel.buscarPorCnpj(cnpj).then((resultado) => {
-    if (resultado.length > 0) {
-      res
-        .status(401)
-        .json({ mensagem: `a empresa com o cnpj ${cnpj} já existe` });
-    } else {
-      empresaModel.cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial).then((resultado) => {
-        res.status(201).json(resultado);
-      });
+    const consultaCadastrarEmpresa = await empresaModel.cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial)
+    if (consultaCadastrarEmpresa.affectedRows !== 1) {
+      retorno.mensagem = "A empresa não foi cadastrada. Tente novamente mais tarde."
+      return res.status(500).json(retorno)
     }
-  });
+
+    retorno.mensagem = "Empresa cadastrada com sucesso!"
+    retorno.dados = { 
+      id: consultaCadastrarEmpresa.insertId 
+    }
+
+    return res.status(200).json(retorno)
+  } catch (e) {
+    console.error(e)
+    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(retorno)
+  }
 }
 
-function desativarCodigo(req, res) {
-  var codigo = req.body.codigoServer;
+async function desativarCodigo(req, res) {
+  const { codigoServer } = req.body
 
-  empresaModel.desativarCodigo(codigo).then((resultado) => {
-    res.status(201).json(resultado);
-  })
+  const retorno = { 
+    mensagem: "", 
+    dados: {} 
+  }
+
+  if (!codigoServer) {
+    retorno.mensagem = "Código inválido."
+    return res.status(400).json(retorno)
+  }
+
+  try {
+    const resultado = await empresaModel.desativarCodigo(codigoServer)
+
+    if (resultado.affectedRows && resultado.affectedRows >= 1) {
+      retorno.mensagem = "Código desativado com sucesso."
+      retorno.dados = resultado
+      return res.status(200).json(retorno)
+    }
+
+    retorno.mensagem = "Não foi possível desativar o código."
+    return res.status(500).json(retorno)
+  } catch (e) {
+    console.error(e)
+    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(retorno)
+  }
 }
 
 module.exports = {
   buscarPorCnpj,
   buscarPorId,
-  cadastrar,
   listar,
   cadastrarEmpresa,
-  desativarCodigo
-};
+  desativarCodigo,
+}

@@ -9,28 +9,19 @@ var mySqlConfig = {
   port: process.env.DB_PORT
 };
 
-function executar(instrucao) {
+async function executar (query, params) {
+  const poolDB = mysql.createPool(mySqlConfig).promise()
+  
+  console.log("======= CONSULTA NO BANCO DE DADOS =======")
+  console.log("Consulta: " + query)
+  console.log("Parâmetros: " + params)
 
-  if (process.env.AMBIENTE_PROCESSO !== "producao" && process.env.AMBIENTE_PROCESSO !== "desenvolvimento") {
-    console.log("\nO AMBIENTE (produção OU desenvolvimento) NÃO FOI DEFINIDO EM .env OU dev.env OU app.js\n");
-    return Promise.reject("AMBIENTE NÃO CONFIGURADO EM .env");
-  }
+  const response = await poolDB.execute(query, params)
+  console.log(response[0])
 
-  return new Promise(function (resolve, reject) {
-    var conexao = mysql.createConnection(mySqlConfig);
-    conexao.connect();
-    conexao.query(instrucao, function (erro, resultados) {
-      conexao.end();
-      if (erro) {
-        reject(erro);
-      }
-      console.log(resultados);
-      resolve(resultados);
-    });
-    conexao.on('error', function (erro) {
-      return ("ERRO NO MySQL SERVER: ", erro.sqlMessage);
-    });
-  });
+  await poolDB.end()
+
+  return response[0]
 }
 
 module.exports = {
