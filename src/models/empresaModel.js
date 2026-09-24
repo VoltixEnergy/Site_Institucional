@@ -42,11 +42,18 @@ async function desativarCodigo(codigo){
     return await database.executar(instrucaoSql, ["desativado", codigo]);
 }
 
+async function buscarNomePeloId (id) {
+  const query = "select nome_fantasia from empresa where id = ? and deletado_em is null"
+
+  return await database.executar(query, [id])
+}
+
 module.exports = {
   buscarPorCnpj, 
   buscarPorId, 
   cadastrar, 
   listar, 
   cadastrarEmpresa,
-  desativarCodigo
+  desativarCodigo,
+  buscarNomePeloId
 };
