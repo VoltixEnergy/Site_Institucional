@@ -157,5 +157,4 @@ module.exports = {
   buscarPorId,
   listar,
   cadastrarEmpresa,
-  desativarCodigo,
 }
