@@ -2,7 +2,7 @@ const database = require("../database/config")
 
 async function autenticar(email, senha) {
   const instrucaoSql = `
-    SELECT id_usuario, nome, email, fk_empresa FROM usuario WHERE email = ? AND senha = SHA2(?, 256)
+    SELECT id, nome, email, empresa_id FROM usuario WHERE email = ? AND senha = SHA2(?, 256)
   `
   return await database.executar(instrucaoSql, [email, senha])
 }
@@ -15,7 +15,7 @@ async function cadastrar(nome, email, senha, cargo, empresaId) {
 }
 
 async function buscarUsuarioPorEmpresa(idEmpresa) {
-  const instrucaoSql = `SELECT id_usuario, nome, email, nivel_permissao FROM usuario WHERE fk_empresa = ?`
+  const instrucaoSql = `SELECT id, nome, email, cargo FROM usuario WHERE empresa_id = ?`
   return await database.executar(instrucaoSql, [idEmpresa])
 }
 

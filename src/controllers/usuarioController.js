@@ -22,13 +22,13 @@ async function autenticar(req, res) {
     const resultadoAutenticar = await usuarioModel.autenticar(email, senha)
 
     if (resultadoAutenticar.length === 1) {
-      const resultadoFuncionarios = await usuarioModel.buscarUsuarioPorEmpresa(resultadoAutenticar[0].fk_empresa)
+      const resultadoFuncionarios = await usuarioModel.buscarUsuarioPorEmpresa(resultadoAutenticar[0].empresa_id)
 
       retorno.dados = {
-        id: resultadoAutenticar[0].id_usuario,
+        id: resultadoAutenticar[0].id,
         email: resultadoAutenticar[0].email,
         nome: resultadoAutenticar[0].nome,
-        empresa: resultadoAutenticar[0].fk_empresa,
+        empresa: resultadoAutenticar[0].empresa_id,
         funcionarios: resultadoFuncionarios.length > 0 ? resultadoFuncionarios : []
       }
 

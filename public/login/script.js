@@ -28,8 +28,8 @@ function entrar() {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      emailServer: emailVar,
-      senhaServer: senhaVar
+      email: emailVar,
+      senha: senhaVar
     })
   }).then(function (resposta) {
     console.log("ESTOU NO THEN DO entrar()!")
@@ -40,11 +40,11 @@ function entrar() {
       resposta.json().then(json => {
         console.log(json);
         console.log(JSON.stringify(json));
-        sessionStorage.EMAIL_USUARIO = json.email;
-        sessionStorage.NOME_USUARIO = json.nome;
-        sessionStorage.ID_USUARIO = json.id;
-        sessionStorage.ID_EMPRESA = json.empresa;
-        sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
+        sessionStorage.EMAIL_USUARIO = json.dados.email;
+        sessionStorage.NOME_USUARIO = json.dados.nome;
+        sessionStorage.ID_USUARIO = json.dados.id;
+        sessionStorage.ID_EMPRESA = json.dados.empresa;
+        sessionStorage.FUNCIONARIOS = JSON.stringify(json.dados.funcionarios);
         window.location = "../app";
         setTimeout(function () {
           window.location = "../app";
