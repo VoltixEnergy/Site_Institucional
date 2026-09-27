@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <link rel="shortcut icon" href="../assets/icon/Logo.ico" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voltix | Dashboard</title>
+
+
+  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="../../js/sessao.js"></script>
+  <script src="./../js/alerta.js"></script>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- scripts do Chart.js - 2022-1 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./script.js"></script>
+
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+  />
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
+  />
+</head>
+
+<body onload="carregarInformacoesUsuario()">
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
+    </div>
+
+    <nav class="navbar-items">
+      <a href="../" class="item">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
+
+      <a href="./" class="item">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+
+      <a href="../servers" class="item active">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+
+  </aside>
+  <main class="content" id="codeContainer">
+    <header class="header">
+      <h1 class="title">Códigos</h1>
+    </header>
+    <div class="create-code-container">
+      <h1>Gerar novo código</h1>
+      <div class="divider"></div>
+      <div class="form-row">
+        <div class="role-container">
+          <i class="ph-bold ph-briefcase"></i>
+          <select id="newRoleSelect">
+            <option value="" selected disabled>Selecione um cargo</option>
+            <option value="0" id="newPartnerOpt" style="display: none;">Novo parceiro</option>
+            <option value="1">Gerente TI</option>
+            <option value="2">FinOps</option>
+            <option value="3">DevOps</option>
+          </select>
+        </div>
+        <input type="email" id="newEmailReceiver" placeholder="Digite o email a receber o código">
+        <div class="action-buttons">
+          <i onclick="sendCode()" tabindex="0" class="ph-bold ph-paper-plane-tilt"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+
+</html>
