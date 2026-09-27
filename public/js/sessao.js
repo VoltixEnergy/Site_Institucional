@@ -40,8 +40,7 @@ function carregarInformacoesUsuario () {
   
   document.getElementById("nomeUsuario").innerHTML = nome;
   document.getElementById("emailUsuario").innerHTML = email;
-  document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
-  document.getElementById("avatarUsuario_celular").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase();
+  document.getElementById("avatarUsuario").innerHTML = nome[0].toUpperCase() + nome[1].toUpperCase()
 
 }
 
