@@ -36,6 +36,7 @@
 .content {
   justify-self: center;
   max-width: 60rem;
+  gap: 1rem;
 }
 
 .header {
@@ -110,4 +111,115 @@
 .create-code-container .form-row:has(select:hover) .ph-briefcase,
 .create-code-container .form-row:has(input:hover) .ph-paper-plane-tilt {
   color: var(--orange-500);
+}
+
+.code-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  background-color: #f1f5f9;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.role-select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+}
+
+.role-icon {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.role-select {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+.code-title {
+  font-size: 1.6rem;
+  line-height: 2.25rem;
+  font-weight: 600;
+  letter-spacing: 0.1rem;
+  color: var(--blue-950);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.card-actions i {
+  cursor: pointer;
+}
+
+.action-icon {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  transition: all 150ms ease;
+}
+
+.action-copy:hover {
+  color: var(--blue-500);
+}
+
+.action-refresh:hover {
+  color: #16a34a;
+}
+
+.action-delete:hover {
+  color: #dc2626;
+}
+
+.is-disabled {
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.card-divider {
+  border-top: 1px solid rgba(2, 6, 23, 0.5);
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  padding-top: 0.25rem;
+}
+
+.info-icon {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.info-row-used {
+  color: #15803d;
+}
+
+.info-row-expiring {
+  color: var(--blue-500);
+}
+
+.info-row-expired {
+  color: #b91c1c;
 }
