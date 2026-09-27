@@ -106,6 +106,8 @@
 }
 
 .create-code-container .form-row:has(select:focus) .ph-briefcase,
-.create-code-container .form-row:has(input:focus) .ph-paper-plane-tilt {
+.create-code-container .form-row:has(input:focus) .ph-paper-plane-tilt,
+.create-code-container .form-row:has(select:hover) .ph-briefcase,
+.create-code-container .form-row:has(input:hover) .ph-paper-plane-tilt {
   color: var(--orange-500);
 }
