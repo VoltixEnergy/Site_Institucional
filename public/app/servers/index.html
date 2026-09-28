@@ -2,17 +2,18 @@
 <html lang="pt-br">
 
 <head>
-  <link rel="shortcut icon" href="../assets/icon/Logo.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voltix | Alertas</title>
+  <title>Voltix | Relatórios</title>
 
 
   <link rel="stylesheet" href="../../css/dashboard-layout.css">
   <link rel="stylesheet" href="./styles.css">
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
+  <script src="./script.js"></script>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link
@@ -22,14 +23,11 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-  />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
-<body onload="carregarInformacoesUsuario()"> 
+<body onload="buscarUsuarios(); carregarInformacoesUsuario()">
 
   <aside class="navbar">
     <div class="logo">
@@ -37,17 +35,17 @@
     </div>
 
     <nav class="navbar-items">
-      <a href="../" class="item">
+      <a href="../index.html" class="item">
         <i class="ph ph-chart-line"></i>
         Dashboard
       </a>
 
-      <a href="./" class="item">
+      <a href="../users/index.html" class="item">
         <i class="ph ph-users-three"></i>
         Funcionários
       </a>
 
-      <a href="../servers" class="item active">
+      <a href="../" class="item active">
         <i class="ph ph-hard-drives"></i>
         Servidores
       </a>
@@ -66,61 +64,95 @@
 
   </aside>
 
-  <div class="em_breve">
+  <main class="content">
+    <header class="header">
+      <h1 class="title">Servidores</h1>
+      <button onclick="abrirAddUser()">+</button>
+    </header>
 
-    <div class="mensagem_em_breve">
+    <div class="users" id="usersBox">
+      <!-- <div class="user">
+          <p id="userAvatar">asd</p>
+          <p id="userName">asd</p>
+      </div> -->
+    </div>
 
-      <div class="icone_breve">
-        <img src="../../assets/imgs/icone_cadeado.png">
+    <div class="geral" id="geral_editor">
+
+      <div id="editor">
+        <div class="topButtons">
+          <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../../assets/imgs/icone_sair.png"
+              alt=""></button>
+        </div>
+        <div class="midInputs">
+          <span>Digite o novo nome:</span><input type="text" id="novoNome">
+        </div>
+        <div class="functionsButtons">
+          <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
+          <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="geral" id="geral_addUser">
+
+      <div id="addUser">
+
+        <div class="topButtons">
+          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""></button>
+        </div>
+
+        <span>Cadastre uma nova instância:</span>
+
+        <div class="group">
+          <span>Região</span><input type="text" id="iptNome">
+          <span>Statos</span> <input type="text" id="iptEmail">
+        </div>
+        <div class="group">
+          <span>Componentes</span> <input type="text" id="iptSenha">
+          <span>Confirme a Senha</span> <input id="iptReSenha">
+        </div>
+        <button onclick="cadastrar()">Cadastrar</button>
       </div>
 
-      <h2>Em breve!</h2>
+    </div>
 
-      <span>Esta funcionalidade estará disponível em breve.</span>
+    <!-- <div class="perfil_celular">
 
-      <div class="aguarde_breve">
-        <img src="../../assets/imgs/icone_tempo.png">
-        Aguarde novidades
+      <div class="logo_celular" onclick="abrir_navbar()">
+        <img src="../../assets/icon/Logo.png" alt="">
       </div>
 
-    </div>
+      <div class="usuario_celular">
+        <div class="avatar_usuario" id="avatarUsuario_celular"></div>
+      </div>
 
-  </div>
+    </div> -->
 
-  <!-- <div class="perfil_celular">
+    <!-- <div id="navbar_celular" class="navbar_celular">
 
-    <div class="logo_celular" onclick="abrir_navbar()">
-      <img src="../../assets/icon/Logo.png" alt="">
-    </div>
+      <a href="../">
+        <img src="../../assets/imgs/icone_dashboard.png">
+      </a>
 
-    <div class="usuario_celular">
-      <div class="avatar_usuario" id="avatarUsuario_celular"></div>
-    </div>
+      <a href="../users">
+        <img src="../../assets/imgs/icone_funcionario.png">
+      </a>
 
-  </div> -->
+      <a href="../servers">
+        <img src="../../assets/imgs/icone_servidor.png">
+      </a>
 
-  <!-- <div id="navbar_celular" class="navbar_celular">
-
-    <a href="../">
-      <img src="../../assets/imgs/icone_dashboard.png">
-    </a>
-
-    <a href="../users/">
-      <img src="../../assets/imgs/icone_funcionario.png">
-    </a>
-
-    <a href="../servers">
-      <img src="../../assets/imgs/icone_servidor.png">
-    </a>
-
-    <a href="../../index.html">
-      <img src="../../assets/imgs/icone_sair.png">
-    </a>
+      <a href="../../index.html">
+        <img src="../../assets/imgs/icone_sair.png">
+      </a>
 
 
-    <button class="fechar_navbar" onclick="abrir_navbar()"></button>
+      <button class="fechar_navbar" onclick="abrir_navbar()">
 
-  </div> -->
+      </button> -->
+
+  </main>
 
 </body>
 
