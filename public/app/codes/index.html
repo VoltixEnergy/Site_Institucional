@@ -8,12 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Voltix | Dashboard</title>
 
-
   <link rel="stylesheet" href="../../css/dashboard-layout.css">
   <link rel="stylesheet" href="./styles.css">
   <script src="../../js/sessao.js"></script>
   <script src="../../js/toast.js"></script>
+  <script src="../../js/dialog.js"></script>
   <link rel="stylesheet" href="../../css/toast.css"></link>
+  <link rel="stylesheet" href="../../css/dialog.css">
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link
@@ -72,6 +73,9 @@
 
   </aside>
   <main class="content" id="codesContainer">
+    <div id="dialogContainer" class="dialog-container">
+      <div id="dialogContent" class="dialog-content"></div>
+    </div>
     <header class="header">
       <h1 class="title">Códigos</h1>
     </header>
@@ -83,15 +87,14 @@
           <i class="ph-bold ph-briefcase"></i>
           <select id="newRoleSelect">
             <option value="" selected disabled>Selecione um cargo</option>
-            <option value="0" id="newPartnerOpt" style="display: none;">Novo parceiro</option>
-            <option value="1">Gerente TI</option>
-            <option value="2">FinOps</option>
-            <option value="3">DevOps</option>
+            <option value="0" id="newPartnerOpt">Novo parceiro</option>
+            <option value="1">Gestor TI</option>
+            <option value="3">Analista NOC</option>
           </select>
         </div>
         <input type="email" id="newEmailReceiver" placeholder="Digite o email a receber o código">
         <div class="action-buttons">
-          <i onclick="sendCode()" tabindex="0" class="ph-bold ph-paper-plane-tilt"></i>
+          <i onclick="sendCode()" tabindex="0" class="ph-bold ph-paper-plane-tilt pointer"></i>
         </div>
       </div>
     </div>
