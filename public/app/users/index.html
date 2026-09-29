@@ -2,159 +2,199 @@
 <html lang="pt-br">
 
 <head>
-  <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voltix | Relatórios</title>
 
+    <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
 
-  <link rel="stylesheet" href="../../css/dashboard-layout.css">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="../../js/sessao.js"></script>
-  <script src="../../js/alerta.js"></script>
-  <script src="./script.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+    <title>Voltix | Funcionários</title>
 
-  <!-- scripts do Chart.js - 2022-1 -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../../css/dashboard-layout.css">
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
 
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+
+    <script src="../../js/sessao.js"></script>
+    <script src="../../js/alerta.js"></script>
+    <script src="../../js/toast.js"></script>
+    <script src="./script.js"></script>
+
 </head>
-
-<body onload="buscarUsuarios(); carregarInformacoesUsuario()">
-
-  <aside class="navbar">
-    <div class="logo">
-      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
-    </div>
-
-    <nav class="navbar-items">
-      <a href="../" class="item">
-        <i class="ph ph-chart-line"></i>
-        Dashboard
-      </a>
-
-      <a href="./" class="item active">
-        <i class="ph ph-users-three"></i>
-        Funcionários
-      </a>
-
-      <a href="../servers" class="item">
-        <i class="ph ph-hard-drives"></i>
-        Servidores
-      </a>
-    </nav>
-
-    <div class="user-data">
-      <div class="icon" id="avatarUsuario"></div>
-
-      <div class="info">
-        <span class="name" id="nomeUsuario"></span>
-        <span class="email" id="emailUsuario"></span>
-      </div>
-
-      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
-    </div>
-
-  </aside>
-
-  <main class="content">
-    <header class="header">
-      <h1 class="title">Funcionários</h1>
-      <button onclick="abrirAddUser()">+</button>
-    </header>
-
-    <div class="users" id="usersBox">
-      <!-- <div class="user">
-          <p id="userAvatar">asd</p>
-          <p id="userName">asd</p>
-      </div> -->
-    </div>
-
-    <div class="geral" id="geral_editor">
-
-      <div id="editor">
-        <div class="topButtons">
-          <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../../assets/imgs/icone_sair.png"
-              alt=""></button>
-        </div>
-        <div class="midInputs">
-          <span>Digite o novo nome:</span><input type="text" id="novoNome">
-        </div>
-        <div class="functionsButtons">
-          <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
-          <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="geral" id="geral_addUser">
-
-      <div id="addUser">
-
-        <div class="topButtons">
-          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""></button>
+<body onload="buscarUsuarios(); carregarInformacoesUsuario(); loadCompanyName();">
+    <aside class="navbar">
+        <div class="logo">
+            <img src="../../assets/icon/Logo.png">
+            <span>Voltix</span>
         </div>
 
-        <span>Crie uma nova conta para um usuário</span>
 
-        <div class="group">
-          <span>Nome</span><input type="text" id="iptNome">
-          <span>Email</span> <input type="text" id="iptEmail">
-          <span>CPF</span> <input type="text" id="iptCpf">
+        <nav class="navbar-items">
+            <a href="../" class="item">
+                <i class="ph ph-chart-line"></i>
+                Dashboard
+            </a>
+            <a href="./" class="item active">
+                <i class="ph ph-users-three"></i>
+                Funcionários
+            </a>
+            <a href="../servers" class="item">
+                <i class="ph ph-hard-drives"></i>
+                Servidores
+            </a>
+        </nav>
+
+
+        <div class="user-data">
+            <div class="icon" id="avatarUsuario"></div>
+            <div class="info">
+                <span class="name" id="nomeUsuario"></span>
+                <span class="email" id="emailUsuario"></span>
+            </div>
+
+            <i
+                class="ph ph-sign-out exit-button"
+                onclick="window.location.href='../../index.html'">
+            </i>
         </div>
-        <div class="group">
-          <span>Senha</span> <input type="text" id="iptSenha">
-          <span>Confirme a Senha</span> <input id="iptReSenha">
+    </aside>
+
+    <main class="content">
+        <div class="page-content">
+            <div class="page-title">
+
+                <div>
+                    <h1>Funcionários</h1>
+                    <h2 id="companyName">
+                        @ Empresa
+                    </h2>
+                </div>
+                <button
+                    class="add-user-button"
+                    onclick="window.location.href='../servers'">
+                    +
+                </button>
+            </div>
+
+            <hr>
+
+            <div class="user-title">
+                <h1>Pesquisar Usuários</h1>
+            </div>
+
+            <div class="search-area">
+                <input
+                    type="text"
+                    id="input_pesquisa"
+                    placeholder="Insira o nome">
+
+                <button onclick="Pesquisar()">
+                    <i class="ph ph-magnifying-glass"></i>
+                    Pesquisar
+                </button>
+            </div>
+
+
+            <div id="listarUsuarios">
+                <div class="user-list-header">
+                    <span>Informações</span>
+                    <span>Cargo</span>
+                    <span>Ações</span>
+                </div>
+            </div>
         </div>
-        <button onclick="cadastrar()">Cadastrar</button>
-      </div>
 
-    </div>
+        <div
+            class="geral"
+            id="geral_editor">
 
-    <!-- <div class="perfil_celular">
+            <div id="editor">
 
-      <div class="logo_celular" onclick="abrir_navbar()">
-        <img src="../../assets/icon/Logo.png" alt="">
-      </div>
+                <div class="topButtons">
+                    <button
+                        class="sair"
+                        id="sairEditor"
+                        onclick="sairEditor()">
+                        <i class="ph ph-x"></i>
+                    </button>
+                </div>
 
-      <div class="usuario_celular">
-        <div class="avatar_usuario" id="avatarUsuario_celular"></div>
-      </div>
+                <h2>Atualizar Informações</h2>
+                <span class="modal-description">
+                    Escolha qual informação deseja alterar
+                </span>
 
-    </div> -->
+                <div class="update-options">
+                    <button
+                        class="update-option"
+                        onclick="mostrarAlterarNome()">
+                        <i class="ph ph-user"></i>
+                        <div>
+                            <strong>Nome</strong>
+                        </div>
+                    </button>
 
-    <!-- <div id="navbar_celular" class="navbar_celular">
+                    <button
+                        class="update-option"
+                        onclick="mostrarAlterarEmail()">
+                        <i class="ph ph-envelope"></i>
+                        <div>
+                            <strong>E-mail</strong>
+                        </div>
+                    </button>
+                </div>
 
-      <a href="../">
-        <img src="../../assets/imgs/icone_dashboard.png">
-      </a>
+                <div
+                    class="midInputs"
+                    id="alterarNomeArea"
+                    style="display: none;">
+                    <span>Novo nome:</span>
+                    <input
+                        type="text"
+                        id="novoNome"
+                        placeholder="Digite o novo nome">
+                    <button
+                        class="confirm-update"
+                        onclick="mudarNome()">
+                        Atualizar Nome
+                    </button>
+                </div>
 
-      <a href="../users">
-        <img src="../../assets/imgs/icone_funcionario.png">
-      </a>
+                <div
+                    class="midInputs"
+                    id="alterarEmailArea"
+                    style="display: none;">
+                    <span>Novo e-mail:</span>
+                    <input
+                        type="email"
+                        id="novoEmail"
+                        placeholder="Digite o novo e-mail">
+                    <button
+                        class="confirm-update"
+                        onclick="mudarEmail()">
+                        Atualizar E-mail
+                    </button>
+                </div>
 
-      <a href="../servers">
-        <img src="../../assets/imgs/icone_servidor.png">
-      </a>
+                <div class="functionsButtons">
+                    <button
+                        id="deletarUsuario"
+                        onclick="deletarUsuario()">
+                        Apagar Usuário
+                    </button>
+                </div>
+            </div>
+        </div>   
 
-      <a href="../../index.html">
-        <img src="../../assets/imgs/icone_sair.png">
-      </a>
+        <div id="toast-container"></div>
 
-
-      <button class="fechar_navbar" onclick="abrir_navbar()">
-
-      </button> -->
-
-  </main>
-
+    </main>
 </body>
-
 </html>
