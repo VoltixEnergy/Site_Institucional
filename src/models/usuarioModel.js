@@ -338,7 +338,6 @@ function adicionarCodigo(
 module.exports = {
     autenticar,
     cadastrar,
-    buscarUsuarioPorCPF,
     buscarUsuarioPorEmpresa,
     listar,
     pesquisar,

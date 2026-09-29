@@ -228,10 +228,6 @@ function atualizar(req, res) {
 }
 
 
-/* =====================================================
-   EDITAR NOME
-   ===================================================== */
-
 function editarNome(req, res) {
 
     const idUsuario = req.params.idUsuario;
