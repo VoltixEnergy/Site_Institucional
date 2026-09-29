@@ -1,297 +1,404 @@
 const usuarioModel = require("../models/usuarioModel");
 
-async function autenticar(req, res) {
-  const { email, senha } = req.body
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
+function autenticar(req, res) {
 
-  if (!email) {
-    retorno.mensagem = "Email inválido."
-    return res.status(400).json(retorno)
-  }
-  if (!senha) {
-    retorno.mensagem = "Senha inválida."
-    return res.status(400).json(retorno)
-  }
+    const email = req.body.email;
+    const senha = req.body.senha || req.body.password;
 
-  try {
-    const resultadoAutenticar = await usuarioModel.autenticar(email, senha)
+    if (!email || !senha) {
 
-    if (resultadoAutenticar.length === 1) {
-      const resultadoFuncionarios = await usuarioModel.buscarUsuarioPorEmpresa(resultadoAutenticar[0].fk_empresa)
+        return res.status(400).json({
+            mensagem: "E-mail e senha são obrigatórios"
+        });
 
-      retorno.dados = {
-        id: resultadoAutenticar[0].id_usuario,
-        email: resultadoAutenticar[0].email,
-        nome: resultadoAutenticar[0].nome,
-        empresa: resultadoAutenticar[0].fk_empresa,
-        funcionarios: resultadoFuncionarios.length > 0 ? resultadoFuncionarios : []
-      }
-
-      return res.status(200).json(retorno)
-    } else if (resultadoAutenticar.length === 0) {
-      retorno.mensagem = "Email e/ou senha inválido(s)"
-      return res.status(403).json(retorno)
-    } else {
-      retorno.mensagem = "Mais de um usuário com o mesmo login e senha!"
-      return res.status(403).json(retorno)
     }
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
-}
-async function buscarUsuarioPorCPF(req, res) {
-  const { cpf } = req.body
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
+    usuarioModel.autenticar(email, senha)
+        .then(function (resultadoAutenticar) {
 
-  if (!cpf) {
-    retorno.mensagem = "CPF inválido."
-    return res.status(400).json(retorno)
-  }
+            if (resultadoAutenticar.length == 1) {
 
-  try {
-    const resultado = await usuarioModel.buscarUsuarioPorCPF(cpf)
+                const usuario = resultadoAutenticar[0];
 
-    retorno.dados = resultado
-    retorno.mensagem = resultado.length ? "" : "Nenhum usuário encontrado."
+                usuarioModel.buscarUsuarioPorEmpresa(usuario.empresa_id)
+                    .then(function (resultadoFuncionarios) {
 
-    return res.status(200).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+                        res.status(200).json({
+
+                            id: usuario.id,
+
+                            email: usuario.email,
+
+                            nome: usuario.nome,
+
+                            empresa: usuario.empresa_id,
+
+                            cargo: usuario.cargo,
+
+                            funcionarios: resultadoFuncionarios
+
+                        });
+
+                    })
+                    .catch(function (erro) {
+
+                        console.log(erro);
+
+                        res.status(500).json(erro);
+
+                    });
+
+            } else {
+
+                res.status(403).json({
+
+                    mensagem: "E-mail e/ou senha inválidos"
+
+                });
+
+            }
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
 }
 
-async function cadastrar(req, res) {
-  const { nome, email, senha, cpf, nivelPermissao, fkEmpresa } = req.body
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
 
-  if (!nome) {
-    retorno.mensagem = "Nome inválido."
-    return res.status(400).json(retorno)
-  }
-  if (!email) {
-    retorno.mensagem = "Email inválido."
-    return res.status(400).json(retorno)
-  }
-  if (!senha) {
-    retorno.mensagem = "Senha inválida."
-    return res.status(400).json(retorno)
-  }
+function cadastrar(req, res) {
 
-  try {
-    const usuarioExistente = await usuarioModel.buscarUsuarioPorCPF(cpf)
+    const nome = req.body.nome || req.body.name;
+    const email = req.body.email;
+    const senha = req.body.senha || req.body.password;
+    const cargo = req.body.cargo || 1;
+    const empresaId = req.body.empresaId || req.body.empresa_id;
 
-    if (usuarioExistente.length > 0) {
-      retorno.mensagem = `O usuário já existe`
-      return res.status(400).json(retorno)
+    if (!nome || !email || !senha || !empresaId) {
+
+        return res.status(400).json({
+
+            mensagem: "Preencha todos os campos obrigatórios"
+
+        });
+
     }
 
-    const resultado = await usuarioModel.cadastrar(nome, email, senha, cpf, nivelPermissao, fkEmpresa)
+    usuarioModel.cadastrar(
+        nome,
+        email,
+        senha,
+        null,
+        cargo,
+        empresaId
+    )
+        .then(function (resultado) {
 
-    if (resultado.affectedRows !== 1) {
-      retorno.mensagem = "O usuário não foi cadastrado. Tente novamente mais tarde."
-      return res.status(500).json(retorno)
-    }
+            res.status(201).json(resultado);
 
-    retorno.mensagem = "Usuário cadastrado com sucesso!"
-    retorno.dados = {
-      id: resultado.insertId
-    }
+        })
+        .catch(function (erro) {
 
-    return res.status(200).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
 }
 
-async function autenticarCodigo(req, res) {
-  const { codigoServer: codigo } = req.body
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
+/* =====================================================
+   BUSCAR USUÁRIOS DA EMPRESA
+   ===================================================== */
 
-  if (!codigo) {
-    retorno.mensagem = "Código inválido."
-    return res.status(400).json(retorno)
-  }
+function buscarUsuarioPorEmpresa(req, res) {
 
-  try {
-    const resultadoAutenticarCodigo = await usuarioModel.autenticarCodigo(codigo)
+    const empresaId = req.params.idEmpresa;
 
-    if (resultadoAutenticarCodigo.length === 1) {
-      retorno.dados = {
-        id: resultadoAutenticarCodigo[0].id_codigo,
-        codigo: resultadoAutenticarCodigo[0].codigo,
-        status: resultadoAutenticarCodigo[0].estado_codigo
-      }
+    usuarioModel.buscarUsuarioPorEmpresa(empresaId)
+        .then(function (resultado) {
 
-      return res.status(200).json(retorno)
-    } else if (resultadoAutenticarCodigo.length === 0) {
-      retorno.mensagem = "Código inválido!"
-      return res.status(403).json(retorno)
-    } else {
-      retorno.mensagem = "Mais de um código com o mesmo valor!"
-      return res.status(403).json(retorno)
-    }
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
 }
 
-async function buscarUsuarioPorEmpresa(req, res) {
-  const { idEmpresa } = req.params
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
 
-  if (!idEmpresa) {
-    retorno.mensagem = "ID da empresa inválido."
-    return res.status(400).json(retorno)
-  }
+function listar(req, res) {
 
-  try {
-    const resultado = await usuarioModel.buscarUsuarioPorEmpresa(idEmpresa)
+    const idUsuario = req.params.id;
 
-    retorno.dados = resultado
-    retorno.mensagem = resultado.length ? "" : "Nenhum funcionário encontrado."
+    usuarioModel.listar(idUsuario)
+        .then(function (resultado) {
 
-    return res.status(200).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
-}
-async function adicionarCodigo(req, res) {
-  const { codigo } = req.body
+            res.status(200).json(resultado);
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
+        })
+        .catch(function (erro) {
 
-  if (!codigo) {
-    retorno.mensagem = "Código inválido."
-    return res.status(400).json(retorno)
-  }
+            console.log(erro);
 
-  try {
-    const resultado = await usuarioModel.adicionarCodigo(codigo)
+            res.status(500).json(erro);
 
-    if (resultado.affectedRows !== 1) {
-      retorno.mensagem = "O código não foi adicionado. Tente novamente mais tarde."
-      return res.status(500).json(retorno)
-    }
-
-    retorno.mensagem = "Código adicionado com sucesso!"
-    retorno.dados = {
-      id: resultado.insertId
-    }
-
-    return res.status(200).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+        });
 }
 
-async function editarNome(req, res) {
-  const { novoNome, idUsuario } = req.body
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
 
-  if (!novoNome) {
-    retorno.mensagem = "Nome inválido."
-    return res.status(400).json(retorno)
-  }
-  if (!idUsuario) {
-    retorno.mensagem = "ID do usuário inválido."
-    return res.status(400).json(retorno)
-  }
+function pesquisar(req, res) {
 
-  try {
-    const resultado = await usuarioModel.editarNome(novoNome, idUsuario)
+    const nome = req.params.nome;
+    const idUsuario = req.query.idUsuario;
 
-    if (resultado.affectedRows && resultado.affectedRows >= 1) {
-      retorno.mensagem = "Nome editado com sucesso!"
-      retorno.dados = resultado
-      return res.status(200).json(retorno)
-    }
+    usuarioModel.pesquisar(nome, idUsuario)
+        .then(function (resultado) {
 
-    retorno.mensagem = "Não foi possível editar o nome."
-    return res.status(500).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
 }
 
-async function deletarUsuario(req, res) {
-  const { idUsuario } = req.params
 
-  const retorno = {
-    mensagem: "",
-    dados: {}
-  }
+function buscarPorId(req, res) {
 
-  if (!idUsuario) {
-    retorno.mensagem = "ID do usuário inválido."
-    return res.status(400).json(retorno)
-  }
+    const idUsuario = req.params.id;
 
-  try {
-    const resultado = await usuarioModel.deletarUsuario(idUsuario)
+    usuarioModel.buscarPorId(idUsuario)
+        .then(function (resultado) {
 
-    if (resultado.affectedRows && resultado.affectedRows >= 1) {
-      retorno.mensagem = "Usuário deletado com sucesso!"
-      retorno.dados = resultado
-      return res.status(200).json(retorno)
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
+
+function atualizar(req, res) {
+
+    const idUsuario = req.params.id;
+
+    const nome = req.body.nome;
+    const email = req.body.email;
+    const cargo = req.body.cargo;
+
+    usuarioModel.atualizar(
+        idUsuario,
+        nome,
+        email,
+        cargo
+    )
+        .then(function (resultado) {
+
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
+
+/* =====================================================
+   EDITAR NOME
+   ===================================================== */
+
+function editarNome(req, res) {
+
+    const idUsuario = req.params.idUsuario;
+    const novoNome = req.body.novoNome;
+
+    if (!novoNome) {
+
+        return res.status(400).json({
+
+            mensagem: "Informe o novo nome"
+
+        });
+
     }
 
-    retorno.mensagem = "Não foi possível deletar o usuário."
-    return res.status(500).json(retorno)
-  } catch (erro) {
-    console.error(erro)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
+    usuarioModel.editarNome(
+        idUsuario,
+        novoNome
+    )
+        .then(function (resultado) {
+
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
 }
+
+function excluir(req, res) {
+
+    const idUsuario = req.params.id;
+
+    usuarioModel.excluir(idUsuario)
+        .then(function (resultado) {
+
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
+
+
+function deletarUsuario(req, res) {
+
+    const idUsuario = req.params.idUsuario;
+
+    usuarioModel.deletarUsuario(idUsuario)
+        .then(function (resultado) {
+
+            res.status(200).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
+
+function autenticarCodigo(req, res) {
+
+    const codigo = req.body.codigo;
+
+    if (!codigo) {
+
+        return res.status(400).json({
+
+            mensagem: "Código não informado"
+
+        });
+
+    }
+
+    usuarioModel.autenticarCodigo(codigo)
+        .then(function (resultado) {
+
+            if (resultado.length == 1) {
+
+                res.status(200).json(resultado);
+
+            } else {
+
+                res.status(403).json({
+
+                    mensagem: "Código inválido ou expirado"
+
+                });
+
+            }
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
+
+
+function adicionarCodigo(req, res) {
+
+    const codigo = req.body.codigo;
+    const empresaId = req.body.empresaId || req.body.empresa_id;
+    const cargo = req.body.cargo;
+    const expiraEm = req.body.expiraEm;
+
+    if (!codigo || !empresaId || !cargo || !expiraEm) {
+
+        return res.status(400).json({
+
+            mensagem: "Preencha todos os campos"
+
+        });
+
+    }
+
+    usuarioModel.adicionarCodigo(
+        codigo,
+        empresaId,
+        cargo,
+        expiraEm
+    )
+        .then(function (resultado) {
+
+            res.status(201).json(resultado);
+
+        })
+        .catch(function (erro) {
+
+            console.log(erro);
+
+            res.status(500).json(erro);
+
+        });
+}
+
 
 module.exports = {
-  autenticar,
-  cadastrar,
-  autenticarCodigo,
-  buscarUsuarioPorEmpresa,
-  adicionarCodigo,
-  editarNome,
-  deletarUsuario,
-  buscarUsuarioPorCPF
-}
+
+    autenticar,
+    cadastrar,
+    buscarUsuarioPorEmpresa,
+    listar,
+    pesquisar,
+    buscarPorId,
+    atualizar,
+    editarNome,
+    excluir,
+    deletarUsuario,
+    autenticarCodigo,
+    adicionarCodigo
+};

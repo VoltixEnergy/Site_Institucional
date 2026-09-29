@@ -1,255 +1,447 @@
+function loadCompanyName(){
+  var companyName = sessionStorage.getItem("COMPANY_NAME")
+  var companyNameElement = document.getElementById("companyName")
+
+  companyNameElement.innerText = `@ ${companyName}`
+}
+
+
+
 function buscarUsuarios() {
-  // var idEmpresa = 1
-  // console.log("Listando funcionarios da empresa!")
-  // fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
-  //     method: "GET"
-  // })
-  //     .then(function (resposta) {
-  //         console.log(resposta)
-  //         console.log("ESTOU NO THEN DO entrar()!")
-  //         if (resposta.ok) {
-  //             console.log(resposta);
-  //             return resposta.json()
-  //         } else {
+    var idEmpresa = sessionStorage.ID_EMPRESA;
 
-  //             console.log("Houve um erro ao tentar listar usuários!");
+    console.log("ID da empresa:", idEmpresa);
 
-  //             resposta.text().then(texto => {
-  //                 console.error(texto);
-  //                 finalizarAguardar(texto);
-  //             });
-  //         }
-
-  //     })
-  //     .then(function (json) {
-
-  //         console.log(json);
-
-  JSON.parse(sessionStorage.FUNCIONARIOS).forEach(item => {
-    let nomeCargo = "Func"
-    if (item.nivel_permissao == 0) {
-      nomeCargo = "Admin"
+    if (!idEmpresa) {
+        console.log("Empresa não encontrada no sessionStorage.");
+        return;
     }
-    document.getElementById("usersBox").innerHTML +=
-      `<div class="user">
-                          <div class="infosUser">
-                          <p id="userAvatar">${item.nome[0].toUpperCase() + item.nome[1].toUpperCase()}</p>
-                          <p id="userName">${item.nome}</p>
-                          
-                          </div>
-                          <p id="userCargo" style = "border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                          <button class="mudarNome" id="mudarNome" onclick="abrirEditor(${item.id_usuario})"><img src="../../assets/imgs/edit.png"></button>
-                      </div>`
-  });
-  // }).catch(function (erro) {
-  //     console.log(erro);
-  // })
-}
 
-function editarNome(novoNome, idUsuario) {
-  fetch("/usuarios/editarNome/:idUsuario", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      novoNome: novoNome,
-      idUsuario: idUsuario
+    fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
+        method: "GET"
     })
-  }).then(function (resposta) {
-    console.log("ESTOU NO THEN DO entrar()!")
+        .then(function (resposta) {
+            console.log("Resposta:", resposta);
 
-    if (resposta.ok) {
-      console.log(resposta);
-      let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-      for (let i = 0; i < funcionarios.length; i++) {
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                console.log("Houve um erro ao tentar listar usuários!");
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    throw new Error(texto);
+                });
+            }
+        })
+        .then(function (usuarios) {
+            console.log("USUÁRIOS DA EMPRESA:", usuarios);
 
-        if (funcionarios[i].id_usuario == idUsuario) {
+            var lista = document.getElementById("listarUsuarios");
 
-          funcionarios[i].nome = novoNome;
+            if (!lista) {
+                console.log("Elemento listarUsuarios não encontrado.");
+                return;
+            }
 
-        }
-      }
-      sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
+            lista.innerHTML = `
+                <div class="user-list-header">
+                    <span>Nome</span>
+                    <span>Cargo</span>
+                    <span>Ações</span>
+                </div>
+            `;
 
-      window.location.reload()
-      resposta.json().then(json => {
-        console.log(json);
+            if (usuarios.length == 0) {
+                lista.innerHTML += `
+                    <div class="user">
+                        <p>Nenhum usuário cadastrado.</p>
+                    </div>
+                `;
+                return;
+            }
 
-      });
+            for (var i = 0; i < usuarios.length; i++) {
+                var item = usuarios[i];
 
-    } else {
+                var nomeCargo = "Usuário";
 
-      console.log("Houve um erro ao tentar atualizar os dados!");
+                if (item.cargo == 1) {
+                    nomeCargo = "Gestor de TI";
+                } else if (item.cargo == 2) {
+                    nomeCargo = "Analista NOC";
+                } 
 
-      resposta.text().then(texto => {
-        console.error(texto);
-        finalizarAguardar(texto);
-      });
-    }
+                var primeiraLetra = item.nome.charAt(0).toUpperCase();
+                var segundaLetra = "";
 
-  }).catch(function (erro) {
-    console.log(erro);
-  })
+                if (item.nome.length > 1) {
+                    segundaLetra = item.nome.charAt(1).toUpperCase();
+                }
 
-  return false;
+                lista.innerHTML += `
+                    <div class="user">
+                        <div class="infosUser">
+                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <div>
+                                <p id="userName">${item.nome}</p>
+                                <span>${item.email}</span>
+                            </div>
+                        </div>
+                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                            <img src="../../assets/imgs/edit.png">
+                        </button>
+                    </div>
+                `;
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro ao buscar usuários:", erro);
+        });
 }
 
 
-let idUsuarioEditar = null
-// const mudarNomeDiv = document.getElementById("mudarNome")
-// const editorWrapper = document.getElementById("editorWrapper")
-const editor = document.getElementById("editor")
+
+function Pesquisar() {
+    var nome = document.getElementById("input_pesquisa").value;
+    var idUsuario = sessionStorage.ID_USUARIO;
+
+    if (nome == "") {
+        buscarUsuarios();
+        return;
+    }
+
+    fetch(`/usuarios/pesquisar/${nome}?idUsuario=${idUsuario}`, {
+        method: "GET"
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                throw new Error("Erro ao pesquisar usuários.");
+            }
+        })
+        .then(function (usuarios) {
+            var lista = document.getElementById("listarUsuarios");
+
+            lista.innerHTML = `
+                <div class="user-list-header">
+                    <span>Nome</span>
+                    <span>Cargo</span>
+                    <span>Ações</span>
+                </div>
+            `;
+
+            if (usuarios.length == 0) {
+                lista.innerHTML += `
+                    <div class="user">
+                        <p>Nenhum usuário encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            for (var i = 0; i < usuarios.length; i++) {
+                var item = usuarios[i];
+
+                var nomeCargo = "Usuário";
+
+                if (item.cargo == 1) {
+                    nomeCargo = "Gerente de TI";
+                } else if (item.cargo == 2) {
+                    nomeCargo = "Analista NOC";
+                } 
+
+                var primeiraLetra = item.nome.charAt(0).toUpperCase();
+                var segundaLetra = "";
+
+                if (item.nome.length > 1) {
+                    segundaLetra = item.nome.charAt(1).toUpperCase();
+                }
+
+                lista.innerHTML += `
+                    <div class="user">
+                        <div class="infosUser">
+                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <div>
+                                <p id="userName">${item.nome}</p>
+                                <span>${item.email}</span>
+                            </div>
+                        </div>
+                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                            <img src="../../assets/imgs/edit.png">
+                        </button>
+                    </div>
+                `;
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro na pesquisa:", erro);
+        });
+}
+
+
+
+var idUsuarioEditar = null;
+
+
 
 function abrirEditor(id) {
-  document.getElementById("geral_editor").style.display = "flex";
-  idUsuarioEditar = id;
+    idUsuarioEditar = id;
+    document.getElementById("geral_editor").style.display = "flex";
+    document.getElementById("alterarNomeArea").style.display = "none";
+    document.getElementById("alterarEmailArea").style.display = "none";
+    document.getElementById("novoNome").value = "";
+    document.getElementById("novoEmail").value = "";
 }
+
+
 
 function sairEditor() {
-  document.getElementById("geral_editor").style.display = "none";
-  idUsuarioEditar = null;
+    document.getElementById("geral_editor").style.display = "none";
+    idUsuarioEditar = null;
+    document.getElementById("novoNome").value = "";
+    document.getElementById("novoEmail").value = "";
+    document.getElementById("alterarNomeArea").style.display = "none";
+    document.getElementById("alterarEmailArea").style.display = "none";
 }
 
-function abrirAddUser() {
-  document.getElementById("geral_addUser").style.display = "flex";
+
+
+function mostrarAlterarNome() {
+    document.getElementById("alterarNomeArea").style.display = "flex";
+    document.getElementById("alterarEmailArea").style.display = "none";
+    document.getElementById("novoNome").value = "";
 }
 
-function sairAddUser() {
-  document.getElementById("geral_addUser").style.display = "none";
+
+
+function mostrarAlterarEmail() {
+    document.getElementById("alterarEmailArea").style.display = "flex";
+    document.getElementById("alterarNomeArea").style.display = "none";
+    document.getElementById("novoEmail").value = "";
 }
+
+
 
 function mudarNome() {
-  novoNome = novoNome.value
-  editarNome(novoNome, idUsuarioEditar)
-}
-function deletarUsuario() {
-  var idUsuario = idUsuarioEditar;
+    var novoNomeInput = document.getElementById("novoNome");
+    var novoNome = novoNomeInput.value.trim();
 
-  if (idUsuario == null) {
-    alert("Nenhum usuário selecionado!");
-    return;
-  }
-
-  fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
+    if (novoNome == "") {
+        alert("Digite um novo nome.");
+        return;
     }
-  })
-    .then(response => {
-      if (response.ok) {
-        alert("Conta deletada com sucesso!");
-        let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-        for (let i = 0; i < funcionarios.length; i++) {
 
-          if (funcionarios[i].id_usuario == idUsuario) {
-            funcionarios.splice(i, 1);
+    if (novoNome.length < 3) {
+        alert("O nome deve ter ao menos 3 caracteres.");
+        return;
+    }
 
-          }
-        }
-        sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-        window.location.reload();
-      } else {
-        response.json().then(erro => alert(erro.erro || "Erro ao deletar"));
-      }
-    })
-    .catch(erro => console.error("Erro na requisição:", erro));
+    if (idUsuarioEditar == null) {
+        alert("Nenhum usuário selecionado.");
+        return;
+    }
+
+    editarNome(novoNome, idUsuarioEditar);
 }
+
+
+
+function editarNome(novoNome, idUsuario) {
+    fetch(`/usuarios/editarNome/${idUsuario}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            novoNome: novoNome
+        })
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                alert("Nome atualizado com sucesso!");
+                sairEditor();
+                buscarUsuarios();
+            } else {
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    throw new Error("Erro ao atualizar nome.");
+                });
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro:", erro);
+            alert("Não foi possível atualizar o nome.");
+        });
+}
+
+
+
+function mudarEmail() {
+    var novoEmailInput = document.getElementById("novoEmail");
+    var novoEmail = novoEmailInput.value.trim();
+
+    if (novoEmail == "") {
+        alert("Digite um novo e-mail.");
+        return;
+    }
+
+    if (!novoEmail.includes("@")) {
+        alert("Digite um e-mail válido.");
+        return;
+    }
+
+    if (idUsuarioEditar == null) {
+        alert("Nenhum usuário selecionado.");
+        return;
+    }
+
+    editarEmail(novoEmail, idUsuarioEditar);
+}
+
+
+
+function editarEmail(novoEmail, idUsuario) {
+    fetch(`/usuarios/atualizar/${idUsuario}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: novoEmail
+        })
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                alert("E-mail atualizado com sucesso!");
+                sairEditor();
+                buscarUsuarios();
+            } else {
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    throw new Error("Erro ao atualizar e-mail.");
+                });
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro:", erro);
+            alert("Não foi possível atualizar o e-mail.");
+        });
+}
+
+
+
+function deletarUsuario() {
+    var idUsuario = idUsuarioEditar;
+
+    if (idUsuario == null) {
+        alert("Nenhum usuário selecionado!");
+        return;
+    }
+
+    if (!confirm("Deseja realmente excluir este usuário?")) {
+        return;
+    }
+
+    fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                alert("Conta deletada com sucesso!");
+                sairEditor();
+                buscarUsuarios();
+            } else {
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    alert("Erro ao deletar usuário.");
+                });
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro na requisição:", erro);
+        });
+}
+
+
+function sairAddUser() {
+    document.getElementById("geral_addUser").style.display = "none";
+}
+
+
 
 function cadastrar() {
-  // aguardar();
+    var nomeVar = document.getElementById("iptNome").value;
+    var emailVar = document.getElementById("iptEmail").value;
+    var senhaVar = document.getElementById("iptSenha").value;
+    var confirmacaoSenhaVar = document.getElementById("iptReSenha").value;
+    var cargoVar = document.getElementById("iptNivelPermissao").value;
+    var empresaIdVar = sessionStorage.ID_EMPRESA;
 
-  //Recupere o valor da nova input pelo nome do id
-  // Agora vá para o método fetch logo abaixo
-  var nomeVar = iptNome.value;
-  var emailVar = iptEmail.value;
-  var senhaVar = iptSenha.value;
-  var confirmacaoSenhaVar = iptReSenha.value;
-  var cpfVar = iptCpf.value;
-  var nivelPermissaoVar = 1;
-  var fkEmpresaVar = sessionStorage.ID_EMPRESA;
-  // Verificando se há algum campo em branco
-  if (
-    nomeVar == "" ||
-    emailVar == "" ||
-    senhaVar == ""
-  ) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "Preencha todos os campos";
+    if (nomeVar == "" || emailVar == "" || senhaVar == "") {
+        alert("Preencha todos os campos.");
+        return false;
+    }
 
-    return false;
-  } else if (nomeVar.length < 3) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "O nome deve ter ao menos 3 caracteres";
+    if (nomeVar.length < 3) {
+        alert("O nome deve ter ao menos 3 caracteres.");
+        return false;
+    }
 
-    return false;
-  } else if (senhaVar.length < 6) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "A senha deve ter ao menos 6 caracteres";
+    if (senhaVar.length < 6) {
+        alert("A senha deve ter ao menos 6 caracteres.");
+        return false;
+    }
 
-    return false;
-  } else if (senhaVar != confirmacaoSenhaVar) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "As senhas não coincidem";
+    if (senhaVar != confirmacaoSenhaVar) {
+        alert("As senhas não coincidem.");
+        return false;
+    }
 
-    return false;
-  } else {
-    // setInterval(sumirMensagem, 5000);
-  }
+    fetch("/usuarios/cadastrar", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nome: nomeVar,
+            email: emailVar,
+            senha: senhaVar,
+            cargo: cargoVar,
+            empresaId: empresaIdVar
+        })
+    })
+        .then(function (resposta) {
+            console.log("Resposta cadastro:", resposta);
 
-  // botao_cadastrar.innerHTML ='<img src="./assets/imgs/aguarde-orange.gif" width="25">';
-
-  // Enviando o valor da nova input
-  fetch("/usuarios/cadastrar", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      // crie um atributo que recebe o valor recuperado aqui
-      // Agora vá para o arquivo routes/usuario.js
-      nomeServer: nomeVar,
-      emailServer: emailVar,
-      senhaServer: senhaVar,
-      cpfServer: cpfVar,
-      nivelPermissaoServer: nivelPermissaoVar,
-      fkEmpresaServer: fkEmpresaVar
-    }),
-  })
-    .then(function (resposta) {
-      console.log("resposta: ", resposta);
-
-      if (resposta.ok) {
-        // cardErro.style.display = "block";
-
-        // mensagem_erro.innerHTML =
-        //     "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
-
-        resposta.json().then(json => {
-          console.log(json);
-          console.log(JSON.stringify(json));
-          let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-          funcionarios.push({ "id_usuario": json.insertId, "nome": nomeVar, "email": emailVar, "nivel_permissao": nivelPermissaoVar })
-          sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-          window.location.reload()
-          document.getElementById('geral_addUser').style.display = "none"
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    throw new Error("Erro ao cadastrar usuário.");
+                });
+            }
+        })
+        .then(function (resultado) {
+            console.log("Usuário cadastrado:", resultado);
+            alert("Usuário cadastrado com sucesso!");
+            document.getElementById("iptNome").value = "";
+            document.getElementById("iptEmail").value = "";
+            document.getElementById("iptSenha").value = "";
+            document.getElementById("iptReSenha").value = "";
+            sairAddUser();
+            buscarUsuarios();
+        })
+        .catch(function (erro) {
+            console.log("Erro no cadastro:", erro);
+            alert("Não foi possível cadastrar o usuário.");
         });
 
-        limparFormulario();
-
-      } else {
-        throw "Houve um erro ao tentar realizar o cadastro!";
-      }
-    })
-    .catch(function (resposta) {
-      console.log(`#ERRO: ${resposta}`);
-      // finalizarAguardar();
-    });
-
-  return false;
+    return false;
 }
