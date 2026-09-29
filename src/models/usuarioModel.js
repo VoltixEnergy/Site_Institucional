@@ -62,15 +62,6 @@ function cadastrar(
 }
 
 
-function buscarUsuarioPorCPF(cpf) {
-
-    // Seu banco atual NÃO possui CPF na tabela usuario.
-    // Por isso, essa função não pode consultar CPF.
-    return Promise.reject(
-        "A tabela usuario não possui a coluna cpf."
-    );
-}
-
 
 function buscarUsuarioPorEmpresa(empresaId) {
 
@@ -286,9 +277,6 @@ function deletarUsuario(idUsuario) {
 }
 
 
-/* =====================================================
-   CÓDIGO DE ATIVAÇÃO
-   ===================================================== */
 
 function autenticarCodigo(codigo) {
 
