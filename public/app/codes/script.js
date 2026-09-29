@@ -1,15 +1,14 @@
 const roleHash = {
   0: "Novo parceiro",
-  1: "Gerente TI",
-  2: "FinOps",
-  3: "DevOps",
+  1: "Gestor TI",
+  2: "Analista NOC",
 }
 
 const fillRolesAtNewCode = () => {
   const newPartnerOpt = document.getElementById("newPartnerOpt")
 
-  const userRole = sessionStorage.getItem("ROLE")
-  const userCompanyId = sessionStorage.getItem("COMPANY_ID")
+  const userRole = sessionStorage.getItem("ID_USUARIO")
+  const userCompanyId = sessionStorage.getItem("ID_EMPRESA")
 
   if (userRole == 1 && userCompanyId == 1) 
     newPartnerOpt.classList.remove("hidden")
@@ -38,8 +37,8 @@ const getCodes = async () => {
 
   const codesContainer = document.getElementById("codesContainer")
 
-  const userRole = sessionStorage.getItem("ROLE")
-  const userCompanyId = sessionStorage.getItem("COMPANY_ID")
+  const userRole = sessionStorage.getItem("ID_USUARIO")
+  const userCompanyId = sessionStorage.getItem("ID_EMPRESA")
   data.forEach(code => {
     const { atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em } = code
 
@@ -53,9 +52,8 @@ const getCodes = async () => {
             <i class="ph-bold ph-briefcase role-icon"></i>
             <select id="roleSelect-${elementId}" class="role-select" onchange="editRole('${elementId}')">
               <option value="0" ${cargo === 0 ? "selected" : ""} ${userRole == 1 && userCompanyId == 1 ? "" : "hidden disabled"}>Novo parceiro</option>
-              <option value="1" ${cargo === 1 ? "selected" : ""}>Gerente TI</option>
-              <option value="2" ${cargo === 2 ? "selected" : ""}>FinOps</option>
-              <option value="3" ${cargo === 3 ? "selected" : ""}>DevOps</option>
+              <option value="1" ${cargo === 1 ? "selected" : ""}>Gestor TI</option>
+              <option value="2" ${cargo === 2 ? "selected" : ""}>Analista NOC</option>
             </select>
           </div>
       
@@ -158,22 +156,19 @@ const copyCode = (elementId) => {
 }
 
 const refreshCode = (elementId) => {
-  const popUpBody = `
-    <div class="flex flex-col">
-      <div class="flex flex-col gap-1.5">
-        <label for="emailReceiver" class="text-slate-200">Email</label> 
-        <input type="email" id="emailReceiver" placeholder="Digite o email a receber o código" class="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-lg outline-none focus:border-blue-500 transition-colors">
+  const dialogBody = `
+    <div class="resend-form">
+      <div class="form-field">
+        <label for="emailReceiver" class="form-label">Email</label>
+        <input type="email" id="emailReceiver" placeholder="Digite o email a receber o código" class="form-input">
       </div>
-      <button 
-        onclick="resendCode('${elementId}')"
-        id="resendCodeButton"
-        class="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-        <i class="ph ph-paper-plane-tilt text-xl -ml-4"></i><span class="font-medium">Reenviar código</span>
+      <button onclick="resendCode('${elementId}')" id="resendCodeButton" class="resend-button">
+        <i class="ph ph-paper-plane-tilt resend-icon"></i><span class="resend-label">Reenviar código</span>
       </button>
     </div>
   `
 
-  showPopUp("Reenviar código", popUpBody)
+  showDialog("Reenviar código", dialogBody)
 }
 
 const resendCode = async (elementId) => {
@@ -219,7 +214,7 @@ const resendCode = async (elementId) => {
     emailReceiverElement.innerHTML = ""
     showToast(responseJson.message, "success")
     
-    closePopUp()
+    closeDialog()
   } catch (e) {
     console.error(e)
     return showToast("Algo deu errado. Tente novamente mais tarde", "error")
@@ -227,23 +222,18 @@ const resendCode = async (elementId) => {
 }
 
 const disableCode = (elementId) => {
-  const popUpBody = `
-    <div class="flex justify-around gap-4">
-    <button 
-        onclick="closePopUp()"
-        class="w-full py-3 mt-2 outline outline-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-        <span class="font-medium">Cancelar</span>
+  const dialogBody = `
+    <div class="dialog-actions">
+      <button onclick="closeDialog()" class="cancel-button">
+        <span class="button-label">Cancelar</span>
       </button>
-      <button 
-        onclick="disableCodeConfirmed('${elementId}')"
-        id="disableCodeConfirmedButton"
-        class="w-full py-3 mt-2 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-        <span class="font-medium">Desativar código</span>
+      <button onclick="disableCodeConfirmed('${elementId}')" id="disableCodeConfirmedButton" class="disable-button">
+        <span class="button-label">Desativar código</span>
       </button>
     </div>
   `
 
-  showPopUp(`Desativar código: <span class="font-bold">${elementId.split("-")[0]}</span>`, popUpBody)
+  showDialog(`Desativar código: <span class="font-bold">${elementId.split("-")[0]}</span>`, dialogBody)
 }
 
 const disableCodeConfirmed = async (elementId) => {
@@ -272,7 +262,7 @@ const disableCodeConfirmed = async (elementId) => {
 
     showToast(responseJson.message, "success")
     
-    closePopUp()
+    closeDialog()
   } catch (e) {
     console.error(e)
     return showToast("Algo deu errado. Tente novamente mais tarde", "error")
@@ -280,24 +270,19 @@ const disableCodeConfirmed = async (elementId) => {
 }
 
 const editRole = (elementId) => {
-  const popUpBody = `
-    <div class="flex justify-around gap-4">
-    <button 
-        onclick="closePopUp()"
-        class="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-        <span class="font-medium">Cancelar</span>
+  const dialogBody = `
+    <div class="dialog-actions">
+      <button onclick="closeDialog()" class="cancel-button">
+        <span class="button-label">Cancelar</span>
       </button>
-      <button 
-        onclick="editRoleConfirmed('${elementId}')"
-        id="editRoleConfirmedButton"
-        class="w-full py-3 mt-2 outline outline-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-        <span class="font-medium">Alterar cargo</span>
+      <button onclick="editRoleConfirmed('${elementId}')" id="editRoleConfirmedButton" class="confirm-button">
+        <span class="button-label">Alterar cargo</span>
       </button>
     </div>
   `
 
   const roleSelected = document.getElementById(`roleSelect-${elementId}`).value
-  showPopUp(`Alterar cargo: <span class="font-bold">${roleHash[roleSelected]}</span>`, popUpBody)
+  showDialog(`Alterar cargo: <span class="font-bold">${roleHash[roleSelected]}</span>`, dialogBody)
 }
 
 const editRoleConfirmed = async (elementId) => {
@@ -337,7 +322,7 @@ const editRoleConfirmed = async (elementId) => {
 
     showToast(responseJson.message, "success")
     
-    closePopUp()
+    closeDialog()
   } catch (e) {
     console.error(e)
     return showToast("Algo deu errado. Tente novamente mais tarde", "error")
@@ -355,29 +340,24 @@ const sendCode = () => {
   if (!newEmailReceiver || !emailRegex.test(newEmailReceiver))
     return showToast("Digite um email válido", "warning")
 
-  const popUpBody = `
-    <div class="flex flex-col justify-around gap-4">
-      <div>
-      <span class="flex gap-2"><p class="font-semibold">Cargo:</p> ${roleHash[newRoleSelect]}</span>
-      <span class="flex gap-2"><p class="font-semibold">Email:</p> ${newEmailReceiver}</span>
+  const dialogBody = `
+    <div class="confirm-details">
+      <div class="details-info">
+        <span class="detail-row"><p class="detail-label">Cargo:</p> ${roleHash[newRoleSelect]}</span>
+        <span class="detail-row"><p class="detail-label">Email:</p> ${newEmailReceiver}</span>
       </div>
-      <div>
-        <button
-          onclick="closePopUp()"
-          class="w-full py-3 mt-2 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-          <span class="font-medium">Cancelar</span>
+      <div class="details-actions">
+        <button onclick="closeDialog()" class="cancel-button">
+          <span class="button-label">Cancelar</span>
         </button>
-        <button
-          onclick="sendCodeConfirmed()"
-          id="sendCodeConfirmedButton"
-          class="w-full py-3 mt-2 outline outline-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors cursor-pointer flex gap-2 items-center justify-center">
-          <span class="font-medium">Confirmar</span>
+        <button onclick="sendCodeConfirmed()" id="sendCodeConfirmedButton" class="confirm-button">
+          <span class="button-label">Confirmar</span>
         </button>
       </div>
     </div>
   `
 
-  showPopUp("Confirme as informações:", popUpBody)
+  showDialog("Confirme as informações:", dialogBody)
 }
 
 const sendCodeConfirmed = async () => {
@@ -416,35 +396,11 @@ const sendCodeConfirmed = async () => {
 
     showToast(responseJson.message, "success")
     
-    closePopUp()
+    closeDialog()
   } catch (e) {
     console.error(e)
     return showToast("Algo deu errado. Tente novamente mais tarde", "error")
   }
-}
-
-const showPopUp = (title, popUpBody) => {
-  const popUpContainer = document.getElementById("popUpContainer")
-  const popUpContent = document.getElementById("popUpContent")
-
-  popUpContainer.classList.replace("hidden", "flex")
-  popUpContent.innerHTML = `
-    <h1 class="text-2xl pb-4">${title}</h1>
-    <button 
-      type="button" 
-      onclick="closePopUp()"
-      class="absolute top-5 right-5 text-slate-400 hover:text-white cursor-pointer transition-all duration-300"> 
-      <i class="ph ph-x text-3xl"></i>
-    </button>
-  `
-
-  popUpContent.innerHTML += popUpBody
-}
-
-const closePopUp = () => {
-  document.getElementById("popUpContainer").classList.replace("flex", "hidden")
-  document.getElementById("popUpContent").innerHTML = ""
-  setTimeout(() => window.location.reload(), 2500)
 }
 
 const toggleLoadingSendButton = (button) => {
@@ -452,10 +408,10 @@ const toggleLoadingSendButton = (button) => {
 
   if (button.disabled) {
     button.disabled = false
-    button.innerHTML = `<i class="ph ph-paper-plane-tilt text-xl -ml-4"></i><span class="font-medium">Enviar código</span>`
+    button.innerHTML = `<i class="ph ph-paper-plane-tilt send-icon"></i><span class="button-label">Enviar código</span>`
   } else {
     button.disabled = true
-    button.innerHTML = `<i class="ph ph-spinner text-xl -ml-4 animate-spin"></i><span class="font-medium">Enviando...</span>`
+    button.innerHTML = `<i class="ph ph-spinner send-icon spinner"></i><span class="button-label">Enviando...</span>`
   }
 }
 
