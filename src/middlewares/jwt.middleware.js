@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken")
 const blacklist = {}
 
-const generate = (req) => {
-  const { id, role, companyId } = req.body
+const generate = async (req) => {
+  const { id, role, companyId } = req
 
   if (!id || !role || !companyId)
     return null
