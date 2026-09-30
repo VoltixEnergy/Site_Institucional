@@ -199,19 +199,20 @@ function buscarPorId(req, res) {
 }
 
 
-function atualizar(req, res) {
+function editarEmail(req, res) {
 
     const idUsuario = req.params.id;
-
-    const nome = req.body.nome;
     const email = req.body.email;
-    const cargo = req.body.cargo;
 
-    usuarioModel.atualizar(
+    if (!email) {
+        return res.status(400).json({
+            mensagem: "Informe o novo e-mail"
+        });
+    }
+
+    usuarioModel.editarEmail(
         idUsuario,
-        nome,
         email,
-        cargo
     )
         .then(function (resultado) {
 
@@ -260,6 +261,32 @@ function editarNome(req, res) {
 
         });
 }
+
+
+function editarCargo(req, res) {
+
+    const idUsuario = req.params.idUsuario;
+    const novoCargo = req.body.cargo;
+
+    if (!novoCargo) {
+        return res.status(400).json({
+            mensagem: "Informe o novo cargo"
+        });
+    }
+
+    usuarioModel.editarCargo(
+        idUsuario,
+        novoCargo
+    )
+        .then(function (resultado) {
+            res.status(200).json(resultado);
+        })
+        .catch(function (erro) {
+            console.log(erro);
+            res.status(500).json(erro);
+        });
+}
+
 
 function excluir(req, res) {
 
@@ -391,8 +418,9 @@ module.exports = {
     listar,
     pesquisar,
     buscarPorId,
-    atualizar,
+    editarEmail,
     editarNome,
+    editarCargo,
     excluir,
     deletarUsuario,
     autenticarCodigo,

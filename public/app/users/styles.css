@@ -429,6 +429,46 @@ body {
     background-color: #ff6b1a;
 }
 
+
+.midInputs select {
+    width: 100%;
+    height: 45px;
+    padding: 0 12px;
+    border: 1px solid #3b465c;
+    border-radius: 7px;
+    outline: none;
+    background-color: #0f172a;
+    color: white;
+    font-family: "Exo 2", sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.midInputs select:hover {
+    border-color: #fb5a00;
+}
+
+.midInputs select:focus {
+    border-color: #d66e31;
+}
+
+
+#userCargo {
+    width: fit-content;
+    min-width: 120px;
+    margin: 0;
+    padding: 7px 14px;
+    border: 1px solid #fb5a00;
+    border-radius: 20px;
+    background-color: rgba(251, 90, 0, 0.10);
+    color: #fb5a00;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+}
+
+
 #deletarUsuario {
     background-color: #b6414e;
     margin-top: -15px;

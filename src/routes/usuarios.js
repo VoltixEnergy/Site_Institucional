@@ -45,14 +45,20 @@ router.get("/:id",function (req, res) {
 });
 
 
-router.put("/atualizar/:id",function (req, res) {
-        usuarioController.atualizar(req,res);
+router.put("/editarEmail/:id",function (req, res) {
+        usuarioController.editarEmail(req,res);
 });
 
 
 router.put("/editarNome/:idUsuario",function (req, res) {
         usuarioController.editarNome(req,res);
 });
+
+
+router.put("/editarCargo/:idUsuario",function (req, res) {
+        usuarioController.editarCargo(req,res);
+});
+
 
 
 router.delete("/excluir/:id",function (req, res) {

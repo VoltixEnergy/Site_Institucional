@@ -149,6 +149,15 @@
                             <strong>E-mail</strong>
                         </div>
                     </button>
+
+                    <button
+                        class="update-option"
+                        onclick="mostrarAlterarCargo()">
+                        <i class="ph ph-envelope"></i>
+                        <div>
+                            <strong>Cargo</strong>
+                        </div>
+                    </button>
                 </div>
 
                 <div
@@ -180,6 +189,23 @@
                         class="confirm-update"
                         onclick="mudarEmail()">
                         Atualizar E-mail
+                    </button>
+                </div>
+
+                <div
+                    class="midInputs"
+                    id="alterarCargoArea"
+                    style="display: none;">
+                    <span>Novo Cargo:</span>
+                    <select id="novoCargo">
+                        <option value="">Selecione um cargo</option>
+                        <option value="1">Gestor de TI</option>
+                        <option value="2">Analista NOC</option>
+                    </select>
+                    <button
+                        class="confirm-update"
+                        onclick="mudarCargo()">
+                        Atualizar Cargo
                     </button>
                 </div>
 

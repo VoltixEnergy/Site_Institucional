@@ -162,69 +162,16 @@ function buscarPorId(idUsuario) {
 }
 
 
-function atualizar(
-    idUsuario,
-    nome,
-    email,
-    cargo
-) {
+function editarEmail(idUsuario,cargo) {
 
-    let instrucaoSql = "";
-    let parametros = [];
-
-    if (nome) {
-
-        instrucaoSql = `
-            UPDATE usuario
-            SET nome = ?,
-                atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
-        `;
-
-        parametros = [
-            nome,
-            idUsuario
-        ];
-
-    } else if (email) {
-
-        instrucaoSql = `
-            UPDATE usuario
-            SET email = ?,
-                atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
-        `;
-
-        parametros = [
-            email,
-            idUsuario
-        ];
-
-    } else if (cargo) {
-
-        instrucaoSql = `
+        const instrucaoSql = `
             UPDATE usuario
             SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
             WHERE id = ?;
         `;
 
-        parametros = [
-            cargo,
-            idUsuario
-        ];
-
-    } else {
-
-        return Promise.reject(
-            "Nenhum campo informado para atualização."
-        );
-    }
-
-    return database.executar(
-        instrucaoSql,
-        parametros
-    );
+    return database.executar(instrucaoSql,[cargo, idUsuario]);
 }
 
 
@@ -241,6 +188,25 @@ function editarNome(idUsuario, novoNome) {
         instrucaoSql,
         [
             novoNome,
+            idUsuario
+        ]
+    );
+}
+
+
+function editarCargo(idUsuario, novoCargo) {
+
+    const instrucaoSql = `
+        UPDATE usuario
+            SET cargo = ?,
+                atualizado_em = CURRENT_TIMESTAMP
+            WHERE id = ?;
+    `;
+
+    return database.executar(
+        instrucaoSql,
+        [
+            novoCargo,
             idUsuario
         ]
     );
@@ -342,8 +308,9 @@ module.exports = {
     listar,
     pesquisar,
     buscarPorId,
-    atualizar,
+    editarEmail,
     editarNome,
+    editarCargo,
     excluir,
     deletarUsuario,
     autenticarCodigo,
