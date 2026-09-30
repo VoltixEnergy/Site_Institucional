@@ -1,8 +1,19 @@
+// TODO: substituir alerts por toasts
 function loadCompanyName(){
   var companyName = sessionStorage.getItem("COMPANY_NAME")
   var companyNameElement = document.getElementById("companyName")
 
   companyNameElement.innerText = `@ ${companyName}`
+}
+
+async function tratarResposta(resposta) {
+    const body = await resposta.json();
+
+    if (!resposta.ok) {
+        throw new Error(body.message || "Erro na requisição.");
+    }
+
+    return body;
 }
 
 
@@ -21,22 +32,13 @@ function buscarUsuarios() {
         method: "GET"
     })
         .then(function (resposta) {
-            console.log("Resposta:", resposta);
-
-            if (resposta.ok) {
-                return resposta.json();
-            } else {
-                console.log("Houve um erro ao tentar listar usuários!");
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    throw new Error(texto);
-                });
-            }
+            return tratarResposta(resposta);
         })
-        .then(function (usuarios) {
-            console.log("USUÁRIOS DA EMPRESA:", usuarios);
+        .then(function (resultado) {
+            console.log("USUÁRIOS DA EMPRESA:", resultado);
 
             var lista = document.getElementById("listarUsuarios");
+            var usuarios = resultado.data || [];
 
             if (!lista) {
                 console.log("Elemento listarUsuarios não encontrado.");
@@ -115,14 +117,11 @@ function Pesquisar() {
         method: "GET"
     })
         .then(function (resposta) {
-            if (resposta.ok) {
-                return resposta.json();
-            } else {
-                throw new Error("Erro ao pesquisar usuários.");
-            }
+            return tratarResposta(resposta);
         })
-        .then(function (usuarios) {
+        .then(function (resultado) {
             var lista = document.getElementById("listarUsuarios");
+            var usuarios = resultado.data || [];
 
             lista.innerHTML = `
                 <div class="user-list-header">
@@ -260,20 +259,16 @@ function editarNome(novoNome, idUsuario) {
         })
     })
         .then(function (resposta) {
-            if (resposta.ok) {
-                alert("Nome atualizado com sucesso!");
-                sairEditor();
-                buscarUsuarios();
-            } else {
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    throw new Error("Erro ao atualizar nome.");
-                });
-            }
+            return tratarResposta(resposta);
+        })
+        .then(function (resultado) {
+            alert(resultado.message || "Nome atualizado com sucesso!");
+            sairEditor();
+            buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro:", erro);
-            alert("Não foi possível atualizar o nome.");
+            alert(erro.message || "Não foi possível atualizar o nome.");
         });
 }
 
@@ -314,20 +309,16 @@ function editarEmail(novoEmail, idUsuario) {
         })
     })
         .then(function (resposta) {
-            if (resposta.ok) {
-                alert("E-mail atualizado com sucesso!");
-                sairEditor();
-                buscarUsuarios();
-            } else {
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    throw new Error("Erro ao atualizar e-mail.");
-                });
-            }
+            return tratarResposta(resposta);
+        })
+        .then(function (resultado) {
+            alert(resultado.message || "E-mail atualizado com sucesso!");
+            sairEditor();
+            buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro:", erro);
-            alert("Não foi possível atualizar o e-mail.");
+            alert(erro.message || "Não foi possível atualizar o e-mail.");
         });
 }
 
@@ -352,19 +343,16 @@ function deletarUsuario() {
         }
     })
         .then(function (resposta) {
-            if (resposta.ok) {
-                alert("Conta deletada com sucesso!");
-                sairEditor();
-                buscarUsuarios();
-            } else {
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    alert("Erro ao deletar usuário.");
-                });
-            }
+            return tratarResposta(resposta);
+        })
+        .then(function (resultado) {
+            alert(resultado.message || "Conta deletada com sucesso!");
+            sairEditor();
+            buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro na requisição:", erro);
+            alert(erro.message || "Erro ao deletar usuário.");
         });
 }
 
@@ -417,20 +405,11 @@ function cadastrar() {
         })
     })
         .then(function (resposta) {
-            console.log("Resposta cadastro:", resposta);
-
-            if (resposta.ok) {
-                return resposta.json();
-            } else {
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    throw new Error("Erro ao cadastrar usuário.");
-                });
-            }
+            return tratarResposta(resposta);
         })
         .then(function (resultado) {
             console.log("Usuário cadastrado:", resultado);
-            alert("Usuário cadastrado com sucesso!");
+            alert(resultado.message || "Usuário cadastrado com sucesso!");
             document.getElementById("iptNome").value = "";
             document.getElementById("iptEmail").value = "";
             document.getElementById("iptSenha").value = "";
@@ -440,7 +419,7 @@ function cadastrar() {
         })
         .catch(function (erro) {
             console.log("Erro no cadastro:", erro);
-            alert("Não foi possível cadastrar o usuário.");
+            alert(erro.message || "Não foi possível cadastrar o usuário.");
         });
 
     return false;

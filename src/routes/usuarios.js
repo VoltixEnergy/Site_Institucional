@@ -1,206 +1,58 @@
 const express = require("express");
-
 const router = express.Router();
 
-const usuarioController =
-    require("../controllers/usuarioController");
+const usuarioController = require("../controllers/usuarioController");
 
+router.post("/cadastrar", function (req, res) {
+  usuarioController.cadastrar(req, res);
+});
 
-/* =========================================================
-   CADASTRO
-   ========================================================= */
+router.post("/autenticar", function (req, res) {
+  usuarioController.autenticar(req, res);
+});
 
-router.post(
-    "/cadastrar",
-    function (req, res) {
-        usuarioController.cadastrar(req, res);
-    }
-);
+router.post("/autenticarCodigo", function (req, res) {
+  usuarioController.autenticarCodigo(req, res);
+});
 
+router.post("/adicionarCodigo", function (req, res) {
+  usuarioController.adicionarCodigo(req, res);
+});
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
+router.get("/buscarUsuarioPorEmpresa/:idEmpresa", function (req, res) {
+  usuarioController.buscarUsuarioPorEmpresa(req, res);
+});
 
-router.post(
-    "/autenticar",
-    function (req, res) {
-        usuarioController.autenticar(req, res);
-    }
-);
+router.get("/listar/:idEmpresa", function (req, res) {
+  usuarioController.listar(req, res);
+});
 
+router.get("/pesquisar/:nome", function (req, res) {
+  usuarioController.pesquisar(req, res);
+});
 
-/* =========================================================
-   CÓDIGOS
-   ========================================================= */
+router.get("/:id", function (req, res) {
+  usuarioController.buscarPorId(req, res);
+});
 
-router.post(
-    "/autenticarCodigo",
-    function (req, res) {
-        usuarioController.autenticarCodigo(req, res);
-    }
-);
+router.put("/atualizar/:id", function (req, res) {
+  usuarioController.atualizar(req, res);
+});
 
+router.put("/editarNome/:idUsuario", function (req, res) {
+  usuarioController.editarNome(req, res);
+});
 
-router.post(
-    "/adicionarCodigo",
-    function (req, res) {
-        usuarioController.adicionarCodigo(req, res);
-    }
-);
+router.delete("/excluir/:id", function (req, res) {
+  usuarioController.deletarUsuario(req, res);
+});
 
+router.delete("/deletarUsuario/:idUsuario", function (req, res) {
+  usuarioController.deletarUsuario(req, res);
+});
 
-/* =========================================================
-   USUÁRIO POR EMPRESA
-   ========================================================= */
-
-router.get(
-    "/buscarUsuarioPorEmpresa/:idEmpresa",
-    function (req, res) {
-
-        usuarioController.buscarUsuarioPorEmpresa(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   LISTAR
-   ========================================================= */
-
-router.get(
-    "/listar/:idEmpresa",
-    function (req, res) {
-
-        usuarioController.listar(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   PESQUISAR
-   ========================================================= */
-
-router.get(
-    "/pesquisar/:nome",
-    function (req, res) {
-
-        usuarioController.pesquisar(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   BUSCAR POR ID
-   ========================================================= */
-
-router.get(
-    "/:id",
-    function (req, res) {
-
-        usuarioController.buscarPorId(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   ATUALIZAR
-   ========================================================= */
-
-router.put(
-    "/atualizar/:id",
-    function (req, res) {
-
-        usuarioController.atualizar(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   EDITAR NOME — ANTIGO
-   ========================================================= */
-
-router.put(
-    "/editarNome/:idUsuario",
-    function (req, res) {
-
-        usuarioController.editarNome(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   EXCLUIR — NOVO
-   ========================================================= */
-
-router.delete(
-    "/excluir/:id",
-    function (req, res) {
-
-        usuarioController.deletarUsuario(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   EXCLUIR — ANTIGO
-   ========================================================= */
-
-router.delete(
-    "/deletarUsuario/:idUsuario",
-    function (req, res) {
-
-        usuarioController.deletarUsuario(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   BUSCAR CPF
-   ========================================================= */
-
-router.get(
-    "/buscarUsuarioPorCPF/:cpf",
-    function (req, res) {
-
-        usuarioController.buscarUsuarioPorCPF(
-            req,
-            res
-        );
-
-    }
-);
-
+router.get("/buscarUsuarioPorCPF/:cpf", function (req, res) {
+  usuarioController.buscarUsuarioPorCPF(req, res);
+});
 
 module.exports = router;
