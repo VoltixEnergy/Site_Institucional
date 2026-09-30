@@ -228,7 +228,7 @@ function mostrarAlterarEmail() {
 
 function mostrarAlterarCargo() {
     document.getElementById("alterarCargoArea").style.display = "flex";
-    document.getElementById("alterarEmailArea").style.display = "nome";
+    document.getElementById("alterarEmailArea").style.display = "none";
     document.getElementById("alterarNomeArea").style.display = "none";
     document.getElementById("novoCargo").value = "";
 }
