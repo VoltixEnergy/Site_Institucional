@@ -1,5 +1,5 @@
 const usuarioModel = require("../models/usuarioModel");
-
+const jwtMiddleware = require("../middlewares/jwt.middleware")
 
 async function autenticar(req, res) {
 
@@ -9,7 +9,7 @@ async function autenticar(req, res) {
   };
 
   const email = req.body.email;
-  const senha = req.body.senha || req.body.password;
+  const senha = req.body.password;
 
   if (!email || !senha) {
 
@@ -25,24 +25,16 @@ async function autenticar(req, res) {
     if (resultadoAutenticar.length === 1) {
 
       const usuario = resultadoAutenticar[0];
-      const resultadoFuncionarios = await usuarioModel.buscarUsuarioPorEmpresa(usuario.empresa_id);
 
       responseBody.message = "Usuário autenticado com sucesso!";
-      responseBody.data = {
-
+      
+      const token = await jwtMiddleware.generate({
         id: usuario.id,
+        companyId: usuario.empresa_id,
+        role: usuario.cargo,
+      })
 
-        email: usuario.email,
-
-        nome: usuario.nome,
-
-        empresa: usuario.empresa_id,
-
-        cargo: usuario.cargo,
-
-        funcionarios: resultadoFuncionarios
-
-      };
+      responseBody.data = token
 
       return res.status(200).json(responseBody);
 
