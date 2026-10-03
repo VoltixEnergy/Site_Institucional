@@ -30,7 +30,7 @@ const verify = (req, res, next) => {
     if (!decoded)
       return res.status(403).json({ message: "Sessão inválida. Faça login novamente." })
 
-    res.locals.token = decoded
+    req.token = decoded
     return next()
   } catch (e) {
     console.error(e)
