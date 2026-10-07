@@ -1,72 +1,46 @@
 const usuarioModel = require("../models/usuarioModel");
+const bcrypt = require("bcrypt");
 
-
-function autenticar(req, res) {
+async function autenticar(req, res) {
 
     const email = req.body.email;
     const senha = req.body.senha || req.body.password;
 
-    if (!email || !senha) {
-
+    if (email == undefined || senha == undefined) {
         return res.status(400).json({
-            mensagem: "E-mail e senha são obrigatórios"
+            mensagem: "Email ou senha não informados"
         });
-
     }
+    try{
+        const resultado = await usuarioModel.autenticar(email); // await --> afisa que a função é assíncrona e espera o resultado da autenticação
 
-    usuarioModel.autenticar(email, senha)
-        .then(function (resultadoAutenticar) {
+        if (!usuario) {
+            return res.status(403).json({
+                mensagem: "Usuario não encontrado"
+            });
+        }
 
-            if (resultadoAutenticar.length == 1) {
+        const usuario = resultado[0];
 
-                const usuario = resultadoAutenticar[0];
+        const senhaCorreta = await bcrypt.compare(senha, usuario.senha); // bcrypt --> comparando a senha fornecida com a senha armazenada no banco de dados
 
-                usuarioModel.buscarUsuarioPorEmpresa(usuario.empresa_id)
-                    .then(function (resultadoFuncionarios) {
-
-                        res.status(200).json({
-
-                            id: usuario.id,
-
-                            email: usuario.email,
-
-                            nome: usuario.nome,
-
-                            empresa: usuario.empresa_id,
-
-                            cargo: usuario.cargo,
-
-                            funcionarios: resultadoFuncionarios
-
-                        });
-
-                    })
-                    .catch(function (erro) {
-
-                        console.log(erro);
-
-                        res.status(500).json(erro);
-
-                    });
-
-            } else {
-
+        if (senhaCorreta) {
+            res.status(200).json({
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email,
+                empresa: usuario.empresa_id,
+                funcionarios: usuario.funcionarios || []
+            })
+            }else {
                 res.status(403).json({
-
-                    mensagem: "E-mail e/ou senha inválidos"
-
+                    mensagem: "Email ou senha inválidos"
                 });
-
             }
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
+    }catch (erro) {
+        console.log("Erro interno: " + erro);
+        res.status(500).json({ mensagem: "Erro interno no servidor ao tentar logar"});
+    }
 }
 
 

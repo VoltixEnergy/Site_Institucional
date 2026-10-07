@@ -1,3 +1,11 @@
+const bcrypt = require('bcrypt');
+
+async function senhaHash(senhaPura) {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(senhaPura, saltRounds);
+  return hash;
+}
+
 function cadastrar() {
   // aguardar();
 
@@ -5,7 +13,7 @@ function cadastrar() {
   // Agora vá para o método fetch logo abaixo
   var nomeVar = nome_input.value;
   var emailVar = email_input.value;
-  var senhaVar = senha_input.value;
+  var senhaVar = senhaHash(senha_input.value);
   var confirmacaoSenhaVar = confirmacao_senha_input.value;
   var cpfVar = cpf_input.value;
   var nivelPermissaoServer = 0;

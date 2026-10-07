@@ -1,24 +1,24 @@
 const database = require("../database/config");
 
 
-function autenticar(email, senha) {
+function autenticar(email) {
 
     const instrucaoSql = `
         SELECT
             id,
             nome,
+            senha,
             email,
             empresa_id,
             cargo
         FROM usuario
         WHERE email = ?
-          AND senha = SHA2(?, 256)
-          AND deletado_em IS NULL;
+        AND deletado_em IS NULL;
     `;
 
     return database.executar(
         instrucaoSql,
-        [email, senha]
+        [email]
     );
 }
 
