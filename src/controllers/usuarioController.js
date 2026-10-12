@@ -26,7 +26,7 @@ function autenticar(req, res) {
 
                         res.status(200).json({
 
-                            id: usuario.id,
+                            uuid: usuario.uuid,
 
                             email: usuario.email,
 
@@ -112,9 +112,7 @@ function cadastrar(req, res) {
 }
 
 
-/* =====================================================
-   BUSCAR USUÁRIOS DA EMPRESA
-   ===================================================== */
+
 
 function buscarUsuarioPorEmpresa(req, res) {
 
@@ -139,9 +137,9 @@ function buscarUsuarioPorEmpresa(req, res) {
 
 function listar(req, res) {
 
-    const idUsuario = req.params.id;
+    const uuid = req.params.uuid;
 
-    usuarioModel.listar(idUsuario)
+    usuarioModel.listar(uuid)
         .then(function (resultado) {
 
             res.status(200).json(resultado);
@@ -161,9 +159,9 @@ function listar(req, res) {
 function pesquisar(req, res) {
 
     const nome = req.params.nome;
-    const idUsuario = req.query.idUsuario;
+    const uuid = req.query.uuid;
 
-    usuarioModel.pesquisar(nome, idUsuario)
+    usuarioModel.pesquisar(nome, uuid)
         .then(function (resultado) {
 
             res.status(200).json(resultado);
@@ -181,9 +179,9 @@ function pesquisar(req, res) {
 
 function buscarPorId(req, res) {
 
-    const idUsuario = req.params.id;
+    const uuid = req.params.uuid;
 
-    usuarioModel.buscarPorId(idUsuario)
+    usuarioModel.buscarPorId(uuid)
         .then(function (resultado) {
 
             res.status(200).json(resultado);
@@ -201,7 +199,7 @@ function buscarPorId(req, res) {
 
 function editarEmail(req, res) {
 
-    const idUsuario = req.params.id;
+    const uuid = req.params.uuid;
     const email = req.body.email;
 
     if (!email) {
@@ -211,8 +209,8 @@ function editarEmail(req, res) {
     }
 
     usuarioModel.editarEmail(
-        idUsuario,
-        email,
+        uuid,
+        email
     )
         .then(function (resultado) {
 
@@ -231,7 +229,7 @@ function editarEmail(req, res) {
 
 function editarNome(req, res) {
 
-    const idUsuario = req.params.idUsuario;
+    const uuid = req.params.uuid;
     const novoNome = req.body.novoNome;
 
     if (!novoNome) {
@@ -245,7 +243,7 @@ function editarNome(req, res) {
     }
 
     usuarioModel.editarNome(
-        idUsuario,
+        uuid,
         novoNome
     )
         .then(function (resultado) {
@@ -265,8 +263,8 @@ function editarNome(req, res) {
 
 function editarCargo(req, res) {
 
-    const idUsuario = req.params.idUsuario;
-    const novoCargo = req.body.cargo;
+    const uuid = req.params.uuid;
+    const novoCargo = req.body.novoCargo;
 
     if (!novoCargo) {
         return res.status(400).json({
@@ -275,7 +273,7 @@ function editarCargo(req, res) {
     }
 
     usuarioModel.editarCargo(
-        idUsuario,
+        uuid,
         novoCargo
     )
         .then(function (resultado) {
@@ -290,9 +288,9 @@ function editarCargo(req, res) {
 
 function excluir(req, res) {
 
-    const idUsuario = req.params.id;
+    const uuid = req.params.uuid;
 
-    usuarioModel.excluir(idUsuario)
+    usuarioModel.excluir(uuid)
         .then(function (resultado) {
 
             res.status(200).json(resultado);
@@ -311,9 +309,9 @@ function excluir(req, res) {
 
 function deletarUsuario(req, res) {
 
-    const idUsuario = req.params.idUsuario;
+    const uuid = req.params.uuid;
 
-    usuarioModel.deletarUsuario(idUsuario)
+    usuarioModel.deletarUsuario(uuid)
         .then(function (resultado) {
 
             res.status(200).json(resultado);

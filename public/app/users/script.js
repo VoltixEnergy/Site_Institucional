@@ -88,7 +88,7 @@ function buscarUsuarios() {
                             </div>
                         </div>
                         <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                        <button class="mudarNome" onclick="abrirEditor('${item.uuid}')">
                             <img src="../../assets/imgs/edit.png">
                         </button>
                     </div>
@@ -104,14 +104,19 @@ function buscarUsuarios() {
 
 function Pesquisar() {
     var nome = document.getElementById("input_pesquisa").value;
-    var idUsuario = sessionStorage.ID_USUARIO;
+    var uuid = sessionStorage.getItem("UUID_USUARIO");
 
     if (nome == "") {
         buscarUsuarios();
         return;
     }
 
-    fetch(`/usuarios/pesquisar/${nome}?idUsuario=${idUsuario}`, {
+    if (!uuid) {
+        console.log("UUID do usuário não encontrado no sessionStorage.");
+        return;
+    }
+
+    fetch(`/usuarios/pesquisar/${nome}?uuid=${uuid}`, {
         method: "GET"
     })
         .then(function (resposta) {
@@ -169,7 +174,7 @@ function Pesquisar() {
                             </div>
                         </div>
                         <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                        <button class="mudarNome" onclick="abrirEditor('${item.uuid}')">
                             <img src="../../assets/imgs/edit.png">
                         </button>
                     </div>
@@ -183,12 +188,12 @@ function Pesquisar() {
 
 
 
-var idUsuarioEditar = null;
+var uuidUsuarioEditar = null;
 
 
 
-function abrirEditor(id) {
-    idUsuarioEditar = id;
+function abrirEditor(uuid) {
+    uuidUsuarioEditar = uuid;
     document.getElementById("geral_editor").style.display = "flex";
     document.getElementById("alterarNomeArea").style.display = "none";
     document.getElementById("alterarEmailArea").style.display = "none";
@@ -200,11 +205,12 @@ function abrirEditor(id) {
 
 function sairEditor() {
     document.getElementById("geral_editor").style.display = "none";
-    idUsuarioEditar = null;
+    uuidUsuarioEditar = null;
     document.getElementById("novoNome").value = "";
     document.getElementById("novoEmail").value = "";
     document.getElementById("alterarNomeArea").style.display = "none";
     document.getElementById("alterarEmailArea").style.display = "none";
+    document.getElementById("alterarCargoArea").style.display = "none";
 }
 
 
@@ -249,17 +255,17 @@ function mudarNome() {
         return;
     }
 
-    if (idUsuarioEditar == null) {
+    if (uuidUsuarioEditar == null) {
         alert("Nenhum usuário selecionado.");
         return;
     }
 
-    editarNome(novoNome, idUsuarioEditar);
+    editarNome(novoNome, uuidUsuarioEditar);
 }
 
 
-function editarNome(novoNome, idUsuario) {
-    fetch(`/usuarios/editarNome/${idUsuario}`, {
+function editarNome(novoNome, uuid) {
+    fetch(`/usuarios/editarNome/${uuid}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -296,23 +302,23 @@ function mudarCargo() {
         return;
     }
 
-    if (idUsuarioEditar == null) {
+    if (uuidUsuarioEditar == null) {
         alert("Nenhum usuário selecionado.");
         return;
     }
 
-    editarCargo(novoCargo, idUsuarioEditar);
+    editarCargo(novoCargo, uuidUsuarioEditar);
 }
 
 
-function editarCargo(novoCargo, idUsuario) {
-    fetch(`/usuarios/editarCargo/${idUsuario}`, {
+function editarCargo(novoCargo, uuid) {
+    fetch(`/usuarios/editarCargo/${uuid}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            cargo: novoCargo
+            novoCargo: novoCargo
         })
     })
         .then(function (resposta) {
@@ -348,18 +354,18 @@ function mudarEmail() {
         return;
     }
 
-    if (idUsuarioEditar == null) {
+    if (uuidUsuarioEditar == null) {
         alert("Nenhum usuário selecionado.");
         return;
     }
 
-    editarEmail(novoEmail, idUsuarioEditar);
+    editarEmail(novoEmail, uuidUsuarioEditar);
 }
 
 
 
-function editarEmail(novoEmail, idUsuario) {
-    fetch(`/usuarios/editarEmail/${idUsuario}`, {
+function editarEmail(novoEmail, uuid) {
+    fetch(`/usuarios/editarEmail/${uuid}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -389,9 +395,9 @@ function editarEmail(novoEmail, idUsuario) {
 
 
 function deletarUsuario() {
-    var idUsuario = idUsuarioEditar;
+    var uuidUsuario = uuidUsuarioEditar;
 
-    if (idUsuario == null) {
+    if (uuidUsuario == null) {
         alert("Nenhum usuário selecionado!");
         return;
     }
@@ -400,7 +406,7 @@ function deletarUsuario() {
         return;
     }
 
-    fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
+    fetch(`/usuarios/deletarUsuario/${uuidUsuario}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json"

@@ -30,7 +30,7 @@ router.get("/buscarUsuarioPorEmpresa/:idEmpresa",function (req, res) {
 });
 
 
-router.get("/listar/:idEmpresa",function (req, res) {
+router.get("/listar/:uuid",function (req, res) {
         usuarioController.listar(req,res);
 });
 
@@ -40,33 +40,33 @@ router.get("/pesquisar/:nome",function (req, res) {
 });
 
 
-router.get("/:id",function (req, res) {
+router.get("/:uuid",function (req, res) {
         usuarioController.buscarPorId(req,res);
 });
 
 
-router.put("/editarEmail/:id",function (req, res) {
+router.put("/editarEmail/:uuid",function (req, res) {
         usuarioController.editarEmail(req,res);
 });
 
 
-router.put("/editarNome/:idUsuario",function (req, res) {
+router.put("/editarNome/:uuid",function (req, res) {
         usuarioController.editarNome(req,res);
 });
 
 
-router.put("/editarCargo/:idUsuario",function (req, res) {
+router.put("/editarCargo/:uuid",function (req, res) {
         usuarioController.editarCargo(req,res);
 });
 
 
 
-router.delete("/excluir/:id",function (req, res) {
-        usuarioController.deletarUsuario(req,res);
+router.delete("/excluir/:uuid",function (req, res) {
+        usuarioController.excluir(req,res);
 });
 
 
-router.delete("/deletarUsuario/:idUsuario",function (req, res) {
+router.delete("/deletarUsuario/:uuid",function (req, res) {
         usuarioController.deletarUsuario(req,res);
 });
 
