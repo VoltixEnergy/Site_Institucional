@@ -16,12 +16,12 @@ const generate = async (req) => {
 }
 
 const verify = (req, res, next) => {
-  const authToken = req.headers["authorization"]
+  const token = req.cookies?.jwt
+  console.log(token)
 
-  if (!authToken)
+  if (!token)
     return res.status(403).json({ message: "A autenticação é necessária para proceguir." })
 
-  const token = authToken.replace("Bearer ", "")
   if (blacklist[token])
     return res.status(403).json({ message: "Sessão inválida. Faça login novamente." })
 
