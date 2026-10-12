@@ -1,6 +1,12 @@
 const usuarioModel = require("../models/usuarioModel");
 const bcrypt = require("bcrypt");
 
+async function senhaHash(senhaPura) {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(senhaPura, saltRounds);
+  return hash;
+}
+
 async function autenticar(req, res) {
 
     const email = req.body.email;
@@ -63,10 +69,12 @@ function cadastrar(req, res) {
 
     }
 
+    const senhaCriptografada = senhaHash(senha);
+
     usuarioModel.cadastrar(
         nome,
         email,
-        senha,
+        senhaCriptografada,
         null,
         cargo,
         empresaId
