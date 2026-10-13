@@ -241,14 +241,18 @@ async function atualizar(req, res) {
   };
 
   const idUsuario = req.params.id;
-
-  const nome = req.body.nome;
   const email = req.body.email;
-  const cargo = req.body.cargo;
+
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
 
   try {
 
-    const resultado = await usuarioModel.atualizar(idUsuario, nome, email, cargo);
+    const resultado = await usuarioModel.atualizar(idUsuario, email, companyId);
 
     responseBody.message = "Usuário atualizado com sucesso!";
     responseBody.data = resultado;

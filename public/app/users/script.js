@@ -295,6 +295,7 @@ function mudarEmail() {
 function editarEmail(novoEmail, idUsuario) {
     fetch(`/usuarios/atualizar/${idUsuario}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },

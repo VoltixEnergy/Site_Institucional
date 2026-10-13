@@ -169,67 +169,20 @@ function buscarPorId(idUsuario) {
 
 function atualizar(
     idUsuario,
-    nome,
     email,
-    cargo
+    companyId
 ) {
+  instrucaoSql = `
+      UPDATE usuario
+      SET email = ?,
+          atualizado_em = CURRENT_TIMESTAMP
+      WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
+  `;
 
-    let instrucaoSql = "";
-    let parametros = [];
-
-    if (nome) {
-
-        instrucaoSql = `
-            UPDATE usuario
-            SET nome = ?,
-                atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
-        `;
-
-        parametros = [
-            nome,
-            idUsuario
-        ];
-
-    } else if (email) {
-
-        instrucaoSql = `
-            UPDATE usuario
-            SET email = ?,
-                atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
-        `;
-
-        parametros = [
-            email,
-            idUsuario
-        ];
-
-    } else if (cargo) {
-
-        instrucaoSql = `
-            UPDATE usuario
-            SET cargo = ?,
-                atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
-        `;
-
-        parametros = [
-            cargo,
-            idUsuario
-        ];
-
-    } else {
-
-        return Promise.reject(
-            "Nenhum campo informado para atualização."
-        );
-    }
-
-    return database.executar(
-        instrucaoSql,
-        parametros
-    );
+  return database.executar(
+      instrucaoSql,
+      [email, idUsuario, companyId]
+  );
 }
 
 
