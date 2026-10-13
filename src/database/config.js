@@ -1,4 +1,10 @@
 var mysql = require("mysql2");
+var crypto = require('crypto');
+
+var gerarUuid = () => {
+  return crypto.randomUUID();
+};
+
 
 // CONEXÃO DO BANCO MYSQL SERVER
 var mySqlConfig = {
@@ -25,5 +31,6 @@ async function executar (query, params) {
 }
 
 module.exports = {
-  executar
+  executar,
+  gerarUuid
 };

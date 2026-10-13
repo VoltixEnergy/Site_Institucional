@@ -33,6 +33,7 @@ function cadastrar(
 
     const instrucaoSql = `
         INSERT INTO usuario (
+            id,
             nome,
             email,
             senha,
@@ -44,6 +45,7 @@ function cadastrar(
             ?,
             ?,
             ?,
+            ?,
             ?
         );
     `;
@@ -51,6 +53,7 @@ function cadastrar(
     return database.executar(
         instrucaoSql,
         [
+            gerarUuid(),
             nome,
             email,
             senha,

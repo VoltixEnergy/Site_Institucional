@@ -19,9 +19,9 @@ async function buscarPorCnpj(cnpj) {
 }
 
 async function cadastrar(razaoSocial, cnpj) {
-  const instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES (?, ?)`;
+  const instrucaoSql = `INSERT INTO empresa (id, razao_social, cnpj) VALUES (?, ?)`;
 
-  return await database.executar(instrucaoSql, [razaoSocial, cnpj]);
+  return await database.executar(instrucaoSql, [gerarUuid(),razaoSocial, cnpj]);
 }
 
 async function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
