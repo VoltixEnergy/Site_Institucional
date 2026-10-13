@@ -33,7 +33,7 @@ router.put("/editarEmail/:id", function (req, res) {
 });
 
 
-router.put("/editarNome/:idUsuario", function (req, res) {
+router.put("/editarNome/:idUsuario", jwtMiddleware.verify, function (req, res) {
         usuarioController.editarNome(req,res);
 });
 

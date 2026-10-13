@@ -254,6 +254,7 @@ function mudarNome() {
 function editarNome(novoNome, idUsuario) {
     fetch(`/usuarios/editarNome/${idUsuario}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },

@@ -232,52 +232,16 @@ async function buscarPorId(req, res) {
   }
 }
 
-
-async function atualizar(req, res) {
-
-  const responseBody = {
-    message: "",
-    data: {}
-  };
-
-  const idUsuario = req.params.id;
-  const email = req.body.email;
-
-  const { role, companyId } = req.token;
-
-  if (role !== 1){
-    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
-    res.status(401).json(responseBody)
-  }
-
-  try {
-
-    const resultado = await usuarioModel.atualizar(idUsuario, email, companyId);
-
-    responseBody.message = "Usuário atualizado com sucesso!";
-    responseBody.data = resultado;
-    return res.status(200).json(responseBody);
-
-  } catch (erro) {
-
-    console.error(erro);
-
-    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
-    return res.status(500).json(responseBody);
-
-  }
-}
-
 async function editarNome(req, res) {
-
+  
   const responseBody = {
     message: "",
     data: {}
   };
-
+  
   const idUsuario = req.params.idUsuario;
   const novoNome = req.body.novoNome;
-
+  
   const { role, companyId } = req.token;
 
   if (role !== 1){
@@ -364,40 +328,6 @@ function editarEmail(req, res) {
     usuarioModel.editarEmail(
         idUsuario,
         email,
-    )
-        .then(function (resultado) {
-
-            res.status(200).json(resultado);
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
-function editarNome(req, res) {
-
-    const idUsuario = req.params.idUsuario;
-    const novoNome = req.body.novoNome;
-
-    if (!novoNome) {
-
-        return res.status(400).json({
-
-            mensagem: "Informe o novo nome"
-
-        });
-
-    }
-
-    usuarioModel.editarNome(
-        idUsuario,
-        novoNome
     )
         .then(function (resultado) {
 
