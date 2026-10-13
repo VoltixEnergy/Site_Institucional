@@ -11,6 +11,7 @@ async function autenticar(req, res) {
   const email = req.body.email;
   const senha = req.body.password;
 
+  console.log(email, senha)
   if (!email || !senha) {
 
     responseBody.message = "E-mail e senha são obrigatórios";
@@ -27,6 +28,13 @@ async function autenticar(req, res) {
       const usuario = resultadoAutenticar[0];
 
       responseBody.message = "Usuário autenticado com sucesso!";
+      responseBody.data = {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        empresa: usuario.empresa_id,
+        cargo: usuario.cargo
+      };
       
       const token = await jwtMiddleware.generate({
         id: usuario.id,
@@ -34,7 +42,11 @@ async function autenticar(req, res) {
         role: usuario.cargo,
       })
 
-      responseBody.data = token
+      res.cookie('jwt', token, {
+        maxAge: parseInt(process.env.JWT_EXPIRES) * 1000, // de segundos para milisegundos,
+        httpOnly: true,
+        secure: false // false para http, true para https
+      })
 
       return res.status(200).json(responseBody);
 
@@ -106,11 +118,15 @@ async function buscarUsuarioPorEmpresa(req, res) {
     data: {}
   };
 
-  const empresaId = req.params.idEmpresa;
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
 
   try {
-
-    const resultado = await usuarioModel.buscarUsuarioPorEmpresa(empresaId);
+    const resultado = await usuarioModel.buscarUsuarioPorEmpresa(companyId);
 
     responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
     responseBody.data = resultado;
