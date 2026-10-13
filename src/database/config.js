@@ -16,18 +16,22 @@ var mySqlConfig = {
 };
 
 async function executar (query, params) {
-  const poolDB = mysql.createPool(mySqlConfig).promise()
+  try {
+    const poolDB = mysql.createPool(mySqlConfig).promise()
+    
+    console.log("======= CONSULTA NO BANCO DE DADOS =======")
+    console.log("Consulta: " + query)
+    console.log("Parâmetros: " + params)
   
-  console.log("======= CONSULTA NO BANCO DE DADOS =======")
-  console.log("Consulta: " + query)
-  console.log("Parâmetros: " + params)
-
-  const response = await poolDB.execute(query, params)
-  console.log(response[0])
-
-  await poolDB.end()
-
-  return response[0]
+    const response = await poolDB.execute(query, params)
+    console.log(response[0])
+  
+    await poolDB.end()
+  
+    return response[0]
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 module.exports = {
