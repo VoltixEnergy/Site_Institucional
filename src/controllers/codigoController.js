@@ -3,7 +3,14 @@ const codeModel = require("../models/codeModel")
 const companyModel = require("../models/empresaModel")
 
 const sendCode = async (req, res) => {
-    const { email, companyId, role } = req.body
+    const { companyId, role } = req.token // cargo do usuário da requisição
+    const { email, codeRole } = req.body // cargo do novo código
+
+    if (role !== 1) {
+      responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+      res.status(401).json(responseBody)
+    }
+
     console.log("email: " + email, "companyId: " + companyId, "role: " + role)
 
     const code = generateCode()
@@ -12,7 +19,7 @@ const sendCode = async (req, res) => {
       message: "Não foi possível enviar o código."
     }
 
-    if (!email || !companyId || role == null) {
+    if (!email || !companyId || codeRole == null) {
       responseBody.message = "Credenciais inválidas.";
       return res.status(400).json(responseBody);
     }
@@ -35,14 +42,14 @@ const sendCode = async (req, res) => {
         const companyName = dbResponse[0].nome_fantasia
         console.log("Nome da empresa: " + companyName)
 
-        const infoEmail = await mailerController.sendVerificationCode(email, code, companyName, role);
+        const infoEmail = await mailerController.sendVerificationCode(email, code, companyName, codeRole);
         
         if (infoEmail.rejected && infoEmail.rejected.length > 0) {
             responseBody.message = "Não foi possível enviar o e-mail.";
             return res.status(500).json(responseBody);
         }
 
-        codeModel.create(code, companyId, role)
+        codeModel.create(code, companyId, codeRole)
 
         responseBody.isError = false;
         responseBody.message = "Código enviado com sucesso!";

@@ -368,20 +368,22 @@ const sendCode = () => {
 
 const sendCodeConfirmed = async () => {
   const button = document.getElementById("sendCodeConfirmed")
-  const roleSelected = document.getElementById(`newRoleSelect`).value
+  const roleSelected = document.getElementById("newRoleSelect").value
   const newEmailReceiver = document.getElementById("newEmailReceiver").value.trim()
+
+  console.log(roleSelected, newEmailReceiver)
 
   toggleDisableButton(button)
 
   const body = { 
-    "companyId": sessionStorage.getItem("ID_EMPRESA"), 
-    "role": roleSelected, 
+    "codeRole": roleSelected, 
     "email": newEmailReceiver
   }
 
   try {
     const response = await fetch("/code/send", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },

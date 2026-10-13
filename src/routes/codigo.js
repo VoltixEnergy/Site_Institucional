@@ -6,7 +6,7 @@ router.get("/getAll", jwtMiddleware.verify,  (req, res) => {
   codeController.getAllCodes(req, res)
 })
 
-router.post("/send", (req, res) => {
+router.post("/send", jwtMiddleware.verify, (req, res) => {
   codeController.sendCode(req, res)
 })
 
