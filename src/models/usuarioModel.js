@@ -1,12 +1,11 @@
 const database = require("../database/config");
-const gerarUuid = database.gerarUuid;
 
 
 function autenticar(email, senha) {
 
     const instrucaoSql = `
         SELECT
-            uuid,
+            id,
             nome,
             email,
             empresa_id,
@@ -33,11 +32,8 @@ function cadastrar(
     empresaId
 ) {
 
-    const uuid = gerarUuid();
-
     const instrucaoSql = `
         INSERT INTO usuario (
-            uuid,
             nome,
             email,
             senha,
@@ -45,7 +41,6 @@ function cadastrar(
             empresa_id
         )
         VALUES (
-            ?,
             ?,
             ?,
             SHA2(?, 256),
@@ -57,7 +52,6 @@ function cadastrar(
     return database.executar(
         instrucaoSql,
         [
-            uuid,
             nome,
             email,
             senha,
@@ -73,7 +67,7 @@ function buscarUsuarioPorEmpresa(empresaId) {
 
     const instrucaoSql = `
         SELECT
-            uuid,
+            id,
             nome,
             email,
             cargo,
@@ -91,11 +85,11 @@ function buscarUsuarioPorEmpresa(empresaId) {
 }
 
 
-function listar(uuid) {
+function listar(idUsuario) {
 
     const instrucaoSql = `
         SELECT
-            u.uuid,
+            u.id,
             u.nome,
             u.email,
             u.cargo,
@@ -104,7 +98,7 @@ function listar(uuid) {
         WHERE u.empresa_id = (
             SELECT empresa_id
             FROM usuario
-            WHERE uuid = ?
+            WHERE id = ?
         )
         AND u.deletado_em IS NULL
         ORDER BY u.nome;
@@ -112,16 +106,16 @@ function listar(uuid) {
 
     return database.executar(
         instrucaoSql,
-        [uuid]
+        [idUsuario]
     );
 }
 
 
-function pesquisar(nome, uuid) {
+function pesquisar(nome, idUsuario) {
 
     const instrucaoSql = `
         SELECT
-            u.uuid,
+            u.id,
             u.nome,
             u.email,
             u.cargo,
@@ -130,7 +124,7 @@ function pesquisar(nome, uuid) {
         WHERE u.empresa_id = (
             SELECT empresa_id
             FROM usuario
-            WHERE uuid = ?
+            WHERE id = ?
         )
         AND u.nome LIKE ?
         AND u.deletado_em IS NULL
@@ -140,111 +134,111 @@ function pesquisar(nome, uuid) {
     return database.executar(
         instrucaoSql,
         [
-            uuid,
+            idUsuario,
             `%${nome}%`
         ]
     );
 }
 
 
-function buscarPorId(uuid) {
+function buscarPorId(idUsuario) {
 
     const instrucaoSql = `
         SELECT
-            uuid,
+            id,
             nome,
             email,
             cargo,
             empresa_id
         FROM usuario
-        WHERE uuid = ?
+        WHERE id = ?
           AND deletado_em IS NULL;
     `;
 
     return database.executar(
         instrucaoSql,
-        [uuid]
+        [idUsuario]
     );
 }
 
 
-function editarEmail(uuid,email) {
+function editarEmail(idUsuario,cargo) {
 
         const instrucaoSql = `
             UPDATE usuario
-            SET email = ?,
+            SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE uuid = ?;
+            WHERE id = ?;
         `;
 
-    return database.executar(instrucaoSql,[email, uuid]);
+    return database.executar(instrucaoSql,[cargo, idUsuario]);
 }
 
 
-function editarNome(uuid, novoNome) {
+function editarNome(idUsuario, novoNome) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET nome = ?,
             atualizado_em = CURRENT_TIMESTAMP
-        WHERE uuid = ?;
+        WHERE id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
         [
             novoNome,
-            uuid
+            idUsuario
         ]
     );
 }
 
 
-function editarCargo(uuid, novoCargo) {
+function editarCargo(idUsuario, novoCargo) {
 
     const instrucaoSql = `
         UPDATE usuario
             SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE uuid = ?;
+            WHERE id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
         [
             novoCargo,
-            uuid
+            idUsuario
         ]
     );
 }
 
 
-function excluir(uuid) {
+function excluir(idUsuario) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET deletado_em = CURRENT_TIMESTAMP
-        WHERE uuid = ?;
+        WHERE id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
-        [uuid]
+        [idUsuario]
     );
 }
 
 
-function deletarUsuario(uuid) {
+function deletarUsuario(idUsuario) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET deletado_em = CURRENT_TIMESTAMP
-        WHERE uuid = ?;
+        WHERE id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
-        [uuid]
+        [idUsuario]
     );
 }
 
