@@ -15,37 +15,20 @@ function cadastrar() {
     senhaVar == "" ||
     codigoAtivacaoVar == ""
   ) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "Preencha todos os campos";
-
+    showToast("Preencha todos os campos", "error");
     return false;
   } else if (nomeVar.length < 3) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "O nome deve ter ao menos 3 caracteres";
-
+    showToast("O nome deve ter ao menos 3 caracteres", "error");
     return false;
   } else if (senhaVar.length < 6) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "A senha deve ter ao menos 6 caracteres";
-
+    showToast("A senha deve ter ao menos 6 caracteres", "error");
     return false;
   } else if (senhaVar != confirmacaoSenhaVar) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "As senhas não coincidem";
-
+    showToast("As senhas não coincidem", "error");
     return false;
   } else if (codigoAtivacaoVar.length !== 6) {
-    cardErro.style.display = "block";
-    mensagem_erro.innerHTML =
-      "O código de ativação deve ter 6 caracteres";
-
+    showToast("O código de ativação deve ter 6 caracteres", "error");
     return false;
-  }else {
-    setInterval(sumirMensagem, 5000);
   }
 
   botao_cadastrar.innerHTML = '<img src="../assets/imgs/aguarde-orange.gif" width="25">';
@@ -68,14 +51,11 @@ function cadastrar() {
       console.log("resposta: ", resposta);
 
       if (resposta.ok) {
-        cardErro.style.display = "block";
-
-        mensagem_erro.innerHTML =
-          "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+        showToast("Cadastro realizado com sucesso! Redirecionando para tela de Login...", "success");
 
         setTimeout(() => {
           window.location = "../login";
-        }, "2000");
+        }, 2000);
 
         limparFormulario();
       } else {
@@ -84,7 +64,7 @@ function cadastrar() {
     })
     .catch(function (resposta) {
       console.log(`#ERRO: ${resposta}`);
-      // finalizarAguardar();
+      showToast("Houve um erro ao tentar realizar o cadastro!", "error");
     });
 
   return false;
