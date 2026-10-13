@@ -195,11 +195,16 @@ const disableCode = async (req, res) => {
 }
 
 const getAllCodes = async (req, res) => {
-  const { id, companyId } = req.token
+  const { id, companyId, role } = req.token
 
   const responseBody = {
     message: "Credenciais inválidas",
     data: {}
+  }
+
+  if (role !== 1) {
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    return res.status(401).json(responseBody)
   }
 
   if (!id || !companyId)
