@@ -27,7 +27,7 @@ function cadastrar(
     nome,
     email,
     senha,
-    cargo = 1,
+    cargo,
     empresaId
 ) {
 
@@ -62,8 +62,6 @@ function cadastrar(
         ]
     );
 }
-
-
 
 function buscarUsuarioPorEmpresa(empresaId) {
 

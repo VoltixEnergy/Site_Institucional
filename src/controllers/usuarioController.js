@@ -1,5 +1,6 @@
 const usuarioModel = require("../models/usuarioModel");
 const jwtMiddleware = require("../middlewares/jwt.middleware")
+const codeModel = require("../models/codeModel")
 
 const bcrypt = require("bcrypt");
 
@@ -44,14 +45,17 @@ async function autenticar(req, res) {
       }
 
       responseBody.message = "Usuário autenticado com sucesso!";
-      responseBody.data = {
-        id: usuario.id,
-        nome: usuario.nome,
-        email: usuario.email,
-        empresa: usuario.empresa_id,
-        cargo: usuario.cargo,
-        funcionarios: usuario.funcionarios || []
-      };
+      responseBody.data.id = usuario.id
+      responseBody.data.nome = usuario.nome
+      responseBody.data.email = usuario.email
+      responseBody.data.empresa = usuario.empresa_id
+      responseBody.data.empresa = usuario.cargo
+      responseBody.data.funcionarios = []
+
+      if (usuario.cargo === 1) {
+        const resultadoFuncionarios = await usuarioModel.buscarUsuarioPorEmpresa(usuario.empresa_id)
+        responseBody.data.funcionarios = resultadoFuncionarios
+      }
       
       const token = await jwtMiddleware.generate({
         id: usuario.id,
@@ -88,31 +92,62 @@ async function cadastrar(req, res) {
   const nome = req.body.nome || req.body.name;
   const email = req.body.email;
   const senha = req.body.senha || req.body.password;
-  const cargo = req.body.cargo || 1;
-  const empresaId = req.body.empresaId || req.body.empresa_id;
+  const codigo = req.body.codigo || req.body.code;
 
-  if (!nome || !email || !senha || !empresaId) {
+  if (!nome) {
+    responseBody.message = "Nome inválido."
+    return res.status(400).json(responseBody)
+  }
+  if (!email) {
+    responseBody.message = "Email inválido."
+    return res.status(400).json(responseBody)
+  }
 
-    responseBody.message = "Preencha todos os campos obrigatórios";
-    return res.status(400).json(responseBody);
+  const isEmailValid = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,}$/.test(email);
+  if (!isEmailValid) {
+    responseBody.message = "Informe um e-mail válido";
+     return res.status(400).json(responseBody);
+  }
 
+  if (!senha) {
+    responseBody.message = "Senha inválida."
+    return res.status(400).json(responseBody)
+  }
+
+  if (!codigo) {
+    responseBody.message = "Código de ativação inválido."
+    return res.status(400).json(responseBody)
   }
 
   try {
+    const codeResponse = await codeModel.getCompanyAndRoleByCode(codigo)
+    
+    if (!codeResponse || codeResponse.length === 0) {
+      retorno.message = "Seu código está inválido"
+      return res.status(401).json(retorno)
+    }
+    
     const senhaCriptografada = await senhaHash(senha);
+    const resultado = await usuarioModel.cadastrar(nome, email, senhaCriptografada, codeResponse[0].cargo, codeResponse[0].empresa_id)
 
-    const resultado = await usuarioModel.cadastrar(
-      nome,
-      email,
-      senhaCriptografada,
-      cargo,
-      empresaId
-    );
+    if (resultado.affectedRows !== 1) {
+      retorno.message = "O usuário não foi cadastrado. Tente novamente mais tarde."
+      return res.status(500).json(retorno)
+    }
 
-    responseBody.message = "Usuário cadastrado com sucesso!";
-    responseBody.data = resultado;
-    return res.status(201).json(responseBody);
+    const codeUpdateResponse = await codeModel.setCodeUsedByCode(codigo)
 
+    if (codeUpdateResponse.affectedRows !== 1) {
+      retorno.message = "Não foi possível cadastrar o usuário. Tente novamente mais tarde"
+      res.status(500).json(retorno)
+    }
+
+    retorno.message = "Cadastro realizado com sucesso! Faça login para prosseguir"
+    retorno.data = {
+      id: resultado.insertId
+    }
+    
+    return res.status(201).json(retorno)
   } catch (erro) {
 
     console.error(erro);
