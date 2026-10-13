@@ -106,8 +106,9 @@ function Pesquisar() {
         return;
     }
 
-    fetch(`/usuarios/pesquisar/${nome}?idUsuario=${idUsuario}`, {
-        method: "GET"
+    fetch(`/usuarios/pesquisar/${nome}`, {
+        method: "GET",
+        credentials: "include",
     })
         .then(function (resposta) {
             return tratarResposta(resposta);

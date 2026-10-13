@@ -120,7 +120,7 @@ function listar(idUsuario) {
 }
 
 
-function pesquisar(nome, idUsuario) {
+function pesquisar(empresaId, nome) {
 
     const instrucaoSql = `
         SELECT
@@ -130,11 +130,7 @@ function pesquisar(nome, idUsuario) {
             u.cargo,
             u.empresa_id
         FROM usuario u
-        WHERE u.empresa_id = (
-            SELECT empresa_id
-            FROM usuario
-            WHERE id = ?
-        )
+        WHERE u.empresa_id = ?
         AND u.nome LIKE ?
         AND u.deletado_em IS NULL
         ORDER BY u.nome;
@@ -143,7 +139,7 @@ function pesquisar(nome, idUsuario) {
     return database.executar(
         instrucaoSql,
         [
-            idUsuario,
+            empresaId,
             `%${nome}%`
         ]
     );

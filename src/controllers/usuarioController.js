@@ -179,11 +179,16 @@ async function pesquisar(req, res) {
   };
 
   const nome = req.params.nome;
-  const idUsuario = req.query.idUsuario;
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
 
   try {
 
-    const resultado = await usuarioModel.pesquisar(nome, idUsuario);
+    const resultado = await usuarioModel.pesquisar(companyId, nome);
 
     responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
     responseBody.data = resultado;
