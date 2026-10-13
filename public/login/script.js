@@ -56,6 +56,7 @@ async function entrar() {
             sessionStorage.NOME_USUARIO = json.data.nome;
             sessionStorage.ID_USUARIO = json.data.id;
             sessionStorage.ID_EMPRESA = json.data.empresa;
+            sessionStorage.COMPANY_NAME = json.data.nome_fantasia;
             sessionStorage.FUNCIONARIOS = JSON.stringify(json.data.funcionarios);
             window.location = "../app";
 

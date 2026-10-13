@@ -5,15 +5,17 @@ function autenticar(email) {
 
     const instrucaoSql = `
         SELECT
-            id,
-            nome,
-            senha,
-            email,
-            empresa_id,
-            cargo
-        FROM usuario
+            u.id,
+            u.nome,
+            u.senha,
+            u.email,
+            u.empresa_id,
+            u.cargo,
+            e.nome_fantasia
+        FROM usuario u
+        JOIN empresa e ON u.empresa_id = e.id
         WHERE email = ?
-        AND deletado_em IS NULL;
+        AND u.deletado_em IS NULL;
     `;
 
     return database.executar(

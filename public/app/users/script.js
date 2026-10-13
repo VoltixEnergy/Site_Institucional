@@ -1,7 +1,7 @@
 // TODO: substituir alerts por toasts
 function loadCompanyName(){
-  var companyName = sessionStorage.getItem("COMPANY_NAME")
-  var companyNameElement = document.getElementById("companyName")
+  const companyName = sessionStorage.getItem("COMPANY_NAME")
+  const companyNameElement = document.getElementById("companyName")
 
   companyNameElement.innerText = `@ ${companyName}`
 }

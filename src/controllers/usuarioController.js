@@ -49,7 +49,8 @@ async function autenticar(req, res) {
       responseBody.data.nome = usuario.nome
       responseBody.data.email = usuario.email
       responseBody.data.empresa = usuario.empresa_id
-      responseBody.data.empresa = usuario.cargo
+      responseBody.data.nome_fantasia = usuario.nome_fantasia
+      responseBody.data.cargo = usuario.cargo
       responseBody.data.funcionarios = []
 
       if (usuario.cargo === 1) {
