@@ -347,10 +347,21 @@ async function deletarUsuario(req, res) {
   };
 
   const idUsuario = req.params.idUsuario;
+  const { companyId, role } = req.token;
+
+  if (role !== 1) {
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    return res.status(401).json(responseBody)
+  }
+
+  if (!idUsuario) {
+    responseBody.message = "ID do usuário não informado";
+    return res.status(400).json(responseBody);
+  }
 
   try {
 
-    const resultado = await usuarioModel.deletarUsuario(idUsuario);
+    const resultado = await usuarioModel.deletarUsuario(idUsuario, companyId);
 
     responseBody.message = "Usuário deletado com sucesso!";
     responseBody.data = resultado;

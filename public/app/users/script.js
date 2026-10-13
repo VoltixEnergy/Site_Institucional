@@ -333,6 +333,7 @@ function deletarUsuario() {
 
     fetch(`/usuarios/deletarUsuario/${idUsuario}`, {
         method: "DELETE",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         }

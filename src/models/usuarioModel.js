@@ -221,17 +221,17 @@ function excluir(idUsuario) {
 }
 
 
-function deletarUsuario(idUsuario) {
+function deletarUsuario(idUsuario, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET deletado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
+        WHERE id = ? AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
-        [idUsuario]
+        [idUsuario, empresaId]
     );
 }
 
