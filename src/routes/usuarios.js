@@ -28,7 +28,7 @@ router.get("/:id", jwtMiddleware.verify, function (req, res) {
   usuarioController.buscarPorId(req, res);
 });
 
-router.put("/editarEmail/:id", function (req, res) {
+router.put("/editarEmail/:id", jwtMiddleware.verify, function (req, res) {
         usuarioController.editarEmail(req,res);
 });
 

@@ -316,6 +316,14 @@ async function deletarUsuario(req, res) {
 
 function editarEmail(req, res) {
 
+    const { role, companyId } = req.token;
+
+    if (role !== 1) {
+        return res.status(403).json({
+            mensagem: "Acesso negado. Apenas gestores de TI podem editar e-mails."
+        });
+    }
+
     const idUsuario = req.params.id;
     const email = req.body.email;
 
@@ -328,6 +336,7 @@ function editarEmail(req, res) {
     usuarioModel.editarEmail(
         idUsuario,
         email,
+        companyId
     )
         .then(function (resultado) {
 

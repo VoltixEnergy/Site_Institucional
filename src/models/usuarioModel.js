@@ -158,16 +158,16 @@ function buscarPorId(idUsuario) {
 }
 
 
-function editarEmail(idUsuario,cargo) {
+function editarEmail(idUsuario,cargo, empresaId) {
 
         const instrucaoSql = `
             UPDATE usuario
-            SET cargo = ?,
+            SET email = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ? AND deletado_em IS NULL;
+            WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
         `;
 
-    return database.executar(instrucaoSql,[cargo, idUsuario]);
+    return database.executar(instrucaoSql,[cargo, idUsuario, empresaId]);
 }
 
 
