@@ -274,6 +274,13 @@ async function editarNome(req, res) {
   const idUsuario = req.params.idUsuario;
   const novoNome = req.body.novoNome;
 
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
+
   if (!novoNome) {
 
     responseBody.message = "Informe o novo nome";
@@ -283,7 +290,7 @@ async function editarNome(req, res) {
 
   try {
 
-    const resultado = await usuarioModel.editarNome(idUsuario, novoNome);
+    const resultado = await usuarioModel.editarNome(idUsuario, novoNome, companyId);
 
     responseBody.message = "Nome atualizado com sucesso!";
     responseBody.data = resultado;

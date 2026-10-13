@@ -233,20 +233,21 @@ function atualizar(
 }
 
 
-function editarNome(idUsuario, novoNome) {
+function editarNome(idUsuario, novoNome, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET nome = ?,
             atualizado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
+        WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
         [
             novoNome,
-            idUsuario
+            idUsuario,
+            empresaId
         ]
     );
 }
