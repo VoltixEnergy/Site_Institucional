@@ -1,4 +1,4 @@
-function entrar() {
+async function entrar() {
 
     aguardar();
 
@@ -25,20 +25,23 @@ function entrar() {
     console.log("FORM LOGIN:", emailVar);
     console.log("FORM SENHA:", senhaVar);
 
-    fetch("/usuarios/autenticar", {
+    try {
 
-        method: "POST",
+        const resposta = await fetch("/usuarios/autenticar", {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+            method: "POST",
+            credentials: "include",
 
-        body: JSON.stringify({
-            email: emailVar,
-            senha: senhaVar
-        })
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-    }).then(function (resposta) {
+            body: JSON.stringify({
+                email: emailVar,
+                password: senhaVar
+            })
+
+        });
 
         console.log("ESTOU NO THEN DO entrar()!");
 
@@ -46,19 +49,15 @@ function entrar() {
 
             console.log("Login realizado com sucesso!");
 
-            resposta.json().then(function (json) {
+            const json = await resposta.json();
 
-                console.log(json);
-
-                sessionStorage.EMAIL_USUARIO = json.email;
-                sessionStorage.NOME_USUARIO = json.nome;
-                sessionStorage.ID_USUARIO = json.id;
-                sessionStorage.ID_EMPRESA = json.empresa;
-                sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
-
-                window.location = "../app";
-
-            });
+            console.log(json);
+            sessionStorage.EMAIL_USUARIO = json.data.email;
+            sessionStorage.NOME_USUARIO = json.data.nome;
+            sessionStorage.ID_USUARIO = json.data.id;
+            sessionStorage.ID_EMPRESA = json.data.empresa;
+            sessionStorage.FUNCIONARIOS = JSON.stringify(json.data.funcionarios);
+            window.location = "../app";
 
         } else {
 
@@ -71,16 +70,14 @@ function entrar() {
                 sumirMensagem();
             }, 4000);
 
-            resposta.text().then(function (texto) {
+            const texto = await resposta.text();
 
-                console.error(texto);
+            console.error(texto);
 
-                finalizarAguardar(texto);
-
-            });
+            finalizarAguardar(texto);
         }
 
-    }).catch(function (erro) {
+    } catch (erro) {
 
         console.log("Erro no login:", erro);
 
@@ -93,7 +90,7 @@ function entrar() {
 
         finalizarAguardar();
 
-    });
+    }
 
     return false;
 }

@@ -111,7 +111,7 @@ function listar(idUsuario) {
 }
 
 
-function pesquisar(nome, idUsuario) {
+function pesquisar(empresaId, nome) {
 
     const instrucaoSql = `
         SELECT
@@ -121,11 +121,7 @@ function pesquisar(nome, idUsuario) {
             u.cargo,
             u.empresa_id
         FROM usuario u
-        WHERE u.empresa_id = (
-            SELECT empresa_id
-            FROM usuario
-            WHERE id = ?
-        )
+        WHERE u.empresa_id = ?
         AND u.nome LIKE ?
         AND u.deletado_em IS NULL
         ORDER BY u.nome;
@@ -134,7 +130,7 @@ function pesquisar(nome, idUsuario) {
     return database.executar(
         instrucaoSql,
         [
-            idUsuario,
+            empresaId,
             `%${nome}%`
         ]
     );
@@ -168,27 +164,28 @@ function editarEmail(idUsuario,cargo) {
             UPDATE usuario
             SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
+            WHERE id = ? AND deletado_em IS NULL;
         `;
 
     return database.executar(instrucaoSql,[cargo, idUsuario]);
 }
 
 
-function editarNome(idUsuario, novoNome) {
+function editarNome(idUsuario, novoNome, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET nome = ?,
             atualizado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
+        WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
         [
             novoNome,
-            idUsuario
+            idUsuario,
+            empresaId
         ]
     );
 }
@@ -200,7 +197,7 @@ function editarCargo(idUsuario, novoCargo) {
         UPDATE usuario
             SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ?;
+            WHERE id = ? AND deletado_em IS NULL;
     `;
 
     return database.executar(
@@ -213,90 +210,17 @@ function editarCargo(idUsuario, novoCargo) {
 }
 
 
-function excluir(idUsuario) {
+function deletarUsuario(idUsuario, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
         SET deletado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
+        WHERE id = ? AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
-        [idUsuario]
-    );
-}
-
-
-function deletarUsuario(idUsuario) {
-
-    const instrucaoSql = `
-        UPDATE usuario
-        SET deletado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
-    `;
-
-    return database.executar(
-        instrucaoSql,
-        [idUsuario]
-    );
-}
-
-
-
-function autenticarCodigo(codigo) {
-
-    const instrucaoSql = `
-        SELECT
-            id,
-            empresa_id,
-            codigo,
-            cargo,
-            expira_em
-        FROM codigo_ativacao
-        WHERE codigo = ?
-          AND usado_em IS NULL
-          AND deletado_em IS NULL
-          AND expira_em > CURRENT_TIMESTAMP;
-    `;
-
-    return database.executar(
-        instrucaoSql,
-        [codigo]
-    );
-}
-
-
-function adicionarCodigo(
-    codigo,
-    empresaId,
-    cargo,
-    expiraEm
-) {
-
-    const instrucaoSql = `
-        INSERT INTO codigo_ativacao (
-            empresa_id,
-            codigo,
-            cargo,
-            expira_em
-        )
-        VALUES (
-            ?,
-            ?,
-            ?,
-            ?
-        );
-    `;
-
-    return database.executar(
-        instrucaoSql,
-        [
-            empresaId,
-            codigo,
-            cargo,
-            expiraEm
-        ]
+        [idUsuario, empresaId]
     );
 }
 
@@ -311,8 +235,5 @@ module.exports = {
     editarEmail,
     editarNome,
     editarCargo,
-    excluir,
     deletarUsuario,
-    autenticarCodigo,
-    adicionarCodigo
 };

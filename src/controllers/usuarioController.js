@@ -1,201 +1,352 @@
 const usuarioModel = require("../models/usuarioModel");
+const jwtMiddleware = require("../middlewares/jwt.middleware")
 
+async function autenticar(req, res) {
 
-function autenticar(req, res) {
+  const responseBody = {
+    message: "",
+    data: {}
+  };
 
-    const email = req.body.email;
-    const senha = req.body.senha || req.body.password;
+  const email = req.body.email;
+  const senha = req.body.password;
 
-    if (!email || !senha) {
+  console.log(email, senha)
+  if (!email || !senha) {
 
-        return res.status(400).json({
-            mensagem: "E-mail e senha são obrigatórios"
-        });
+    responseBody.message = "E-mail e senha são obrigatórios";
+    return res.status(400).json(responseBody);
 
-    }
+  }
 
-    usuarioModel.autenticar(email, senha)
-        .then(function (resultadoAutenticar) {
+  try {
 
-            if (resultadoAutenticar.length == 1) {
+    const resultadoAutenticar = await usuarioModel.autenticar(email, senha);
 
-                const usuario = resultadoAutenticar[0];
+    if (resultadoAutenticar.length === 1) {
 
-                usuarioModel.buscarUsuarioPorEmpresa(usuario.empresa_id)
-                    .then(function (resultadoFuncionarios) {
+      const usuario = resultadoAutenticar[0];
 
-                        res.status(200).json({
+      responseBody.message = "Usuário autenticado com sucesso!";
+      responseBody.data = {
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        empresa: usuario.empresa_id,
+        cargo: usuario.cargo
+      };
+      
+      const token = await jwtMiddleware.generate({
+        id: usuario.id,
+        companyId: usuario.empresa_id,
+        role: usuario.cargo,
+      })
 
-                            id: usuario.id,
+      res.cookie('jwt', token, {
+        maxAge: parseInt(process.env.JWT_EXPIRES) * 1000, // de segundos para milisegundos,
+        httpOnly: true,
+        secure: false // false para http, true para https
+      })
 
-                            email: usuario.email,
-
-                            nome: usuario.nome,
-
-                            empresa: usuario.empresa_id,
-
-                            cargo: usuario.cargo,
-
-                            funcionarios: resultadoFuncionarios
-
-                        });
-
-                    })
-                    .catch(function (erro) {
-
-                        console.log(erro);
-
-                        res.status(500).json(erro);
-
-                    });
-
-            } else {
-
-                res.status(403).json({
-
-                    mensagem: "E-mail e/ou senha inválidos"
-
-                });
-
-            }
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
-
-function cadastrar(req, res) {
-
-    const nome = req.body.nome || req.body.name;
-    const email = req.body.email;
-    const senha = req.body.senha || req.body.password;
-    const cargo = req.body.cargo || 1;
-    const empresaId = req.body.empresaId || req.body.empresa_id;
-
-    if (!nome || !email || !senha || !empresaId) {
-
-        return res.status(400).json({
-
-            mensagem: "Preencha todos os campos obrigatórios"
-
-        });
+      return res.status(200).json(responseBody);
 
     }
 
-    usuarioModel.cadastrar(
-        nome,
-        email,
-        senha,
-        null,
-        cargo,
-        empresaId
-    )
-        .then(function (resultado) {
+    responseBody.message = "E-mail e/ou senha inválidos";
+    return res.status(403).json(responseBody);
 
-            res.status(201).json(resultado);
+  } catch (erro) {
 
-        })
-        .catch(function (erro) {
+    console.error(erro);
 
-            console.log(erro);
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
 
-            res.status(500).json(erro);
-
-        });
+  }
 }
 
 
-/* =====================================================
-   BUSCAR USUÁRIOS DA EMPRESA
-   ===================================================== */
+async function cadastrar(req, res) {
 
-function buscarUsuarioPorEmpresa(req, res) {
+  const responseBody = {
+    message: "",
+    data: {}
+  };
 
-    const empresaId = req.params.idEmpresa;
+  const nome = req.body.nome || req.body.name;
+  const email = req.body.email;
+  const senha = req.body.senha || req.body.password;
+  const cargo = req.body.cargo || 1;
+  const empresaId = req.body.empresaId || req.body.empresa_id;
 
-    usuarioModel.buscarUsuarioPorEmpresa(empresaId)
-        .then(function (resultado) {
+  if (!nome || !email || !senha || !empresaId) {
 
-            res.status(200).json(resultado);
+    responseBody.message = "Preencha todos os campos obrigatórios";
+    return res.status(400).json(responseBody);
 
-        })
-        .catch(function (erro) {
+  }
 
-            console.log(erro);
+  try {
 
-            res.status(500).json(erro);
+    const resultado = await usuarioModel.cadastrar(
+      nome,
+      email,
+      senha,
+      null,
+      cargo,
+      empresaId
+    );
 
-        });
+    responseBody.message = "Usuário cadastrado com sucesso!";
+    responseBody.data = resultado;
+    return res.status(201).json(responseBody);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
+}
+
+async function buscarUsuarioPorEmpresa(req, res) {
+
+  const responseBody = {
+    message: "",
+    data: {}
+  };
+
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
+
+  try {
+    const resultado = await usuarioModel.buscarUsuarioPorEmpresa(companyId);
+
+    responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
 }
 
 
+async function listar(req, res) {
 
-function listar(req, res) {
+  const responseBody = {
+    message: "",
+    data: {}
+  };
 
-    const idUsuario = req.params.id;
+  const idUsuario = req.params.id;
 
-    usuarioModel.listar(idUsuario)
-        .then(function (resultado) {
+  try {
 
-            res.status(200).json(resultado);
+    const resultado = await usuarioModel.listar(idUsuario);
 
-        })
-        .catch(function (erro) {
+    responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
 
-            console.log(erro);
+  } catch (erro) {
 
-            res.status(500).json(erro);
+    console.error(erro);
 
-        });
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
 }
 
 
+async function pesquisar(req, res) {
 
-function pesquisar(req, res) {
+  const responseBody = {
+    message: "",
+    data: {}
+  };
 
-    const nome = req.params.nome;
-    const idUsuario = req.query.idUsuario;
+  const nome = req.params.nome;
+  const { role, companyId } = req.token;
 
-    usuarioModel.pesquisar(nome, idUsuario)
-        .then(function (resultado) {
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
 
-            res.status(200).json(resultado);
+  try {
 
-        })
-        .catch(function (erro) {
+    const resultado = await usuarioModel.pesquisar(companyId, nome);
 
-            console.log(erro);
+    responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
 
-            res.status(500).json(erro);
+  } catch (erro) {
 
-        });
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
 }
 
 
-function buscarPorId(req, res) {
+async function buscarPorId(req, res) {
 
-    const idUsuario = req.params.id;
+  const responseBody = {
+    message: "",
+    data: {}
+  };
 
-    usuarioModel.buscarPorId(idUsuario)
-        .then(function (resultado) {
+  const idUsuario = req.params.id;
 
-            res.status(200).json(resultado);
+  try {
 
-        })
-        .catch(function (erro) {
+    const resultado = await usuarioModel.buscarPorId(idUsuario);
 
-            console.log(erro);
+    responseBody.message = resultado.length ? "" : "Nenhum usuário encontrado.";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
 
-            res.status(500).json(erro);
+  } catch (erro) {
 
-        });
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
+}
+
+
+async function atualizar(req, res) {
+
+  const responseBody = {
+    message: "",
+    data: {}
+  };
+
+  const idUsuario = req.params.id;
+  const email = req.body.email;
+
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
+
+  try {
+
+    const resultado = await usuarioModel.atualizar(idUsuario, email, companyId);
+
+    responseBody.message = "Usuário atualizado com sucesso!";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
+}
+
+async function editarNome(req, res) {
+
+  const responseBody = {
+    message: "",
+    data: {}
+  };
+
+  const idUsuario = req.params.idUsuario;
+  const novoNome = req.body.novoNome;
+
+  const { role, companyId } = req.token;
+
+  if (role !== 1){
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    res.status(401).json(responseBody)
+  }
+
+  if (!novoNome) {
+
+    responseBody.message = "Informe o novo nome";
+    return res.status(400).json(responseBody);
+
+  }
+
+  try {
+
+    const resultado = await usuarioModel.editarNome(idUsuario, novoNome, companyId);
+
+    responseBody.message = "Nome atualizado com sucesso!";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
+}
+
+
+async function deletarUsuario(req, res) {
+
+  const responseBody = {
+    message: "",
+    data: {}
+  };
+
+  const idUsuario = req.params.idUsuario;
+  const { companyId, role } = req.token;
+
+  if (role !== 1) {
+    responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
+    return res.status(401).json(responseBody)
+  }
+
+  if (!idUsuario) {
+    responseBody.message = "ID do usuário não informado";
+    return res.status(400).json(responseBody);
+  }
+
+  try {
+
+    const resultado = await usuarioModel.deletarUsuario(idUsuario, companyId);
+
+    responseBody.message = "Usuário deletado com sucesso!";
+    responseBody.data = resultado;
+    return res.status(200).json(responseBody);
+
+  } catch (erro) {
+
+    console.error(erro);
+
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    return res.status(500).json(responseBody);
+
+  }
 }
 
 
@@ -288,128 +439,6 @@ function editarCargo(req, res) {
 }
 
 
-function excluir(req, res) {
-
-    const idUsuario = req.params.id;
-
-    usuarioModel.excluir(idUsuario)
-        .then(function (resultado) {
-
-            res.status(200).json(resultado);
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
-
-function deletarUsuario(req, res) {
-
-    const idUsuario = req.params.idUsuario;
-
-    usuarioModel.deletarUsuario(idUsuario)
-        .then(function (resultado) {
-
-            res.status(200).json(resultado);
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
-function autenticarCodigo(req, res) {
-
-    const codigo = req.body.codigo;
-
-    if (!codigo) {
-
-        return res.status(400).json({
-
-            mensagem: "Código não informado"
-
-        });
-
-    }
-
-    usuarioModel.autenticarCodigo(codigo)
-        .then(function (resultado) {
-
-            if (resultado.length == 1) {
-
-                res.status(200).json(resultado);
-
-            } else {
-
-                res.status(403).json({
-
-                    mensagem: "Código inválido ou expirado"
-
-                });
-
-            }
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
-
-function adicionarCodigo(req, res) {
-
-    const codigo = req.body.codigo;
-    const empresaId = req.body.empresaId || req.body.empresa_id;
-    const cargo = req.body.cargo;
-    const expiraEm = req.body.expiraEm;
-
-    if (!codigo || !empresaId || !cargo || !expiraEm) {
-
-        return res.status(400).json({
-
-            mensagem: "Preencha todos os campos"
-
-        });
-
-    }
-
-    usuarioModel.adicionarCodigo(
-        codigo,
-        empresaId,
-        cargo,
-        expiraEm
-    )
-        .then(function (resultado) {
-
-            res.status(201).json(resultado);
-
-        })
-        .catch(function (erro) {
-
-            console.log(erro);
-
-            res.status(500).json(erro);
-
-        });
-}
-
-
 module.exports = {
 
     autenticar,
@@ -421,8 +450,5 @@ module.exports = {
     editarEmail,
     editarNome,
     editarCargo,
-    excluir,
     deletarUsuario,
-    autenticarCodigo,
-    adicionarCodigo
 };
