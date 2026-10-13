@@ -18,22 +18,21 @@ const setCodeUsedByCode = async (code) => {
   return await database.executar(query, [code])
 }
 
-const updateRoleById = async (id, role) => {
-  const query = "update codigo_ativacao set cargo = ?, atualizado_em = current_timestamp() where id = ?"
+const updateRoleById = async (id, role, companyId) => {
+  const query = "update codigo_ativacao set cargo = ?, atualizado_em = current_timestamp() where id = ? and empresa_id = ?"
 
-  return await database.executar(query, [role, id])
+  return await database.executar(query, [role, id, companyId])
 }
 
-const updateExpiresAtById = async (id) => {
-  const query = "update codigo_ativacao set expira_em = date_add(current_timestamp(), interval 15 minute), atualizado_em = current_timestamp() where id = ?"
+const updateExpiresAtById = async (id, companyId) => {
+  const query = "update codigo_ativacao set expira_em = date_add(current_timestamp(), interval 15 minute), atualizado_em = current_timestamp() where id = ? and empresa_id = ?"
 
-  return await database.executar(query, [id])
+  return await database.executar(query, [id, companyId])
 }
 
-const getCodeDataByCodeId = async (id) => {
-   const query = "select e.nome_fantasia, ca.cargo, ca.codigo from empresa e join codigo_ativacao ca on ca.empresa_id = e.id where ca.id = ? and ca.expira_em > current_timestamp() and ca.deletado_em is null and ca.usado_em is null"
-
-  return await database.executar(query, [id])
+const getCodeDataByCodeId = async (id, companyId) => {
+   const query = "select e.nome_fantasia, ca.cargo, ca.codigo from empresa e join codigo_ativacao ca on ca.empresa_id = e.id where ca.id = ? and ca.empresa_id = ? and ca.expira_em > current_timestamp() and ca.deletado_em is null and ca.usado_em is null"
+  return await database.executar(query, [id, companyId])
 }
 
 const disableCodeById = async (id) => {

@@ -49,7 +49,7 @@ const getCodes = async () => {
     const { atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em } = code
 
     console.log(atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em)
-    const elementId = `${codigo}-${id}`
+    const elementId = `${codigo}_${id}`
 
     const element = `
       <div id="${elementId}" class="code-card">
@@ -185,7 +185,7 @@ const resendCode = async (elementId) => {
   if (!emailReceiver || !emailRegex.test(emailReceiver))
     return showToast("Email inválido", "warning")
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
   const body = { 
     id: codeId, 
     role: null, 
@@ -198,6 +198,7 @@ const resendCode = async (elementId) => {
     toggleLoadingSendButton(resendCodeButton)
     const response = await fetch("/code/edit", {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
@@ -239,14 +240,14 @@ const disableCode = (elementId) => {
     </div>
   `
 
-  showDialog(`Desativar código: <span class="font-bold">${elementId.split("-")[0]}</span>`, dialogBody)
+  showDialog(`Desativar código: <span class="font-bold">${elementId.split("_")[0]}</span>`, dialogBody)
 }
 
 const disableCodeConfirmed = async (elementId) => {
   const button = document.getElementById("disableCodeConfirmedButton")
   toggleDisableButton(button)
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
   const body = { 
     id: codeId
   }
@@ -254,6 +255,7 @@ const disableCodeConfirmed = async (elementId) => {
   try {
     const response = await fetch("/code/disable", {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
@@ -296,7 +298,7 @@ const editRoleConfirmed = async (elementId) => {
   const roleSelected = document.getElementById(`roleSelect-${elementId}`).value
   toggleDisableButton(button)
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
 
   const body ={ 
     "id": codeId, 
@@ -308,6 +310,7 @@ const editRoleConfirmed = async (elementId) => {
   try {
     const response = await fetch("/code/edit", {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },

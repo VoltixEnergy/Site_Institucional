@@ -80,8 +80,16 @@ const generateCode = () => {
 }
 
 const editCode = async (req, res) => {
+  const { role: userRole, companyId } = req.token
   const { id, role, email, isRenewal } = req.body
 
+  if (userRole !== 1) {
+    const responseBody = {
+      message: "Somente Gestores de TI têm acesso aos usuários do sistema."
+    }
+    return res.status(401).json(responseBody)
+  }
+  
   const responseBody = {
     message: ""
   }
@@ -105,8 +113,7 @@ const editCode = async (req, res) => {
   try {
 
     if (role !== null && typeof role !== "undefined") {
-      console.log("cargo: " + role)
-      const response = await codeModel.updateRoleById(id, role)
+      const response = await codeModel.updateRoleById(id, role, companyId)
 
       if (response.affectedRows !== 1) {
         responseBody.message = "Não foi possível alterar o cargo relacionado ao código. Tente novamente mais tarde"
@@ -120,14 +127,14 @@ const editCode = async (req, res) => {
     else if (isEmailValid && email !== null && typeof email !== "undefined" && email !== "") {
       console.log("email: " + email)
 
-      const response = await codeModel.updateExpiresAtById(id)
+      const response = await codeModel.updateExpiresAtById(id, companyId)
 
       if (response.affectedRows !== 1) {
         responseBody.message = "Não foi possível renovar data de expiração do código. Tente novamente mais tarde"
         return res.status(500).json(responseBody);
       } 
 
-      const dbResponse = await codeModel.getCodeDataByCodeId(id)
+      const dbResponse = await codeModel.getCodeDataByCodeId(id, companyId)
       if (dbResponse.length !== 1) {
         responseBody.message = "Não foi possível encontrar o código de ativação";
         return res.status(500).json(responseBody);

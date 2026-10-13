@@ -10,7 +10,7 @@ router.post("/send", jwtMiddleware.verify, (req, res) => {
   codeController.sendCode(req, res)
 })
 
-router.put("/edit", (req, res) => {
+router.put("/edit", jwtMiddleware.verify, (req, res) => {
   codeController.editCode(req, res)
 })
 
