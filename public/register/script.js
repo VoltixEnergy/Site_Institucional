@@ -7,14 +7,13 @@ function cadastrar() {
   var emailVar = email_input.value;
   var senhaVar = senha_input.value;
   var confirmacaoSenhaVar = confirmacao_senha_input.value;
-  var cpfVar = cpf_input.value;
-  var nivelPermissaoServer = 0;
-  var fkEmpresaServer = sessionStorage.ID_EMPRESA;
+  var codigoAtivacaoVar = codigo_ativacao_input.value;
   // Verificando se há algum campo em branco
   if (
     nomeVar == "" ||
     emailVar == "" ||
-    senhaVar == ""
+    senhaVar == "" ||
+    codigoAtivacaoVar == ""
   ) {
     cardErro.style.display = "block";
     mensagem_erro.innerHTML =
@@ -39,12 +38,17 @@ function cadastrar() {
       "As senhas não coincidem";
 
     return false;
-  } else {
+  } else if (codigoAtivacaoVar.length !== 6) {
+    cardErro.style.display = "block";
+    mensagem_erro.innerHTML =
+      "O código de ativação deve ter 6 caracteres";
+
+    return false;
+  }else {
     setInterval(sumirMensagem, 5000);
   }
 
   botao_cadastrar.innerHTML = '<img src="../assets/imgs/aguarde-orange.gif" width="25">';
-  console.log("FGHJKGFDS: " + fkEmpresaServer)
   // Enviando o valor da nova input
   fetch("/usuarios/cadastrar", {
     method: "POST",
@@ -54,12 +58,10 @@ function cadastrar() {
     body: JSON.stringify({
       // crie um atributo que recebe o valor recuperado aqui
       // Agora vá para o arquivo routes/usuario.js
-      nomeServer: nomeVar,
-      emailServer: emailVar,
-      senhaServer: senhaVar,
-      cpfServer: cpfVar,
-      nivelPermissaoServer: nivelPermissaoServer,
-      fkEmpresaServer: fkEmpresaServer
+      nome: nomeVar,
+      email: emailVar,
+      senha: senhaVar,
+      codigo: codigoAtivacaoVar,
     }),
   })
     .then(function (resposta) {
