@@ -22,7 +22,13 @@ const getCodes = async () => {
   if (!userId || !companyId) 
     return showToast("Sessão inválida, faça login novamente", "warning")
 
-  const response = await fetch(`/code/getAll?userId=${userId}&companyId=${companyId}`)
+  const response = await fetch(`/code/getAll?userId=${userId}&companyId=${companyId}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
 
   if (response.status === 204)
     return showToast("Não há nenhum código de ativação", "warning")

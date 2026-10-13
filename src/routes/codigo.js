@@ -1,7 +1,8 @@
 const codeController = require("../controllers/codigoController")
 const router = require("express").Router()
+const jwtMiddleware = require("../middlewares/jwt.middleware")
 
-router.get("/getAll", (req, res) => {
+router.get("/getAll", jwtMiddleware.verify,  (req, res) => {
   codeController.getAllCodes(req, res)
 })
 

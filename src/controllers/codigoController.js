@@ -181,18 +181,18 @@ const disableCode = async (req, res) => {
 }
 
 const getAllCodes = async (req, res) => {
-  const { userId, companyId } = req.query
+  const { id, companyId } = req.token
 
   const responseBody = {
     message: "Credenciais inválidas",
     data: {}
   }
 
-  if (!userId || !companyId)
+  if (!id || !companyId)
     return res.status(400).json(responseBody)
 
   try {
-    const dbResponse = await codeModel.getAllCodesByUserAndCompanyId(userId, companyId)
+    const dbResponse = await codeModel.getAllCodesByUserAndCompanyId(id, companyId)
 
     if (dbResponse.length === 0) 
       return res.status(204).json(responseBody)
