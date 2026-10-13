@@ -1,6 +1,14 @@
 const usuarioModel = require("../models/usuarioModel");
 const jwtMiddleware = require("../middlewares/jwt.middleware")
 
+const bcrypt = require("bcrypt");
+
+async function senhaHash(senhaPura) {
+  const saltRounds = 10;
+  const hash = await bcrypt.hash(senhaPura, saltRounds);
+  return hash;
+}
+
 async function autenticar(req, res) {
 
   const responseBody = {
@@ -11,21 +19,29 @@ async function autenticar(req, res) {
   const email = req.body.email;
   const senha = req.body.password;
 
-  console.log(email, senha)
   if (!email || !senha) {
-
     responseBody.message = "E-mail e senha são obrigatórios";
     return res.status(400).json(responseBody);
-
   }
 
   try {
-
     const resultadoAutenticar = await usuarioModel.autenticar(email, senha);
 
     if (resultadoAutenticar.length === 1) {
 
       const usuario = resultadoAutenticar[0];
+
+      if (!usuario) {
+        responseBody.message = "Usuário não encontrado";
+        return res.status(403).json(responseBody);
+      }
+
+      const senhaCorreta = await bcrypt.compare(senha, usuario.senha); // bcrypt --> comparando a senha fornecida com a senha armazenada no banco de dados
+
+      if (!senhaCorreta) {
+        responseBody.message = "E-mail e/ou senha inválidos";
+        return res.status(403).json(responseBody);
+      }
 
       responseBody.message = "Usuário autenticado com sucesso!";
       responseBody.data = {
@@ -33,7 +49,8 @@ async function autenticar(req, res) {
         nome: usuario.nome,
         email: usuario.email,
         empresa: usuario.empresa_id,
-        cargo: usuario.cargo
+        cargo: usuario.cargo,
+        funcionarios: usuario.funcionarios || []
       };
       
       const token = await jwtMiddleware.generate({
@@ -49,12 +66,7 @@ async function autenticar(req, res) {
       })
 
       return res.status(200).json(responseBody);
-
     }
-
-    responseBody.message = "E-mail e/ou senha inválidos";
-    return res.status(403).json(responseBody);
-
   } catch (erro) {
 
     console.error(erro);
@@ -87,12 +99,12 @@ async function cadastrar(req, res) {
   }
 
   try {
+    const senhaCriptografada = await senhaHash(senha);
 
     const resultado = await usuarioModel.cadastrar(
       nome,
       email,
-      senha,
-      null,
+      senhaCriptografada,
       cargo,
       empresaId
     );
