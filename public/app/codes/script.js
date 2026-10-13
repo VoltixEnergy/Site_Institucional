@@ -22,7 +22,13 @@ const getCodes = async () => {
   if (!userId || !companyId) 
     return showToast("Sessão inválida, faça login novamente", "warning")
 
-  const response = await fetch(`/code/getAll?userId=${userId}&companyId=${companyId}`)
+  const response = await fetch(`/code/getAll?userId=${userId}&companyId=${companyId}`, {
+    method: "GET",
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
 
   if (response.status === 204)
     return showToast("Não há nenhum código de ativação", "warning")
@@ -43,7 +49,7 @@ const getCodes = async () => {
     const { atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em } = code
 
     console.log(atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em)
-    const elementId = `${codigo}-${id}`
+    const elementId = `${codigo}_${id}`
 
     const element = `
       <div id="${elementId}" class="code-card">
@@ -179,7 +185,7 @@ const resendCode = async (elementId) => {
   if (!emailReceiver || !emailRegex.test(emailReceiver))
     return showToast("Email inválido", "warning")
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
   const body = { 
     id: codeId, 
     role: null, 
@@ -192,6 +198,7 @@ const resendCode = async (elementId) => {
     toggleLoadingSendButton(resendCodeButton)
     const response = await fetch("/code/edit", {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
@@ -233,14 +240,14 @@ const disableCode = (elementId) => {
     </div>
   `
 
-  showDialog(`Desativar código: <span class="font-bold">${elementId.split("-")[0]}</span>`, dialogBody)
+  showDialog(`Desativar código: <span class="font-bold">${elementId.split("_")[0]}</span>`, dialogBody)
 }
 
 const disableCodeConfirmed = async (elementId) => {
   const button = document.getElementById("disableCodeConfirmedButton")
   toggleDisableButton(button)
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
   const body = { 
     id: codeId
   }
@@ -248,6 +255,7 @@ const disableCodeConfirmed = async (elementId) => {
   try {
     const response = await fetch("/code/disable", {
       method: "DELETE",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
@@ -290,7 +298,7 @@ const editRoleConfirmed = async (elementId) => {
   const roleSelected = document.getElementById(`roleSelect-${elementId}`).value
   toggleDisableButton(button)
 
-  const codeId = elementId.split("-")[1]
+  const codeId = elementId.split("_")[1]
 
   const body ={ 
     "id": codeId, 
@@ -302,6 +310,7 @@ const editRoleConfirmed = async (elementId) => {
   try {
     const response = await fetch("/code/edit", {
       method: "PUT",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
@@ -362,20 +371,22 @@ const sendCode = () => {
 
 const sendCodeConfirmed = async () => {
   const button = document.getElementById("sendCodeConfirmed")
-  const roleSelected = document.getElementById(`newRoleSelect`).value
+  const roleSelected = document.getElementById("newRoleSelect").value
   const newEmailReceiver = document.getElementById("newEmailReceiver").value.trim()
+
+  console.log(roleSelected, newEmailReceiver)
 
   toggleDisableButton(button)
 
   const body = { 
-    "companyId": sessionStorage.getItem("ID_EMPRESA"), 
-    "role": roleSelected, 
+    "codeRole": roleSelected, 
     "email": newEmailReceiver
   }
 
   try {
     const response = await fetch("/code/send", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json"
       },
