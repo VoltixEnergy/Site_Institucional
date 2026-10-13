@@ -38,7 +38,7 @@ router.put("/editarNome/:idUsuario", jwtMiddleware.verify, function (req, res) {
 });
 
 
-router.put("/editarCargo/:idUsuario", function (req, res) {
+router.put("/editarCargo/:idUsuario", jwtMiddleware.verify, function (req, res) {
         usuarioController.editarCargo(req,res);
 });
 

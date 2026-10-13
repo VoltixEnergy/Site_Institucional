@@ -191,20 +191,21 @@ function editarNome(idUsuario, novoNome, empresaId) {
 }
 
 
-function editarCargo(idUsuario, novoCargo) {
+function editarCargo(idUsuario, novoCargo, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
             SET cargo = ?,
                 atualizado_em = CURRENT_TIMESTAMP
-            WHERE id = ? AND deletado_em IS NULL;
+            WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
         [
             novoCargo,
-            idUsuario
+            idUsuario,
+            empresaId
         ]
     );
 }

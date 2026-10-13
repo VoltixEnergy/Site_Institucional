@@ -346,6 +346,14 @@ function editarEmail(req, res) {
 
 function editarCargo(req, res) {
 
+    const { role, companyId } = req.token;
+
+    if (role !== 1) {
+        return res.status(403).json({
+            mensagem: "Acesso negado. Apenas gestores de TI podem editar cargos."
+        });
+    }
+
     const idUsuario = req.params.idUsuario;
     const novoCargo = req.body.cargo;
 
@@ -357,7 +365,8 @@ function editarCargo(req, res) {
 
     usuarioModel.editarCargo(
         idUsuario,
-        novoCargo
+        novoCargo,
+        companyId
     )
         .then(function (resultado) {
             res.status(200).json(resultado);

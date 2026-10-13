@@ -298,6 +298,7 @@ function mudarCargo() {
 function editarCargo(novoCargo, idUsuario) {
     fetch(`/usuarios/editarCargo/${idUsuario}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
