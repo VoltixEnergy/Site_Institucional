@@ -1,9 +1,9 @@
 const database = require("../database/config")
 
 const create = async (code, companyId, role) => {
-  const query = "insert into codigo_ativacao (codigo, cargo, empresa_id, expira_em) values (?, ?, ?, date_add(current_timestamp(), interval 15 minute))"
+  const query = "insert into codigo_ativacao (id, codigo, cargo, empresa_id, expira_em) values (?, ?, ?, ?, date_add(current_timestamp(), interval 15 minute))"
 
-  return await database.executar(query, [code, role, companyId])
+  return await database.executar(query, [database.gerarUuid(), code, role, companyId])
 }
 
 const getCompanyAndRoleByCode = async (code) => {
