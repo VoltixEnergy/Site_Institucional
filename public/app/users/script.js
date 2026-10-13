@@ -140,7 +140,7 @@ function Pesquisar() {
                 var nomeCargo = "Usuário";
 
                 if (item.cargo == 1) {
-                    nomeCargo = "Gerente de TI";
+                    nomeCargo = "Gestor de TI";
                 } else if (item.cargo == 2) {
                     nomeCargo = "Analista NOC";
                 } 
