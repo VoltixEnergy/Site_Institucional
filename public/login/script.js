@@ -7,19 +7,11 @@ async function entrar() {
 
     if (emailVar == "" || senhaVar == "") {
 
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "Preencha todos os campos";
-
-        setTimeout(function () {
-            sumirMensagem();
-        }, 4000);
+        showToast("Preencha todos os campos", "error");
 
         finalizarAguardar();
         return false;
 
-    } else {
-
-        setInterval(sumirMensagem, 5000);
     }
 
     console.log("FORM LOGIN:", emailVar);
@@ -60,34 +52,24 @@ async function entrar() {
             sessionStorage.FUNCIONARIOS = JSON.stringify(json.data.funcionarios);
             window.location = "../app";
 
-        } else {
+            } else {
 
-            console.log("Houve um erro ao tentar realizar o login!");
+                console.log("Houve um erro ao tentar realizar o login!");
 
-            cardErro.style.display = "block";
-            mensagem_erro.innerHTML = "E-mail ou senha inválidos";
+                showToast("E-mail ou senha inválidos", "error");
 
-            setTimeout(function () {
-                sumirMensagem();
-            }, 4000);
+                const texto = await resposta.text();
 
-            const texto = await resposta.text();
+                console.error(texto);
 
-            console.error(texto);
-
-            finalizarAguardar(texto);
-        }
+                finalizarAguardar(texto);
+            }
 
     } catch (erro) {
 
         console.log("Erro no login:", erro);
 
-        cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "Erro ao conectar com o servidor";
-
-        setTimeout(function () {
-            sumirMensagem();
-        }, 4000);
+        showToast("Erro ao conectar com o servidor", "error");
 
         finalizarAguardar();
 
@@ -96,9 +78,3 @@ async function entrar() {
     return false;
 }
 
-
-function sumirMensagem() {
-
-    cardErro.style.display = "none";
-
-}
