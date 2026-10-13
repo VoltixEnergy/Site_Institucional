@@ -115,7 +115,7 @@ async function cadastrar(req, res) {
     return res.status(400).json(responseBody)
   }
 
-  if (!codigo) {
+  if (!codigo || codigo.length !== 6) {
     responseBody.message = "Código de ativação inválido."
     return res.status(400).json(responseBody)
   }
@@ -124,31 +124,31 @@ async function cadastrar(req, res) {
     const codeResponse = await codeModel.getCompanyAndRoleByCode(codigo)
     
     if (!codeResponse || codeResponse.length === 0) {
-      retorno.message = "Seu código está inválido"
-      return res.status(401).json(retorno)
+      responseBody.message = "Seu código está inválido"
+      return res.status(401).json(responseBody)
     }
     
     const senhaCriptografada = await senhaHash(senha);
     const resultado = await usuarioModel.cadastrar(nome, email, senhaCriptografada, codeResponse[0].cargo, codeResponse[0].empresa_id)
 
     if (resultado.affectedRows !== 1) {
-      retorno.message = "O usuário não foi cadastrado. Tente novamente mais tarde."
-      return res.status(500).json(retorno)
+      responseBody.message = "O usuário não foi cadastrado. Tente novamente mais tarde."
+      return res.status(500).json(responseBody)
     }
 
     const codeUpdateResponse = await codeModel.setCodeUsedByCode(codigo)
 
     if (codeUpdateResponse.affectedRows !== 1) {
-      retorno.message = "Não foi possível cadastrar o usuário. Tente novamente mais tarde"
-      res.status(500).json(retorno)
+      responseBody.message = "Não foi possível cadastrar o usuário. Tente novamente mais tarde"
+      res.status(500).json(responseBody)
     }
 
-    retorno.message = "Cadastro realizado com sucesso! Faça login para prosseguir"
-    retorno.data = {
+    responseBody.message = "Cadastro realizado com sucesso! Faça login para prosseguir"
+    responseBody.data = {
       id: resultado.insertId
     }
     
-    return res.status(201).json(retorno)
+    return res.status(201).json(responseBody)
   } catch (erro) {
 
     console.error(erro);
@@ -170,7 +170,7 @@ async function buscarUsuarioPorEmpresa(req, res) {
 
   if (role !== 1){
     responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
-    res.status(401).json(responseBody)
+    return res.status(401).json(responseBody)
   }
 
   try {
