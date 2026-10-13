@@ -35,7 +35,7 @@ const getCodes = async () => {
 
   const { message, data } = await response.json()
   
-  if (response.status === 400)
+  if (response.status === 400 || response.status === 401)
     return showToast(message, "warning")
   
   if (response.status === 500)
