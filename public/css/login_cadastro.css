@@ -120,7 +120,6 @@ body {
   height: 2.8rem;
   border: 1px solid #052350;
   border-radius: 0.625rem;
-  margin-bottom: 0.625rem;
 }
 
 .info_login button {
@@ -170,7 +169,7 @@ a:hover {
 .coluna_cadastro2 {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
 }
 
 .cadastro_geral {
