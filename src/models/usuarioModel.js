@@ -1,24 +1,24 @@
 const database = require("../database/config");
 
 
-function autenticar(email, senha) {
+function autenticar(email) {
 
     const instrucaoSql = `
         SELECT
             id,
             nome,
+            senha,
             email,
             empresa_id,
             cargo
         FROM usuario
         WHERE email = ?
-          AND senha = SHA2(?, 256)
-          AND deletado_em IS NULL;
+        AND deletado_em IS NULL;
     `;
 
     return database.executar(
         instrucaoSql,
-        [email, senha]
+        [email]
     );
 }
 
@@ -27,13 +27,13 @@ function cadastrar(
     nome,
     email,
     senha,
-    cpf,
-    cargo = 1,
+    cargo,
     empresaId
 ) {
 
     const instrucaoSql = `
         INSERT INTO usuario (
+            id,
             nome,
             email,
             senha,
@@ -43,7 +43,8 @@ function cadastrar(
         VALUES (
             ?,
             ?,
-            SHA2(?, 256),
+            ?,
+            ?,
             ?,
             ?
         );
@@ -52,6 +53,7 @@ function cadastrar(
     return database.executar(
         instrucaoSql,
         [
+            gerarUuid(),
             nome,
             email,
             senha,
@@ -60,17 +62,6 @@ function cadastrar(
         ]
     );
 }
-
-
-function buscarUsuarioPorCPF(cpf) {
-
-    // Seu banco atual NÃO possui CPF na tabela usuario.
-    // Por isso, essa função não pode consultar CPF.
-    return Promise.reject(
-        "A tabela usuario não possui a coluna cpf."
-    );
-}
-
 
 function buscarUsuarioPorEmpresa(empresaId) {
 
@@ -167,22 +158,16 @@ function buscarPorId(idUsuario) {
 }
 
 
-function atualizar(
-    idUsuario,
-    email,
-    companyId
-) {
-  instrucaoSql = `
-      UPDATE usuario
-      SET email = ?,
-          atualizado_em = CURRENT_TIMESTAMP
-      WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
-  `;
+function editarEmail(idUsuario,cargo, empresaId) {
 
-  return database.executar(
-      instrucaoSql,
-      [email, idUsuario, companyId]
-  );
+        const instrucaoSql = `
+            UPDATE usuario
+            SET email = ?,
+                atualizado_em = CURRENT_TIMESTAMP
+            WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
+        `;
+
+    return database.executar(instrucaoSql,[cargo, idUsuario, empresaId]);
 }
 
 
@@ -206,17 +191,22 @@ function editarNome(idUsuario, novoNome, empresaId) {
 }
 
 
-function excluir(idUsuario) {
+function editarCargo(idUsuario, novoCargo, empresaId) {
 
     const instrucaoSql = `
         UPDATE usuario
-        SET deletado_em = CURRENT_TIMESTAMP
-        WHERE id = ?;
+            SET cargo = ?,
+                atualizado_em = CURRENT_TIMESTAMP
+            WHERE id = ? AND deletado_em IS NULL AND empresa_id = ?;
     `;
 
     return database.executar(
         instrucaoSql,
-        [idUsuario]
+        [
+            novoCargo,
+            idUsuario,
+            empresaId
+        ]
     );
 }
 
@@ -236,79 +226,15 @@ function deletarUsuario(idUsuario, empresaId) {
 }
 
 
-/* =====================================================
-   CÓDIGO DE ATIVAÇÃO
-   ===================================================== */
-
-function autenticarCodigo(codigo) {
-
-    const instrucaoSql = `
-        SELECT
-            id,
-            empresa_id,
-            codigo,
-            cargo,
-            expira_em
-        FROM codigo_ativacao
-        WHERE codigo = ?
-          AND usado_em IS NULL
-          AND deletado_em IS NULL
-          AND expira_em > CURRENT_TIMESTAMP;
-    `;
-
-    return database.executar(
-        instrucaoSql,
-        [codigo]
-    );
-}
-
-
-function adicionarCodigo(
-    codigo,
-    empresaId,
-    cargo,
-    expiraEm
-) {
-
-    const instrucaoSql = `
-        INSERT INTO codigo_ativacao (
-            empresa_id,
-            codigo,
-            cargo,
-            expira_em
-        )
-        VALUES (
-            ?,
-            ?,
-            ?,
-            ?
-        );
-    `;
-
-    return database.executar(
-        instrucaoSql,
-        [
-            empresaId,
-            codigo,
-            cargo,
-            expiraEm
-        ]
-    );
-}
-
-
 module.exports = {
     autenticar,
     cadastrar,
-    buscarUsuarioPorCPF,
     buscarUsuarioPorEmpresa,
     listar,
     pesquisar,
     buscarPorId,
-    atualizar,
+    editarEmail,
     editarNome,
-    excluir,
+    editarCargo,
     deletarUsuario,
-    autenticarCodigo,
-    adicionarCodigo
 };

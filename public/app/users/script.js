@@ -205,6 +205,7 @@ function sairEditor() {
 function mostrarAlterarNome() {
     document.getElementById("alterarNomeArea").style.display = "flex";
     document.getElementById("alterarEmailArea").style.display = "none";
+    document.getElementById("alterarCargoArea").style.display = "none";
     document.getElementById("novoNome").value = "";
 }
 
@@ -213,7 +214,16 @@ function mostrarAlterarNome() {
 function mostrarAlterarEmail() {
     document.getElementById("alterarEmailArea").style.display = "flex";
     document.getElementById("alterarNomeArea").style.display = "none";
+    document.getElementById("alterarCargoArea").style.display = "none";
     document.getElementById("novoEmail").value = "";
+}
+
+
+function mostrarAlterarCargo() {
+    document.getElementById("alterarCargoArea").style.display = "flex";
+    document.getElementById("alterarEmailArea").style.display = "none";
+    document.getElementById("alterarNomeArea").style.display = "none";
+    document.getElementById("novoCargo").value = "";
 }
 
 
@@ -241,10 +251,10 @@ function mudarNome() {
 }
 
 
-
 function editarNome(novoNome, idUsuario) {
     fetch(`/usuarios/editarNome/${idUsuario}`, {
         method: "PUT",
+        credentials: "include",
         headers: {
             "Content-Type": "application/json"
         },
@@ -266,6 +276,53 @@ function editarNome(novoNome, idUsuario) {
         });
 }
 
+
+function mudarCargo() {
+    var novoCargoInput = document.getElementById("novoCargo");
+    var novoCargo = novoCargoInput.value.trim();
+
+    if (novoCargo == "") {
+        alert("Digite um novo cargo.");
+        return;
+    }
+
+    if (idUsuarioEditar == null) {
+        alert("Nenhum usuário selecionado.");
+        return;
+    }
+
+    editarCargo(novoCargo, idUsuarioEditar);
+}
+
+
+function editarCargo(novoCargo, idUsuario) {
+    fetch(`/usuarios/editarCargo/${idUsuario}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            cargo: novoCargo
+        })
+    })
+        .then(function (resposta) {
+            if (resposta.ok) {
+                alert("Cargo atualizado com sucesso!");
+                sairEditor();
+                buscarUsuarios();
+            } else {
+                return resposta.text().then(function (texto) {
+                    console.error(texto);
+                    throw new Error("Erro ao atualizar cargo.");
+                });
+            }
+        })
+        .catch(function (erro) {
+            console.log("Erro:", erro);
+            alert("Não foi possível atualizar o cargo.");
+        });
+}
 
 
 function mudarEmail() {
@@ -293,7 +350,7 @@ function mudarEmail() {
 
 
 function editarEmail(novoEmail, idUsuario) {
-    fetch(`/usuarios/atualizar/${idUsuario}`, {
+    fetch(`/usuarios/editarEmail/${idUsuario}`, {
         method: "PUT",
         credentials: "include",
         headers: {

@@ -19,9 +19,9 @@ async function buscarPorCnpj(cnpj) {
 }
 
 async function cadastrar(razaoSocial, cnpj) {
-  const instrucaoSql = `INSERT INTO empresa (razao_social, cnpj) VALUES (?, ?)`;
+  const instrucaoSql = `INSERT INTO empresa (id, razao_social, cnpj) VALUES (?, ?)`;
 
-  return await database.executar(instrucaoSql, [razaoSocial, cnpj]);
+  return await database.executar(instrucaoSql, [gerarUuid(),razaoSocial, cnpj]);
 }
 
 async function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
@@ -34,12 +34,10 @@ async function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
     return await database.executar(instrucaoSql, [cnpj, nomeFantasia, razaoSocial]);
 }
 
-async function desativarCodigo(codigo){
-    const instrucaoSql = `
-      UPDATE codigo_ativacao SET estado_codigo = ? WHERE codigo = ?
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return await database.executar(instrucaoSql, ["desativado", codigo]);
+async function buscarNomePeloId (id) {
+  const query = "select nome_fantasia from empresa where id = ? and deletado_em is null"
+
+  return await database.executar(query, [id])
 }
 
 module.exports = {
@@ -48,5 +46,5 @@ module.exports = {
   cadastrar, 
   listar, 
   cadastrarEmpresa,
-  desativarCodigo
+  buscarNomePeloId
 };

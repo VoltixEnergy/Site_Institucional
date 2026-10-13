@@ -28,16 +28,18 @@ router.get("/:id", jwtMiddleware.verify, function (req, res) {
   usuarioController.buscarPorId(req, res);
 });
 
-router.put("/atualizar/:id", jwtMiddleware.verify, function (req, res) {
-  usuarioController.atualizar(req, res);
+router.put("/editarEmail/:id", jwtMiddleware.verify, function (req, res) {
+        usuarioController.editarEmail(req,res);
 });
+
 
 router.put("/editarNome/:idUsuario", jwtMiddleware.verify, function (req, res) {
-  usuarioController.editarNome(req, res);
+        usuarioController.editarNome(req,res);
 });
 
-router.delete("/excluir/:id", jwtMiddleware.verify, function (req, res) {
-  usuarioController.deletarUsuario(req, res);
+
+router.put("/editarCargo/:idUsuario", jwtMiddleware.verify, function (req, res) {
+        usuarioController.editarCargo(req,res);
 });
 
 router.delete("/deletarUsuario/:idUsuario", jwtMiddleware.verify, function (req, res) {
