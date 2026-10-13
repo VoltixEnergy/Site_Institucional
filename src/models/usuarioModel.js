@@ -55,7 +55,7 @@ function cadastrar(
     return database.executar(
         instrucaoSql,
         [
-            gerarUuid(),
+            database.gerarUuid(),
             nome,
             email,
             senha,
