@@ -49,15 +49,12 @@ function entrar() {
             resposta.json().then(function (json) {
 
                 console.log(json);
-                console.log("UUID retornado pela API:", json.uuid);
 
                 sessionStorage.EMAIL_USUARIO = json.email;
                 sessionStorage.NOME_USUARIO = json.nome;
-                sessionStorage.UUID_USUARIO = json.uuid;
+                sessionStorage.ID_USUARIO = json.id;
                 sessionStorage.ID_EMPRESA = json.empresa;
                 sessionStorage.FUNCIONARIOS = JSON.stringify(json.funcionarios);
-
-                console.log("UUID salvo:", sessionStorage.getItem("UUID_USUARIO"));
 
                 window.location = "../app";
 
