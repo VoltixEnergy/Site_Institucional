@@ -19,17 +19,10 @@ async function tratarResposta(resposta) {
 
 
 function buscarUsuarios() {
-    var idEmpresa = sessionStorage.ID_EMPRESA;
 
-    console.log("ID da empresa:", idEmpresa);
-
-    if (!idEmpresa) {
-        console.log("Empresa não encontrada no sessionStorage.");
-        return;
-    }
-
-    fetch(`/usuarios/buscarUsuarioPorEmpresa/${idEmpresa}`, {
-        method: "GET"
+    fetch(`/usuarios/buscarUsuarioPorEmpresa`, {
+        method: "GET",
+        credentials: "include",
     })
         .then(function (resposta) {
             return tratarResposta(resposta);

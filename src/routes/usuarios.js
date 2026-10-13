@@ -12,7 +12,7 @@ router.post("/autenticar", function (req, res) {
   usuarioController.autenticar(req, res);
 });
 
-router.get("/buscarUsuarioPorEmpresa/:idEmpresa", jwtMiddleware.verify, function (req, res) {
+router.get("/buscarUsuarioPorEmpresa/", jwtMiddleware.verify, function (req, res) {
   usuarioController.buscarUsuarioPorEmpresa(req, res);
 });
 
