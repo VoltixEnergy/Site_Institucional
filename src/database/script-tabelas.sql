@@ -6,64 +6,167 @@
 comandos para mysql server
 */
 
-CREATE DATABASE IF NOT EXISTS voltix;
+CREATE SCHEMA IF NOT EXISTS voltix;
+
 USE voltix;
 
-CREATE TABLE IF NOT EXISTS empresa(
-    id_empresa INT PRIMARY KEY AUTO_INCREMENT,
-    cnpj CHAR(14) UNIQUE NOT NULL,
-    nome_fantasia VARCHAR(100) NOT NULL,
-    razao_social VARCHAR(100) NOT NULL
+
+-- -----------------------------------------------------
+-- EMPRESA
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS empresa (
+    id INT NOT NULL AUTO_INCREMENT,
+    cnpj CHAR(14) NOT NULL,
+    razao_social VARCHAR(90),
+    nome_fantasia VARCHAR(60),
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+    UNIQUE (cnpj)
 );
 
-CREATE TABLE IF NOT EXISTS usuario(
-    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
-    cpf CHAR(11) UNIQUE NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    nivel_permissao INT,
-    senha VARCHAR(64),
-    fk_empresa INT,
-    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
+CREATE TABLE IF NOT EXISTS especificacao (
+    id INT NOT NULL AUTO_INCREMENT,
+    componente_id INT NOT NULL,
+    nome VARCHAR(120) NOT NULL,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (componente_id)
+        REFERENCES componente (id)
 );
 
-CREATE TABLE IF NOT EXISTS maquina (
-    id_maquina INT PRIMARY KEY AUTO_INCREMENT,
-    nome_maquina VARCHAR(100) NOT NULL,
-    sistema_operacional VARCHAR(50),
-    total_memoria_ram DECIMAL(5, 2) NOT NULL,
-    total_disco DECIMAL(7, 2) NOT NULL,    
-    fk_empresa INT NOT NULL,
-    FOREIGN KEY (fk_empresa) REFERENCES empresa(id_empresa)
+CREATE TABLE IF NOT EXISTS instancia (
+    id INT NOT NULL AUTO_INCREMENT,
+    nome varchar(45),
+    endereco_mac CHAR(12) NOT NULL,
+    descricao TEXT NOT NULL,
+    empresa_id INT NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deletado_em DATETIME,
+    status boolean default true,
+    PRIMARY KEY (id),
+    UNIQUE (endereco_mac),
+
+    FOREIGN KEY (empresa_id)
+        REFERENCES empresa (id)
 );
 
-CREATE TABLE IF NOT EXISTS componente(
-id_componente INT PRIMARY KEY AUTO_INCREMENT,
-nome_componente VARCHAR(15),
-    unidade_medida VARCHAR(3)
+
+-- -----------------------------------------------------
+-- METRICA
+-- -----------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS metrica (
+    id INT NOT NULL AUTO_INCREMENT,
+    instancia_id INT NOT NULL,
+    especificacao_id INT NOT NULL,
+    maximo DOUBLE(8,2),
+    minimo DOUBLE(8,2),
+    unidade_medida VARCHAR(20) NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (instancia_id)
+        REFERENCES instancia (id),
+
+    FOREIGN KEY (especificacao_id)
+        REFERENCES especificacao (id)
 );
 
-CREATE TABLE IF NOT EXISTS leitura(
-    id_leitura INT PRIMARY KEY AUTO_INCREMENT,
-    horario_leitura DATETIME DEFAULT CURRENT_TIMESTAMP,
-    fk_componente INT,
-    FOREIGN KEY (fk_componente) REFERENCES componente(id_componente),
-    fk_maquina INT NOT NULL,
-    FOREIGN KEY (fk_maquina) REFERENCES maquina(id_maquina)
+
+CREATE TABLE IF NOT EXISTS usuario (
+    id INT NOT NULL AUTO_INCREMENT,
+    empresa_id INT NOT NULL,
+    nome VARCHAR(120) NOT NULL,
+    cargo TINYINT NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    senha BLOB NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+    UNIQUE (email),
+
+    FOREIGN KEY (empresa_id)
+        REFERENCES empresa (id)
 );
 
-CREATE TABLE IF NOT EXISTS codigo_ativacao(
-id_codigo INT PRIMARY KEY AUTO_INCREMENT,
-    codigo VARCHAR(64),
-    estado_codigo ENUM("ativado", "desativado")
+CREATE TABLE IF NOT EXISTS componente (
+    id INT NOT NULL AUTO_INCREMENT,
+    tipo VARCHAR(100) NOT NULL,
+
+    PRIMARY KEY (id)
 );
 
-CREATE TABLE IF NOT EXISTS maquina_componente(
-id_maquina_componente INT PRIMARY KEY AUTO_INCREMENT,
-    fk_maquina INT,
-    FOREIGN KEY (fk_maquina) REFERENCES maquina(id_maquina),
-    fk_componente INT,
-    FOREIGN KEY (fk_componente) REFERENCES componente(id_componente),
-    parametro_componente DECIMAL(15,2),
-    estado_componente ENUM("ativado", "desativado")
+CREATE TABLE IF NOT EXISTS alerta (
+    id INT NOT NULL AUTO_INCREMENT,
+    metrica_id INT NOT NULL,
+    prioridade TINYINT NOT NULL,
+    tipo VARCHAR(45),
+    descricao TEXT,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    enviado_em DATETIME,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (metrica_id)
+        REFERENCES metrica (id)
+);
+
+CREATE TABLE IF NOT EXISTS codigo_ativacao (
+    id INT NOT NULL AUTO_INCREMENT,
+    empresa_id INT NOT NULL,
+    codigo CHAR(6) NOT NULL,
+    cargo TINYINT NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expira_em DATETIME NOT NULL,
+    usado_em DATETIME,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+    UNIQUE (codigo),
+
+    FOREIGN KEY (empresa_id)
+        REFERENCES empresa (id)
+);
+
+CREATE TABLE IF NOT EXISTS usuario (
+    id INT NOT NULL AUTO_INCREMENT,
+    empresa_id INT NOT NULL,
+    nome VARCHAR(120) NOT NULL,
+    cargo TINYINT NOT NULL,
+    email VARCHAR(120) NOT NULL,
+    senha BLOB NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+    UNIQUE (email),
+
+    FOREIGN KEY (empresa_id)
+        REFERENCES empresa (id)
+);
+
+CREATE TABLE IF NOT EXISTS contato (
+    id INT NOT NULL AUTO_INCREMENT,
+    email VARCHAR(45) NOT NULL,
+    usuario_id INT NOT NULL,
+    criado_em DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em DATETIME,
+    deletado_em DATETIME,
+
+    PRIMARY KEY (id),
+
+    FOREIGN KEY (usuario_id)
+        REFERENCES usuario (id)
 );
