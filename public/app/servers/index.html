@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+
+  <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Voltix | Servidores</title>
+
+  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+
+  <script src="../../js/sessao.js"></script>
+  <script src="../../js/alerta.js"></script>
+  <!-- <script src="../../js/toast.js"></script> -->
+  <script src="script.js"></script>
+
+</head>
+
+<body onload="buscarServidores()">
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../../assets/icon/Logo.png">
+      <span>Voltix</span>
+    </div>
+
+
+    <nav class="navbar-items">
+      <a href="../" class="item">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
+      <a href="../users" class="item">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+      <a href="./" class="item active">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+    </nav>
+
+
+    <div class="user-data">
+      <div class="icon" id="avatarUsuario"></div>
+      <div class="info">
+        <span class="name" id="nomeUsuario"></span>
+        <span class="email" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'">
+      </i>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="page-content">
+      <div class="page-title">
+
+        <div>
+          <h1>Servidores</h1>
+          <h2 id="companyName">
+            @ Empresa
+          </h2>
+        </div>
+        <button class="add-user-button" onclick="abrirAddUser()">
+          +
+        </button>
+      </div>
+
+      <hr>
+
+      <div class="user-title">
+        <h1>Pesquisar Servidor</h1>
+      </div>
+
+      <div class="search-area">
+        <input type="text" id="input_pesquisa" placeholder="Insira a região">
+
+        <button onclick="Pesquisar()">
+          <i class="ph ph-magnifying-glass"></i>
+          Pesquisar
+        </button>
+      </div>
+
+
+      <div id="listarUsuarios">
+        <div class="user-list-header">
+          <span>Região</span>
+          <span>CPU</span>
+          <span>RAM</span>
+          <span>Disco</span>
+          <span>Perda de pacotes</span>
+          <span>Rede Enviada</span>
+          <span>Rede Recebida</span>
+          <span>Status</span>
+          <span>Atualizar</span>
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+
+
+    <!-- CRIAR NOVO SERVIDOR -->
+
+    <div class="geral" id="geral_addUser">
+
+      <div id="addUser">
+
+        <div class="topButtons">
+          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""
+              width="40rem"></button>
+          <div id="column">
+            <span id="title">Cadastrar uma nova instância</span>
+            <span id="caption">Informe os dados instância e os limites de uso de cada componente </span>
+          </div>
+          <button id="register" onclick="cadastrar()">Cadastrar</button>
+
+        </div>
+
+        <div class="group">
+          <div class="campo">
+            <label>Região</label>
+            <input type="text" id="ipt_regiao">
+          </div>
+
+          <div class="campo">
+            <label>MAC Address</label>
+            <input type="text" id="ipt_mac">
+          </div>
+
+          <div class="campo">
+            <label>Categoria</label>
+            <select id="ipt_categoria">
+              <option>00:1A:2B:3C:4D:5E</option>
+            </select>
+          </div>
+        </div>
+
+        <h2 id="type-title">Limites de uso (mínimo e máximo)</h2>
+
+        <div class="cards-container">
+          <!-- Cartão Ativo (ex: CPU) -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">CPU</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_cpu" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_cpu_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_cpu_max" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">RAM</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_ram" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_ram_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_ram_max" />
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Disco</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_disco" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_disco_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_disco_max" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 id="type-title">Rede</h2>
+        <div class="cards-container">
+          <!--Ativo-->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Perda de pacote</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_perda_pacotes" />
+            </div>
+            <div class="card-body">
+              
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_perda_pacotes_max" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Recebida</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_rede_recebida" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_rede_recebida_min" />
+              </div>
+              
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Enviada</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_rede_enviada" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_rede_enviada_min" />
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+
+    <!-- FIM NOVO SERVIDOR -->
+
+
+
+
+    <!-- ALTERAR INFORMAÇÕES DO SERVIDOR -->
+    <div id="geral_editor">
+
+      <div id="editor">
+
+        <div class="topButtons">
+          <button class="sair" id="sairEditor" onclick="sairEditor()">
+            <i class="ph ph-x"></i>
+          </button>
+        </div>
+
+        <h2>Atualizar Status</h2>
+
+        <div class="update-options">
+       <div class="status">
+         <button class="update-option" id="UpdateDesativar" onclick="buttonDesativar()">Desativar</button>
+         <button class="update-option" id="UpdateAtivarr" onclick="buttonAtivar()">Ativar</button>
+         
+       </div>
+          <div class="functionsButtons">
+            <button id="deletarUsuario" onclick="deletarServidor()">
+              Apagar Instância
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- FECHAR ATUALIZAR SERVIDOR -->
+
+      <div id="toast-container"></div>
+
+  </main>
+</body>
+
+</html>
