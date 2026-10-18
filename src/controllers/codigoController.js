@@ -5,19 +5,20 @@ const companyModel = require("../models/empresaModel")
 const sendCode = async (req, res) => {
     const { companyId, role } = req.token // cargo do usuário da requisição
     const { email, codeRole } = req.body // cargo do novo código
+    
+    const responseBody = {
+      message: "Não foi possível enviar o código."
+    }
 
     if (role !== 1) {
       responseBody.message = "Somente Gestores de TI têm acesso aos usuários do sistema."
-      res.status(401).json(responseBody)
+      return res.status(401).json(responseBody)
     }
 
     console.log("email: " + email, "companyId: " + companyId, "role: " + role)
 
     const code = generateCode()
 
-    const responseBody = {
-      message: "Não foi possível enviar o código."
-    }
 
     if (!email || !companyId || codeRole == null) {
       responseBody.message = "Credenciais inválidas.";
