@@ -2,163 +2,297 @@
 <html lang="pt-br">
 
 <head>
+
   <link rel="shortcut icon" href="../../assets/icon/Logo.ico" type="image/x-icon">
+
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voltix | Relatórios</title>
 
+  <title>Voltix | Servidores</title>
 
   <link rel="stylesheet" href="../../css/dashboard-layout.css">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
-  <script src="./script.js"></script>
+  <!-- <script src="../../js/toast.js"></script> -->
+  <script src="script.js"></script>
 
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
-
-  <!-- scripts do Chart.js - 2022-1 -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <link rel="stylesheet" type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
-<body onload="buscarUsuarios(); carregarInformacoesUsuario()">
-
+<body onload="buscarServidores()">
   <aside class="navbar">
     <div class="logo">
-      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
+      <img src="../../assets/icon/Logo.png">
+      <span>Voltix</span>
     </div>
 
+
     <nav class="navbar-items">
-      <a href="../index.html" class="item">
+      <a href="../" class="item">
         <i class="ph ph-chart-line"></i>
         Dashboard
       </a>
-
-      <a href="../users/index.html" class="item">
+      <a href="../users" class="item">
         <i class="ph ph-users-three"></i>
         Funcionários
       </a>
-
-      <a href="../" class="item active">
+      <a href="./" class="item active">
         <i class="ph ph-hard-drives"></i>
         Servidores
       </a>
-
-      <a href="../codes" class="item">
-        <i class="ph ph-numpad"></i>
-        Códigos
-      </a>
     </nav>
+
 
     <div class="user-data">
       <div class="icon" id="avatarUsuario"></div>
-
       <div class="info">
         <span class="name" id="nomeUsuario"></span>
         <span class="email" id="emailUsuario"></span>
       </div>
 
-      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'">
+      </i>
     </div>
-
   </aside>
 
   <main class="content">
-    <header class="header">
-      <h1 class="title">Servidores</h1>
-      <button onclick="abrirAddUser()">+</button>
-    </header>
+    <div class="page-content">
+      <div class="page-title">
 
-    <div class="users" id="usersBox">
-      <!-- <div class="user">
-          <p id="userAvatar">asd</p>
-          <p id="userName">asd</p>
-      </div> -->
-    </div>
-
-    <div class="geral" id="geral_editor">
-
-      <div id="editor">
-        <div class="topButtons">
-          <button class="sair" id="sairEditor" onclick="sairEditor()"><img src="../../assets/imgs/icone_sair.png"
-              alt=""></button>
+        <div>
+          <h1>Servidores</h1>
+          <h2 id="companyName">
+            @ Empresa
+          </h2>
         </div>
-        <div class="midInputs">
-          <span>Digite o novo nome:</span><input type="text" id="novoNome">
-        </div>
-        <div class="functionsButtons">
-          <button id="mudarNome" onclick="mudarNome()">Alterar Nome</button>
-          <button id="deletarUsuario" onclick="deletarUsuario()">Apagar Usuário</button>
-        </div>
+        <button class="add-user-button" onclick="abrirAddUser()">
+          +
+        </button>
       </div>
+
+      <hr>
+
+      <div class="user-title">
+        <h1>Pesquisar Servidor</h1>
+      </div>
+
+      <div class="search-area">
+        <input type="text" id="input_pesquisa" placeholder="Insira a região">
+
+        <button onclick="Pesquisar()">
+          <i class="ph ph-magnifying-glass"></i>
+          Pesquisar
+        </button>
+      </div>
+
+
+      <div id="listarUsuarios">
+        <div class="user-list-header">
+          <span>Região</span>
+          <span>CPU</span>
+          <span>RAM</span>
+          <span>Disco</span>
+          <span>Perda de pacotes</span>
+          <span>Rede Enviada</span>
+          <span>Rede Recebida</span>
+          <span>Status</span>
+          <span>Atualizar</span>
+        </div>
+
+      </div>
+
     </div>
+    </div>
+
+
+    <!-- CRIAR NOVO SERVIDOR -->
 
     <div class="geral" id="geral_addUser">
 
       <div id="addUser">
 
         <div class="topButtons">
-          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""></button>
+          <button class="sair" onclick="sairAddUser()"><img src="../../assets/imgs/icone_sair.png" alt=""
+              width="40rem"></button>
+          <div id="column">
+            <span id="title">Cadastrar uma nova instância</span>
+            <span id="caption">Informe os dados instância e os limites de uso de cada componente </span>
+          </div>
+          <button id="register" onclick="cadastrar()">Cadastrar</button>
+
         </div>
 
-        <span>Cadastre uma nova instância:</span>
+        <div class="group">
+          <div class="campo">
+            <label>Região</label>
+            <input type="text" id="ipt_regiao">
+          </div>
 
-        <div class="group">
-          <span>Região</span><input type="text" id="iptNome">
-          <span>Statos</span> <input type="text" id="iptEmail">
+          <div class="campo">
+            <label>MAC Address</label>
+            <input type="text" id="ipt_mac">
+          </div>
+
+          <div class="campo">
+            <label>Categoria</label>
+            <select id="ipt_categoria">
+              <option>00:1A:2B:3C:4D:5E</option>
+            </select>
+          </div>
         </div>
-        <div class="group">
-          <span>Componentes</span> <input type="text" id="iptSenha">
-          <span>Confirme a Senha</span> <input id="iptReSenha">
+
+        <h2 id="type-title">Limites de uso (mínimo e máximo)</h2>
+
+        <div class="cards-container">
+          <!-- Cartão Ativo (ex: CPU) -->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">CPU</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_cpu" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_cpu_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_cpu_max" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">RAM</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_ram" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_ram_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_ram_max" />
+              </div>
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Disco</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_disco" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0%" id="ipt_disco_min" />
+              </div>
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="100%" id="ipt_disco_max" />
+              </div>
+            </div>
+          </div>
         </div>
-        <button onclick="cadastrar()">Cadastrar</button>
+
+        <h2 id="type-title">Rede</h2>
+        <div class="cards-container">
+          <!--Ativo-->
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Perda de pacote</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_perda_pacotes" />
+            </div>
+            <div class="card-body">
+              
+              <div class="input-group">
+                <label>Máx.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_perda_pacotes_max" />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Recebida</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_rede_recebida" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_rede_recebida_min" />
+              </div>
+              
+            </div>
+          </div>
+
+
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Rede Enviada</span>
+              <input type="checkbox" class="card-checkbox" id="ipt_rede_enviada" />
+            </div>
+            <div class="card-body">
+              <div class="input-group">
+                <label>Mín.</label>
+                <input type="text" placeholder="0KB/s" id="ipt_rede_enviada_min" />
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
       </div>
+
 
     </div>
 
-    <!-- <div class="perfil_celular">
+    <!-- FIM NOVO SERVIDOR -->
 
-      <div class="logo_celular" onclick="abrir_navbar()">
-        <img src="../../assets/icon/Logo.png" alt="">
+
+
+
+    <!-- ALTERAR INFORMAÇÕES DO SERVIDOR -->
+    <div id="geral_editor">
+
+      <div id="editor">
+
+        <div class="topButtons">
+          <button class="sair" id="sairEditor" onclick="sairEditor()">
+            <i class="ph ph-x"></i>
+          </button>
+        </div>
+
+        <h2>Atualizar Status</h2>
+
+        <div class="update-options">
+       <div class="status">
+         <button class="update-option" id="UpdateDesativar" onclick="buttonDesativar()">Desativar</button>
+         <button class="update-option" id="UpdateAtivarr" onclick="buttonAtivar()">Ativar</button>
+         
+       </div>
+          <div class="functionsButtons">
+            <button id="deletarUsuario" onclick="deletarServidor()">
+              Apagar Instância
+            </button>
+          </div>
+        </div>
       </div>
+      <!-- FECHAR ATUALIZAR SERVIDOR -->
 
-      <div class="usuario_celular">
-        <div class="avatar_usuario" id="avatarUsuario_celular"></div>
-      </div>
-
-    </div> -->
-
-    <!-- <div id="navbar_celular" class="navbar_celular">
-
-      <a href="../">
-        <img src="../../assets/imgs/icone_dashboard.png">
-      </a>
-
-      <a href="../users">
-        <img src="../../assets/imgs/icone_funcionario.png">
-      </a>
-
-      <a href="../servers">
-        <img src="../../assets/imgs/icone_servidor.png">
-      </a>
-
-      <a href="../../index.html">
-        <img src="../../assets/imgs/icone_sair.png">
-      </a>
-
-
-      <button class="fechar_navbar" onclick="abrir_navbar()">
-
-      </button> -->
+      <div id="toast-container"></div>
 
   </main>
-
 </body>
 
 </html>
