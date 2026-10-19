@@ -1,4 +1,4 @@
-const serverModel = require("../models/serverModel ");
+const serverModel = require("../models/serverModel");
 
 
 function autenticar(req, res) {
