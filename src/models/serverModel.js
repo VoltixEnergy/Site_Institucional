@@ -10,14 +10,14 @@ function AddComponentes(
         from metrica m
         JOIN especificacao e ON m.especificacao_id = e.id
         JOIN instancia i ON m.instancia_id = i.id
-        where i.empresa_id = ${empresaId}
+        where i.empresa_id = ?
           AND i.deletado_em IS NULL
           AND m.deletado_em IS NULL;
     `;
 
     return database.executar(
-        instrucaoSql
-
+        instrucaoSql,
+        [empresaId]
     );
 }
 
@@ -31,12 +31,12 @@ function cadastrar_instancia(
 
     const instrucaoSql = `
         INSERT INTO instancia (nome, endereco_mac,  descricao, empresa_id, criado_em)
-        VALUES ('${regiao}', '${mac}', '${categoria}',${empresaId} , now());
+        VALUES ('?', '?', '?', ?, now());
     `;
 
     return database.executar(
         instrucaoSql
-
+      [regiao, mac, categoria, empresaId]
     );
 }
 
@@ -44,18 +44,17 @@ function cadastrar_instancia(
 
 function cadastrar_rede(
     nome,
-    idEspecificacao
+    idComponenteRede = "f5ae3d95-02da-49f6-ba72-4a3913bb6c70"
 ) {
-
     const instrucaoSql = `
         INSERT INTO especificacao (componente_id, nome) VALUES
-        (1, '${nome}')
+        ('?', '?')
     `;
 
 
     return database.executar(
-        instrucaoSql
-
+        instrucaoSql,
+        [idComponenteRede, nome]
     );
 }
 
@@ -70,12 +69,13 @@ function cadastrar_metrica_rede(
 
     const instrucaoSql = `
         INSERT INTO metrica (instancia_id, especificacao_id, minimo, unidade_medida , criado_em) 
-        VALUES ('${idInstancia}', '${idEspecificacao}', '${minimo}', '${unidade_medida}' , now())
+        VALUES ('?', '?', '?', '?' , now())
     `;
 
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idInstancia, idEspecificacao, minimo, unidade_medida]
 
     );
 }
@@ -84,18 +84,19 @@ function cadastrar_metrica_rede(
 // COMEÇO PERDA DE PACOTES
 
 function cadastrar_perda_pacote(
-    nome
-    
+    nome,
+    idComponenteRede = "f5ae3d95-02da-49f6-ba72-4a3913bb6c70"
 ) {
 
     const instrucaoSql = `
         INSERT INTO especificacao (componente_id, nome) VALUES
-        (1, '${nome}')
+        ('?', '?')
     `;
 
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idComponenteRede, nome]
 
     );
 }
@@ -111,12 +112,13 @@ function cadastrar_metrica_perda_pacote(
 
     const instrucaoSql = `
         INSERT INTO metrica (instancia_id, especificacao_id, maximo, unidade_medida , criado_em) 
-        VALUES ('${idInstancia}', '${idEspecificacao}', '${maximo}', '${unidade_medida}' , now())
+        VALUES ('?', '?', '?', '?' , now())
     `;
 
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idInstancia, idEspecificacao, maximo, unidade_medida]
 
     );
 }
@@ -124,18 +126,18 @@ function cadastrar_metrica_perda_pacote(
 
 function cadastrar_cpu(
     nome,
-    idEspecificacao
+    idComponenteCpu = 'f5ae3d95-02da-49f6-ba72-4a3913bb6c67'
 ) {
 
     const instrucaoSql = `
         INSERT INTO especificacao (componente_id, nome) VALUES
-        (1, '${nome}')
+        ('?', '?')
     `;
 
 
     return database.executar(
-        instrucaoSql
-
+        instrucaoSql,
+        [idComponenteCpu, nome]
     );
 }
 
@@ -150,12 +152,13 @@ function cadastrar_metrica(
 
     const instrucaoSql = `
         INSERT INTO metrica (instancia_id, especificacao_id, maximo, minimo, unidade_medida , criado_em) 
-        VALUES ('${idInstancia}', '${idEspecificacao}','${maximo}', '${minimo}', '${unidade_medida}' , now())
+        VALUES ('?', '?','?', '?', '?' , now())
     `;
 
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idInstancia, idEspecificacao, maximo, minimo, unidade_medida]
 
     );
 }
@@ -165,11 +168,12 @@ function update_desativar(idServidor) {
     const instrucaoSql = `
         UPDATE instancia
         SET status = 0
-        WHERE id = ${idServidor};
-    `;
+        WHERE id = '?';
+    `; // adcicionar o atualizado_em como coluna no banco de dados
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idServidor]
     );
 }
 function update_ativar(idServidor) {
@@ -177,11 +181,12 @@ function update_ativar(idServidor) {
     const instrucaoSql = `
         UPDATE instancia
         SET status = 1
-        WHERE id = ${idServidor};
-    `;
+        WHERE id = '?';
+    `; // adcicionar o atualizado_em como coluna no banco de dados
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idServidor]
     );
 }
 
@@ -194,14 +199,15 @@ function pesquisar(nome, empresaId) {
             from metrica m
             JOIN especificacao e ON m.especificacao_id = e.id
             JOIN instancia i ON m.instancia_id = i.id
-            where i.empresa_id = ${empresaId} and i.nome
-            like '%${nome}%'
+            where i.empresa_id = '?' and i.nome
+            like '%?%'
                AND i.deletado_em IS NULL
               AND m.deletado_em IS NULL;
     `;
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [empresaId, nome]
     );
 }
 
@@ -211,11 +217,12 @@ function deletarServidor(idServidor) {
     const instrucaoSql = `
         UPDATE instancia
         SET deletado_em = CURRENT_TIMESTAMP
-        WHERE id = ${idServidor};
+        WHERE id = ?};
     `;
 
     return database.executar(
-        instrucaoSql
+        instrucaoSql,
+        [idServidor]
     );
 }
 
