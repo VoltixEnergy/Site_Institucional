@@ -66,42 +66,6 @@ router.post(
 
 // FIM CPU
 
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-router.post(
-    "/autenticar",
-    function (req, res) {
-        serverController.autenticar(req, res);
-    }
-);
-
-
-/* =========================================================
-   CÓDIGOS
-   ========================================================= */
-
-router.post(
-    "/autenticarCodigo",
-    function (req, res) {
-        serverController.autenticarCodigo(req, res);
-    }
-);
-
-
-router.post(
-    "/adicionarCodigo",
-    function (req, res) {
-        serverController.adicionarCodigo(req, res);
-    }
-);
-
-
-/* =========================================================
-   USUÁRIO POR EMPRESA
-   ========================================================= */
-
 router.get(
     "/buscarserverPorEmpresa/:idEmpresa",
     function (req, res) {
@@ -241,23 +205,6 @@ router.delete(
     function (req, res) {
 
         serverController.deletarServidor(
-            req,
-            res
-        );
-
-    }
-);
-
-
-/* =========================================================
-   BUSCAR CPF
-   ========================================================= */
-
-router.get(
-    "/buscarserverPorCPF/:cpf",
-    function (req, res) {
-
-        serverController.buscarserverPorCPF(
             req,
             res
         );
