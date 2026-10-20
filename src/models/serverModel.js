@@ -30,13 +30,13 @@ function cadastrar_instancia(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO instancia (nome, endereco_mac,  descricao, empresa_id, criado_em)
-        VALUES ('?', '?', '?', ?, now());
+        INSERT INTO instancia (id, nome, endereco_mac,  descricao, empresa_id, criado_em)
+        VALUES ('?', '?', '?', '?', ?, now());
     `;
 
     return database.executar(
         instrucaoSql
-      [regiao, mac, categoria, empresaId]
+      [database.gerarUuid(), regiao, mac, categoria, empresaId]
     );
 }
 
@@ -47,14 +47,14 @@ function cadastrar_rede(
     idComponenteRede = "f5ae3d95-02da-49f6-ba72-4a3913bb6c70"
 ) {
     const instrucaoSql = `
-        INSERT INTO especificacao (componente_id, nome) VALUES
-        ('?', '?')
+        INSERT INTO especificacao (id, componente_id, nome) VALUES
+        ('?', '?', '?')
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idComponenteRede, nome]
+        [database.gerarUuid(), idComponenteRede, nome]
     );
 }
 
@@ -68,14 +68,14 @@ function cadastrar_metrica_rede(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO metrica (instancia_id, especificacao_id, minimo, unidade_medida , criado_em) 
-        VALUES ('?', '?', '?', '?' , now())
+        INSERT INTO metrica (id, instancia_id, especificacao_id, minimo, unidade_medida , criado_em) 
+        VALUES ('?', '?', '?', '?', '?' , now())
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idInstancia, idEspecificacao, minimo, unidade_medida]
+        [database.gerarUuid(), idInstancia, idEspecificacao, minimo, unidade_medida]
 
     );
 }
@@ -89,14 +89,14 @@ function cadastrar_perda_pacote(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO especificacao (componente_id, nome) VALUES
-        ('?', '?')
+        INSERT INTO especificacao (id, componente_id, nome) VALUES
+        ('?', '?', '?')
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idComponenteRede, nome]
+        [database.gerarUuid(), idComponenteRede, nome]
 
     );
 }
@@ -111,14 +111,14 @@ function cadastrar_metrica_perda_pacote(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO metrica (instancia_id, especificacao_id, maximo, unidade_medida , criado_em) 
-        VALUES ('?', '?', '?', '?' , now())
+        INSERT INTO metrica (id, instancia_id, especificacao_id, maximo, unidade_medida , criado_em) 
+        VALUES ('?', '?', '?', '?', '?' , now())
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idInstancia, idEspecificacao, maximo, unidade_medida]
+        [database.gerarUuid(), idInstancia, idEspecificacao, maximo, unidade_medida]
 
     );
 }
@@ -130,14 +130,14 @@ function cadastrar_cpu(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO especificacao (componente_id, nome) VALUES
-        ('?', '?')
+        INSERT INTO especificacao (id, componente_id, nome) VALUES
+        ('?', '?', '?')
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idComponenteCpu, nome]
+        [database.gerarUuid(), idComponenteCpu, nome]
     );
 }
 
@@ -151,14 +151,14 @@ function cadastrar_metrica(
 ) {
 
     const instrucaoSql = `
-        INSERT INTO metrica (instancia_id, especificacao_id, maximo, minimo, unidade_medida , criado_em) 
-        VALUES ('?', '?','?', '?', '?' , now())
+        INSERT INTO metrica (id, instancia_id, especificacao_id, maximo, minimo, unidade_medida , criado_em) 
+        VALUES ('?', '?', '?','?', '?', '?' , now())
     `;
 
 
     return database.executar(
         instrucaoSql,
-        [idInstancia, idEspecificacao, maximo, minimo, unidade_medida]
+        [database.gerarUuid(), idInstancia, idEspecificacao, maximo, minimo, unidade_medida]
 
     );
 }
