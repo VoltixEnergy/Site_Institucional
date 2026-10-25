@@ -22,11 +22,8 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-  />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
 <body onload="carregarInformacoesUsuario()">
@@ -71,26 +68,134 @@
 
   </aside>
 
-  <div class="em_breve">
 
-    <div class="mensagem_em_breve">
+  <div class="conteiner">
+    <div class="em_breve">
+      <div class="Tkpis">
+        <div class="KPI">
+          <i class="ph ph-hard-drives" style="font-size: 32px;"></i>
+          <h2>Servidores Ativos</h2>
+          <span>8/9</span>
+        </div>
+        <div class="KPI">
+          <i class="ph ph-warning" style="font-size: 32px;"></i>
+          <h2>Servidores Em Alerta</h2>
+          <span>3</span>
+        </div>
+        <div class="KPI">
+          <i class="ph ph-map-pin" style="font-size: 32px;"></i>
+          <h2>Menor Variação</h2>
+          <span>Região 01</span>
+        </div>
+        <div class="KPI">
+          <i class="ph ph-warning" style="font-size: 32px;"></i>
+          <h2>Alertas Hoje</h2>
+          <span>4</span>
+        </div>
 
-      <div class="icone_breve">
-        <img src="../assets/imgs/icone_cadeado.png">
       </div>
 
-      <h2>Em breve!</h2>
+      <div class="dados">
+        <div class="server">
+          <div class="page-title">
+            <div class="pesquisar">
+              <div class="user-title">
+                <h1>Pesquisar Servidor</h1>
+              </div>
 
-      <span>Esta funcionalidade estará disponível em breve.</span>
+              <div class="search-area">
+                <input type="text" id="input_pesquisa" placeholder="Insira o servidor">
 
-      <div class="aguarde_breve">
-        <img src="../assets/imgs/icone_tempo.png">
-        Aguarde novidades
+                <button onclick="Pesquisar()">
+                  <i class="ph ph-magnifying-glass" style="font-size: 22px;"></i>
+                </button>
+              </div>
+            </div>
+            <div class="button-add">
+              <button class="add-user-button" onclick="window.location.href='../app/servers/'">
+                +
+              </button>
+            </div>
+          </div>
+
+
+          <div class="filter">
+            <select name="filtro" id="filter">
+              <option value="ipt_filter">FILTRAR</option>
+            </select>
+          </div>
+          <div class="conteiner-box">
+            <div class="box">
+              <div class="status-box">
+                <div class="button-add-status"></div>
+                <p style="font-size: 15px; font-weight: 550; color: green;">ATIVO</p>
+              </div>
+
+              <span>Região 01</span>
+            </div>
+
+
+          </div>
+
+        </div>
+        <div class="alert">
+          <h2>Alertas - 06/10/2026</h2>
+          <div class="alert-dados">
+            <div class="dados-alertas">
+              <div class="valor">
+                <h4>xxxxxxxxxx 01</h4>
+                <span style="color: #ff0000;">CPU - 80%</span>
+              </div>
+              <div class="obs">
+                <span>06/10/2026 - 14h55m</span>
+                <span style="color: #ff0000; font-size: 15px; font-weight: bold; margin-right: 6px;">CPU Crítica</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert-dados">
+            <div class="dados-alertas">
+              <div class="valor">
+                <h4>xxxxxxxxxx 01</h4>
+                <span style="color: #ff0000;">CPU - 80%</span>
+              </div>
+              <div class="obs">
+                <span>06/10/2026 - 14h55m</span>
+                <span style="color: #ff0000; font-size: 15px; font-weight: bold; margin-right: 6px;">CPU Crítica</span>
+              </div>
+            </div>
+          </div>
+          <div class="alert-dados">
+            <div class="dados-alertas">
+              <div class="valor">
+                <h4>xxxxxxxxxx 01</h4>
+                <span style="color: #ff0000;">CPU - 80%</span>
+              </div>
+              <div class="obs">
+                <span>06/10/2026 - 14h55m</span>
+                <span style="color: #ff0000; font-size: 15px; font-weight: bold; margin-right: 6px;">CPU Crítica</span>
+              </div>
+            </div>
+          </div>
+          <div class="alert-dados">
+            <div class="dados-alertas">
+              <div class="valor">
+                <h4>xxxxxxxxxx 01</h4>
+                <span style="color: #ff0000;">CPU - 80%</span>
+              </div>
+              <div class="obs">
+                <span>06/10/2026 - 14h55m</span>
+                <span style="color: #ff0000; font-size: 15px; font-weight: bold; margin-right: 6px;">CPU Crítica</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-
     </div>
 
   </div>
+
+
 
   <!-- <div class="perfil_celular">
 
