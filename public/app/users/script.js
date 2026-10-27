@@ -1,11 +1,4 @@
 // TODO: substituir alerts por toasts
-function loadCompanyName(){
-  const companyName = sessionStorage.getItem("COMPANY_NAME")
-  const companyNameElement = document.getElementById("companyName")
-
-  companyNameElement.innerText = `@ ${companyName}`
-}
-
 async function tratarResposta(resposta) {
     const body = await resposta.json();
 

@@ -44,3 +44,10 @@ function carregarInformacoesUsuario () {
 function abrir_navbar() {
   document.getElementById("navbar_celular").classList.toggle("ativo");
 }
+
+function loadCompanyName(){
+  const companyName = sessionStorage.getItem("COMPANY_NAME")
+  const companyNameElement = document.getElementById("companyName")
+
+  companyNameElement.innerText = `@ ${companyName}`
+}
