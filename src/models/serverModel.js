@@ -202,15 +202,15 @@ async function pesquisar(nome, empresaId) {
             from metrica m
             JOIN especificacao e ON m.especificacao_id = e.id
             JOIN instancia i ON m.instancia_id = i.id
-            where i.empresa_id = '?' and i.nome
-            like '%?%'
+            where i.empresa_id = ? and i.nome
+            like ?
                AND i.deletado_em IS NULL
               AND m.deletado_em IS NULL;
     `;
 
     return await database.executar(
         instrucaoSql,
-        [empresaId, nome]
+        [empresaId, '%' + nome + '%']
     );
 }
 

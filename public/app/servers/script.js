@@ -1,9 +1,9 @@
-var cpu = 'NA';
-var ram = 'NA';
-var disco = 'NA';
-var perda_pacote = 'NA';
-var rede_enviada = 'NA';
-var rede_recebida = 'NA';
+var cpu = '-';
+var ram = '-';
+var disco = '-';
+var perda_pacote = '-';
+var rede_enviada = '-';
+var rede_recebida = '-';
 
 function buscarServidores() {
   // var idEmpresa = sessionStorage.ID_EMPRESA;
@@ -122,12 +122,12 @@ function buscarServidores() {
 
         </div>`
 
-          cpu = 'NA';
-          ram = 'NA';
-          disco = 'NA';
-          perda_pacote = 'NA';
-          rede_enviada = 'NA';
-          rede_recebida = 'NA';
+          cpu = '-';
+          ram = '-';
+          disco = '-';
+          perda_pacote = '-';
+          rede_enviada = '-';
+          rede_recebida = '-';
 
 
 
@@ -272,12 +272,12 @@ function Pesquisar() {
 
         </div>`
 
-          cpu = 'NA';
-          ram = 'NA';
-          disco = 'NA';
-          perda_pacote = 'NA';
-          rede_enviada = 'NA';
-          rede_recebida = 'NA';
+          cpu = '-';
+          ram = '-';
+          disco = '-';
+          perda_pacote = '-';
+          rede_enviada = '-';
+          rede_recebida = '-';
 
 
 

@@ -530,13 +530,13 @@ function update_ativar(req, res) {
 function pesquisar(req, res) {
 
     const nome = req.params.nome;
-    const { companyId: empresaId } = req.token;
+    const { role, companyId: empresaId } = req.token;
 
-    // if (role !== 1){
-    //   return res.status(401).json({
-    //     mensagem: "Somente Gestores de TI têm acesso aos servidores do sistema."
-    //   })
-    // }
+    if (role !== 1){
+      return res.status(401).json({
+        mensagem: "Somente Gestores de TI têm acesso aos servidores do sistema."
+      })
+    }
 
     serverModel.pesquisar(nome, empresaId)
         .then(function (resultado) {
