@@ -83,6 +83,10 @@ const generateCode = () => {
 const editCode = async (req, res) => {
   const { role: userRole, companyId } = req.token
   const { id, role, email, isRenewal } = req.body
+  
+  const responseBody = {
+    message: ""
+  }
 
   if (userRole !== 1) {
     const responseBody = {
@@ -91,9 +95,6 @@ const editCode = async (req, res) => {
     return res.status(401).json(responseBody)
   }
   
-  const responseBody = {
-    message: ""
-  }
 
   if (!id) {
     responseBody.message = "Id do código está inválido"

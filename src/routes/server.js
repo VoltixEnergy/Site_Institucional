@@ -5,6 +5,7 @@ const router = express.Router();
 const serverController =
     require("../controllers/servidorController");
 
+const jwtMiddleware = require("../middlewares/jwt.middleware")
 
 /* =========================================================
    CADASTRO
@@ -12,6 +13,7 @@ const serverController =
 
 router.post(
     "/cadastrar-instancia",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_instancia(req, res);
     }
@@ -20,14 +22,25 @@ router.post(
 // COMEÇO METRICAS
 router.post(
     "/cadastrar-cpu",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_cpu(req, res);
     }
 );
+
 router.post(
     "/cadastrar-metrica",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_metrica(req, res);
+    }
+);
+
+router.get(
+    "/dados-instancia/:id",
+    jwtMiddleware.verify,
+    function (req, res) {
+        serverController.buscarDadosInstancia(req, res);
     }
 );
 
@@ -36,6 +49,7 @@ router.post(
 
 router.post(
     "/cadastrar-rede",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_rede(req, res);
     }
@@ -43,15 +57,25 @@ router.post(
 
 router.post(
     "/cadastrar-metrica-rede",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_metrica_rede(req, res);
     }
 );
 
+// router.get(
+//     "/list",
+//     jwtMiddleware.verify,
+//     function (req, res) {
+//         serverController.listServers(req, res);
+//     }
+// );
+
 //perda pacotes
 
 router.post(
     "/cadastrar-perda-pacote",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_perda_pacote(req, res);
     }
@@ -59,6 +83,7 @@ router.post(
 
 router.post(
     "/cadastrar-metrica-perda-pacote",
+    jwtMiddleware.verify,
     function (req, res) {
         serverController.cadastrar_metrica_perda_pacote(req, res);
     }
@@ -68,6 +93,7 @@ router.post(
 
 router.get(
     "/buscarserverPorEmpresa/:idEmpresa",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.buscarserverPorEmpresa(
@@ -85,6 +111,7 @@ router.get(
 
 router.get(
     "/listar/:idEmpresa",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.listar(
@@ -101,6 +128,7 @@ router.get(
 
 router.get(
     "/update_desativar/:idServidor",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.update_desativar(
@@ -117,6 +145,7 @@ router.get(
 
 router.get(
     "/update_ativar/:idServidor",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.update_ativar(
@@ -133,7 +162,8 @@ router.get(
    ========================================================= */
 
 router.get(
-    "/pesquisar/:nome/:empresaId",
+    "/pesquisar/:nome",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.pesquisar(
@@ -149,17 +179,18 @@ router.get(
    BUSCAR POR ID
    ========================================================= */
 
-router.get(
-    "/:id",
-    function (req, res) {
+// router.get(
+//     "/:id",
+//     jwtMiddleware.verify,
+//     function (req, res) {
 
-        serverController.buscarPorId(
-            req,
-            res
-        );
+//         serverController.buscarPorId(
+//             req,
+//             res
+//         );
 
-    }
-);
+//     }
+// );
 
 
 /* =========================================================
@@ -168,6 +199,7 @@ router.get(
 
 router.put(
     "/atualizar/:id",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.atualizar(
@@ -178,30 +210,13 @@ router.put(
     }
 );
 
-
-/* =========================================================
-   EDITAR NOME — ANTIGO
-   ========================================================= */
-
-router.put(
-    "/editarNome/:idserver",
-    function (req, res) {
-
-        serverController.editarNome(
-            req,
-            res
-        );
-
-    }
-);
-
-
 /* =========================================================
    EXCLUIR — ANTIGO
    ========================================================= */
 
 router.delete(
     "/deletarservidor/:idServidor",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.deletarServidor(
@@ -214,7 +229,8 @@ router.delete(
 
 
 router.get(
-    "/AddComponentes/:empresaId",
+    "/AddComponentes",
+    jwtMiddleware.verify,
     function (req, res) {
 
         serverController.AddComponentes(

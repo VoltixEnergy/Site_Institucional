@@ -6,16 +6,10 @@ var rede_enviada = 'NA';
 var rede_recebida = 'NA';
 
 function buscarServidores() {
-  var idEmpresa = sessionStorage.ID_EMPRESA;
+  // var idEmpresa = sessionStorage.ID_EMPRESA;
 
-  console.log("ID da empresa:", idEmpresa);
-
-  if (!idEmpresa) {
-    console.log("Empresa não encontrada no sessionStorage.");
-    return;
-  }
-
-  fetch(`/server/AddComponentes/${idEmpresa}`, {
+  fetch(`/server/AddComponentes`, {
+    credentials: "include",
     method: "GET"
   })
     .then(function (resposta) {
@@ -73,27 +67,27 @@ function buscarServidores() {
         //   segundaLetra = item.nome.charAt(1).toUpperCase();
         // }
 
-        if (servidor[i]['componente'] == 'cpu_use_percent') {
+        if (servidor[i]['componente'] == 'cpu_use_percent' && (servidor[i]['min'] || servidor[i]['max'])) {
           cpu = servidor[i]['componente'] == 'cpu_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
-        if (servidor[i]['componente'] == 'ram_total_percent') {
-          ram = servidor[i]['componente'] == 'ram_total_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
+        if (servidor[i]['componente'] == 'ram_use_percent'&& (servidor[i]['min'] || servidor[i]['max'])) {
+          ram = servidor[i]['componente'] == 'ram_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
-        if (servidor[i]['componente'] == 'disk_free_percent') {
-          disco = servidor[i]['componente'] == 'disk_free_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
+        if (servidor[i]['componente'] == 'disk_use_percent'&& (servidor[i]['min'] || servidor[i]['max'])) {
+          disco = servidor[i]['componente'] == 'disk_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
-        if (servidor[i]['componente'] == 'package_drop_total') {
-          perda_pacote = servidor[i]['componente'] == 'package_drop_total' ? (servidor[i]['max']) + 'KB/s' : '';
+        if (servidor[i]['componente'] == 'package_drop_total'&& (servidor[i]['min'] || servidor[i]['max'])) {
+          perda_pacote = servidor[i]['componente'] == 'package_drop_total' ? (servidor[i]['max']) + ' pacotes/s' : '';
 
         }
-        if (servidor[i]['componente'] == 'network_sent') {
+        if (servidor[i]['componente'] == 'network_sent'&& (servidor[i]['min'] || servidor[i]['max'])) {
           rede_enviada = servidor[i]['componente'] == 'network_sent' ? (servidor[i]['min']) + 'KB/s ' : "";
 
         }
-        if (servidor[i]['componente'] == 'network_received') {
+        if (servidor[i]['componente'] == 'network_received'&& (servidor[i]['min'] || servidor[i]['max'])) {
           rede_recebida = servidor[i]['componente'] == 'network_received' ? (servidor[i]['min']) + 'KB/s ' : "";
 
         }
@@ -123,7 +117,7 @@ function buscarServidores() {
           <span>${rede_recebida}</span>
           <span id="status" class = "cor">${servidor[i]['status'] == '1' ? 'Ativo' : "Inativo"}</span>
 
-          <button onclick="abrirEditor(${servidor[i]['instancia_id']})" id="img_atualizar"><img src="../../assets/imgs/edit.png"
+          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><img src="../../assets/imgs/edit.png"
               width="18px"></button>
 
         </div>`
@@ -196,14 +190,15 @@ function StatusCor(){
 
 function Pesquisar() {
     var nome = document.getElementById("input_pesquisa").value;
-    var empresaId = sessionStorage.ID_EMPRESA;
+    // var empresaId = sessionStorage.ID_EMPRESA;
 
     if (nome == "") {
         buscarUsuarios();
         return;
     }
 
-    fetch(`/server/pesquisar/${nome}/${empresaId}`, {
+    fetch(`/server/pesquisar/${nome}`, {
+        credentials: "include",
         method: "GET"
     })
         .then(function (resposta) {
@@ -272,7 +267,7 @@ function Pesquisar() {
           <span>${rede_recebida}</span>
           <span id="status" class = "cor">${servidor[i]['status'] == '1' ? 'Ativo' : "Inativo"}</span>
 
-          <button onclick="abrirEditor(${servidor[i]['instancia_id']})" id="img_atualizar"><img src="../../assets/imgs/edit.png"
+          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><img src="../../assets/imgs/edit.png"
               width="18px"></button>
 
         </div>`
@@ -299,67 +294,98 @@ function Pesquisar() {
 }
 
 
-
-function editarNome(novoNome, idUsuario) {
-  fetch("/usuarios/editarNome/:idUsuario", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      novoNome: novoNome,
-      idUsuario: idUsuario
-    })
-  }).then(function (resposta) {
-    console.log("ESTOU NO THEN DO entrar()!")
-
-    if (resposta.ok) {
-      console.log(resposta);
-      let funcionarios = JSON.parse(sessionStorage.FUNCIONARIOS);
-      for (let i = 0; i < funcionarios.length; i++) {
-
-        if (funcionarios[i].id_usuario == idUsuario) {
-
-          funcionarios[i].nome = novoNome;
-
-        }
-      }
-      sessionStorage.FUNCIONARIOS = JSON.stringify(funcionarios);
-
-      window.location.reload()
-      resposta.json().then(json => {
-        console.log(json);
-
-      });
-
-    } else {
-
-      console.log("Houve um erro ao tentar atualizar os dados!");
-
-      resposta.text().then(texto => {
-        console.error(texto);
-        finalizarAguardar(texto);
-      });
-    }
-
-  }).catch(function (erro) {
-    console.log(erro);
-  })
-
-  return false;
-}
-
-
-let idServidorEditar = null
+var idServidorEditar = null
 // const mudarNomeDiv = document.getElementById("mudarNome")
 // const editorWrapper = document.getElementById("editorWrapper")
 const editor = document.getElementById("editor")
 
-function abrirEditor(id) {
+async function abrirEditor(id) {
   idServidorEditar = id;
   document.getElementById("geral_editor").style.display = "flex";
-  document.getElementById("alterarNomeArea").style.display = "none";
-  document.getElementById("alterarEmailArea").style.display = "none";
+
+  let regiaoVar = document.getElementById("ipt_regiao_edit");
+  let macVar = document.getElementById("ipt_mac_edit");
+  // let categoriaVar = document.getElementById("ipt_categoria_edit");
+  let cpuVar = document.getElementById("ipt_cpu_edit");
+  let cpu_minVar = document.getElementById("ipt_cpu_min_edit");
+  let cpu_maxVar = document.getElementById("ipt_cpu_max_edit");
+  let ramVar = document.getElementById("ipt_ram_edit");
+  let ram_minVar = document.getElementById("ipt_ram_min_edit");
+  let ram_maxVar = document.getElementById("ipt_ram_max_edit");
+  let discoVar = document.getElementById("ipt_disco_edit");
+  let disco_minVar = document.getElementById("ipt_disco_min_edit");
+  let disco_maxVar = document.getElementById("ipt_disco_max_edit");
+  let perda_pacotesVar = document.getElementById("ipt_perda_pacotes_edit");
+  let perda_pacotes_maxVar = document.getElementById("ipt_perda_pacotes_max_edit");
+  let rede_recebidaVar = document.getElementById("ipt_rede_recebida_edit");
+  let rede_recebida_minVar = document.getElementById("ipt_rede_recebida_min_edit");
+  let rede_enviadaVar = document.getElementById("ipt_rede_enviada_edit");
+  let rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
+
+  const response = await fetch("/server/dados-instancia/" + idServidorEditar, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+
+  if (response.status != 200) 
+    return alert("algo de errado");
+  
+  const responseJson = await response.json();
+
+  const data = responseJson.data;
+  console.log(data);
+
+  console.log(data[0].regiao)
+  console.log(data[0].endereco_mac)
+
+  regiaoVar.value = data[0].regiao
+
+  let enderecoMac = ""
+  for(let i = 0; i < data[0].endereco_mac.length; i++) {
+    enderecoMac += data[0].endereco_mac[i]
+    if (i > 0 && i < 11 && i % 2 != 0)
+      enderecoMac += ":"
+  }
+
+  macVar.value = enderecoMac
+  
+  for (let i = 0; i < data.length; i++) {
+    const comp = data[i].componente;
+    switch (comp) {
+      case "cpu_use_percent":
+        cpuVar.checked = true;
+        cpu_minVar.value = data[i].min;
+        cpu_maxVar.value = data[i].max;
+        break;
+      case "ram_use_percent":
+        ramVar.checked = true;
+        ram_minVar.value = data[i].min;
+        ram_maxVar.value = data[i].max;
+        break;
+      case "disk_use_percent":
+        discoVar.checked = true;
+        disco_minVar.value = data[i].min;
+        disco_maxVar.value = data[i].max;
+        break;
+      case "network_sent":
+        rede_enviadaVar.checked = true;
+        rede_enviada_minVar.value = data[i].min;
+        break;
+      case "network_received":
+        rede_recebidaVar.checked = true;
+        rede_recebida_minVar.value = data[i].min;
+        break;
+      case "package_drop_total":
+        perda_pacotesVar.checked = true;
+        perda_pacotes_maxVar.value = data[i].max;
+        break;
+    }
+  }
+  // document.getElementById("alterarNomeArea").style.display = "none";
+  // document.getElementById("alterarEmailArea").style.display = "none";
 }
 
 function sairEditor() {
@@ -385,6 +411,7 @@ function deletarServidor() {
   }
 
   fetch(`/server/deletarservidor/${idServidor}`, {
+    credentials: "include",
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
@@ -404,11 +431,13 @@ function deletarServidor() {
 
 
 
-function cadastrar() {
+async function cadastrar() {
   var regiaoVar = document.getElementById("ipt_regiao").value;
   var macVar = document.getElementById("ipt_mac").value;
-  var categoriaVar = document.getElementById("ipt_categoria").value;
+  // var categoriaVar = document.getElementById("ipt_categoria").value;
   var cpuVar = document.getElementById("ipt_cpu");
+  var cpu_minVar = document.getElementById("ipt_cpu_min").value;
+  var cpu_maxVar = document.getElementById("ipt_cpu_max").value;
   var ramVar = document.getElementById("ipt_ram");
   var ram_minVar = document.getElementById("ipt_ram_min").value;
   var ram_maxVar = document.getElementById("ipt_ram_max").value;
@@ -421,661 +450,69 @@ function cadastrar() {
   var rede_recebida_minVar = document.getElementById("ipt_rede_recebida_min").value;
   var rede_enviadaVar = document.getElementById("ipt_rede_enviada");
   var rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min").value;
-  var empresaIdVar = sessionStorage.ID_EMPRESA;
-  var idInstancia = 0;
 
+  const body = {
+    mac: macVar,
+    name: regiaoVar
+  }
 
+  if (cpuVar.checked) {
+    body.cpu = {
+      min: cpu_minVar,
+      max: cpu_maxVar,
+    }
+  }
 
+  if (ramVar.checked) {
+    body.ram = {
+      min: ram_minVar,
+      max: ram_maxVar,
+    }
+  }
 
+  if (discoVar.checked) {
+    body.disk = {
+      min: disco_minVar,
+      max: disco_maxVar,
+    }
+  }
 
-  // if (nomeVar.length < 3) {
-  //     alert("O nome deve ter ao menos 3 caracteres.");
-  //     return false;
-  // }
+  if (perda_pacotesVar.checked) {
+    body.packageDrop = {
+      max: perda_pacotes_maxVar,
+    }
+  }
 
-  // if (senhaVar.length < 6) {
-  //     alert("A senha deve ter ao menos 6 caracteres.");
-  //     return false;
-  // }
+  if (rede_recebidaVar.checked) {
+    body.networkRecv = {
+      min: rede_recebida_minVar,
+    }
+  }
 
-  // if (senhaVar != confirmacaoSenhaVar) {
-  //     alert("As senhas não coincidem.");
-  //     return false;
-  // }
+  if (rede_enviadaVar.checked) {
+    body.networkSent = {
+      min: rede_enviada_minVar,
+    }
+  }
 
-  fetch("/server/cadastrar-instancia", {
+  const registerResponse = await fetch("/server/cadastrar-instancia", {
+    credentials: "include",
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({
-      regiao: regiaoVar,
-      mac: macVar,
-      categoria: categoriaVar,
-      empresaId: empresaIdVar,
-    })
+    body: JSON.stringify(body)
   })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
 
-      if (resposta.ok) {
-        return resposta.json();
+  if (registerResponse.status != 201) 
+    return alert("algo de errado")
+  
+  const responseJson = await registerResponse.json()
 
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar intância.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("Intância cadastrado:", resultado);
-      alert("Intância cadastrado com sucesso!");
-      idInstancia = resultado.insertId;
-      if (cpuVar.checked) {
-        cadastrar_cpu(idInstancia);
-      }
-      if (ramVar.checked) {
-        cadastrar_ram(idInstancia);
-      }
-      if (discoVar.checked) {
-        cadastrar_disco(idInstancia);
-      }
-      if (perda_pacotesVar.checked) {
-        cadastrar_perda_pacote(idInstancia);
-      }
-      if (rede_enviadaVar.checked) {
-        cadastrar_rede_enviada(idInstancia);
-      }
-      if (rede_recebidaVar.checked) {
-        cadastrar_rede_recebida(idInstancia);
-      }
+  alert(responseJson.mensagem)
+  console.log(responseJson)
 
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-      alert("Não foi possível cadastrar o intância.");
-
-    });
-
-
-
-
-  return false;
-
-
-}
-
-// CPU
-function cadastrar_cpu(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-cpu", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'cpu_use_percent',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar especificação.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("Especificação. cadastrado:", resultado);
-      alert("Especificação. cadastrado com sucesso!");
-      idEspecificacao = resultado.insertId;
-
-      cpu_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-      alert("Não foi possível cadastrar o especificação..");
-    });
-
-
-
-  return null;
-
-}
-
-function cpu_metrica(idEspecificacao, idInstancia) {
-
-  var cpu_minVar = document.getElementById("ipt_cpu_min").value;
-  var cpu_maxVar = document.getElementById("ipt_cpu_max").value;
-  var unidade_medidaVar = '%';
-
-
-
-  fetch("/server/cadastrar-metrica", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      maximo: cpu_maxVar,
-      minimo: cpu_minVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar métrica.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("Métrica cadastrado:", resultado);
-      window.location.reload()
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-  return null;
-}
-
-// RAM
-
-function cadastrar_ram(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-cpu", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'ram_total_percent',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar ram.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("RAM. cadastrado:", resultado);
-      idEspecificacao = resultado.insertId;
-
-      ram_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
-
-}
-
-function ram_metrica(idEspecificacao, idInstancia) {
-
-  var ram_minVar = document.getElementById("ipt_ram_min").value;
-  var ram_maxVar = document.getElementById("ipt_ram_max").value;
-  var unidade_medidaVar = '%';
-
-  fetch("/server/cadastrar-metrica", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      maximo: ram_maxVar,
-      minimo: ram_minVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar ram.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("ram cadastrado:", resultado);
-      window.location.reload()
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-  return null;
-}
-
-// Disco
-
-
-function cadastrar_disco(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-cpu", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'disk_free_percent',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar disco.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("disco. cadastrado:", resultado);
-      idEspecificacao = resultado.insertId;
-
-      disco_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
-
-}
-
-function disco_metrica(idEspecificacao, idInstancia) {
-
-  var disco_minVar = document.getElementById("ipt_disco_min").value;
-  var disco_maxVar = document.getElementById("ipt_disco_max").value;
-  var unidade_medidaVar = '%';
-
-  fetch("/server/cadastrar-metrica", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      maximo: disco_maxVar,
-      minimo: disco_minVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar DISCO.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("DISCO cadastrado:", resultado);
-      window.location.reload()
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-  return null;
-}
-
-// PERDA DE PACOTE
-
-
-function cadastrar_perda_pacote(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-perda-pacote", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'package_drop_total',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar perda de pacotes.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("perda de pacotes. cadastrado:", resultado);
-      idEspecificacao = resultado.insertId;
-
-      perda_pacotes_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
-
-}
-
-function perda_pacotes_metrica(idEspecificacao, idInstancia) {
-
-  var perda_pacotes_maxVar = document.getElementById("ipt_perda_pacotes_max").value;
-  var unidade_medidaVar = 'KB/s';
-
-
-
-  fetch("/server/cadastrar-metrica-perda-pacote", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      maximo: perda_pacotes_maxVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar perda de pacotes.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("perda de pacotes cadastrado:", resultado);
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-  return null;
-}
-
-// REDE ENVIADA
-
-function cadastrar_rede_enviada(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-rede", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'network_sent',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar Rede enviada.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("Rede. cadastrado:", resultado);
-      idEspecificacao = resultado.insertId;
-
-      rede_enviada_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
-
-}
-
-function rede_enviada_metrica(idEspecificacao, idInstancia) {
-
-  var rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min").value;
-  var unidade_medidaVar = 'KB/s';
-
-
-  fetch("/server/cadastrar-metrica-rede", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-
-      minimo: rede_enviada_minVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar rede enviada.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("rede enviada cadastrado:", resultado);
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-  return null;
-}
-
-
-// REDE RECEBIDA
-
-function cadastrar_rede_recebida(idInstancia) {
-
-
-  var idEspecificacao = 0;
-
-  // Especificação
-  fetch("/server/cadastrar-rede", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      nome: 'network_received',
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar rede recebida.");
-        });
-      }
-    })
-    .then(function (resultado) {
-      console.log("rede recebida. cadastrado:", resultado);
-      idEspecificacao = resultado.insertId;
-
-      rede_recebida_metrica(idEspecificacao, idInstancia);
-
-
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
-
-}
-
-function rede_recebida_metrica(idEspecificacao, idInstancia) {
-
-  var rede_recebida_minVar = document.getElementById("ipt_rede_recebida_min").value;
-  var unidade_medidaVar = 'KB/s';
-
-  // alert(rede_recebida_maxVar)
-  // alert(rede_recebida_minVar)
-  // alert(unidade_medidaVar)
-  // alert(idEspecificacao)
-  // alert(idInstancia)
-
-  fetch("/server/cadastrar-metrica-rede", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      minimo: rede_recebida_minVar,
-      unidade_medida: unidade_medidaVar,
-      idEspecificacao: idEspecificacao,
-      idInstancia: idInstancia,
-
-
-    })
-  })
-    .then(function (resposta) {
-      console.log("Resposta cadastro:", resposta);
-
-      if (resposta.ok) {
-        return resposta.json();
-      } else {
-        return resposta.text().then(function (texto) {
-          console.error(texto);
-          throw new Error("Erro ao cadastrar rede recebida.");
-        });
-      }
-    })
-    .then(function (resultado) {
-
-      console.log("rede recebida cadastrado:", resultado);
-      window.location.reload();
-    })
-    .catch(function (erro) {
-      console.log("Erro no cadastro:", erro);
-    });
-
-
-
-  return null;
+  setInterval(() => window.location.reload(), 3000)
 }
 
 function buttonDesativar() {
@@ -1088,6 +525,7 @@ function buttonDesativar() {
   }
 
   fetch(`/server/update_desativar/${idServidor}`, {
+    credentials: "include",
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -1118,6 +556,7 @@ function buttonAtivar() {
   }
 
   fetch(`/server/update_ativar/${idServidor}`, {
+    credentials: "include",
     method: "GET",
     headers: {
       "Content-Type": "application/json"
@@ -1137,4 +576,104 @@ function buttonAtivar() {
     .catch(function (erro) {
       console.log("Erro na requisição:", erro);
     });
+}
+
+async function updateMetrics () {
+  const serverId = idServidorEditar
+
+  if (serverId == null) {
+    alert("Nenhum servidor selecionado!");
+    return;
+  }
+
+  let regiaoVar = document.getElementById("ipt_regiao_edit");
+  let cpu_minVar = document.getElementById("ipt_cpu_min_edit");
+  let cpu_maxVar = document.getElementById("ipt_cpu_max_edit");
+  let ram_minVar = document.getElementById("ipt_ram_min_edit");
+  let ram_maxVar = document.getElementById("ipt_ram_max_edit");
+  let disco_minVar = document.getElementById("ipt_disco_min_edit");
+  let disco_maxVar = document.getElementById("ipt_disco_max_edit");
+  let perda_pacotes_maxVar = document.getElementById("ipt_perda_pacotes_max_edit");
+  let rede_recebida_minVar = document.getElementById("ipt_rede_recebida_min_edit");
+  let rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
+
+  if (regiaoVar.value.trim() == "") {
+    return alert("O nome da instância não pode ficar vazio.");
+  }
+
+  const response = await fetch("/server/dados-instancia/" + serverId, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
+
+  if (response.status != 200)
+    return alert("algo de errado");
+
+  const responseJson = await response.json();
+  const data = responseJson.data
+
+  const body = {}
+
+  if (regiaoVar.value != data[0].regiao) {
+    body.name = regiaoVar.value
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    const comp = data[i].componente;
+    switch (comp) {
+      case "cpu_use_percent":
+        if (Number(cpu_minVar.value) != Number(data[i].min) || Number(cpu_maxVar.value) != Number(data[i].max)) {
+          body.cpu = { min: cpu_minVar.value, max: cpu_maxVar.value }
+        }
+        break;
+      case "ram_use_percent":
+        if (Number(ram_minVar.value) != Number(data[i].min) || Number(ram_maxVar.value) != Number(data[i].max)) {
+          body.ram = { min: ram_minVar.value, max: ram_maxVar.value }
+        }
+        break;
+      case "disk_use_percent":
+        if (Number(disco_minVar.value) != Number(data[i].min) || Number(disco_maxVar.value) != Number(data[i].max)) {
+          body.disk = { min: disco_minVar.value, max: disco_maxVar.value }
+        }
+        break;
+      case "network_sent":
+        if (Number(rede_enviada_minVar.value) != Number(data[i].min)) {
+          body.networkSent = { min: rede_enviada_minVar.value }
+        }
+        break;
+      case "network_received":
+        if (Number(rede_recebida_minVar.value) != Number(data[i].min)) {
+          body.networkRecv = { min: rede_recebida_minVar.value }
+        }
+        break;
+      case "package_drop_total":
+        if (Number(perda_pacotes_maxVar.value) != Number(data[i].max)) {
+          body.packageDrop = { max: perda_pacotes_maxVar.value }
+        }
+        break;
+    }
+  }
+
+  if (Object.keys(body).length == 0) {
+    return alert("Nenhuma alteração foi feita.");
+  }
+
+  const updateResponse = await fetch(`/server/atualizar/${serverId}`, {
+    credentials: "include",
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (updateResponse.ok) {
+    alert("Métricas atualizadas com sucesso");
+    window.location.reload();
+  } else {
+    alert("Erro ao atualizar métricas.");
+  }
 }
