@@ -181,7 +181,7 @@ body {
   width: calc(100dvw - 18rem);
   margin-left: 18rem;
   min-height: 100dvh;
-  display: flex;
+  display: flex;  
   flex-direction: column;
   padding: 3rem;
 }
