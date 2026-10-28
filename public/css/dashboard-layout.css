@@ -198,3 +198,44 @@ body {
   font-size: 2rem;
   color: var(--blue-950);
 }
+
+
+@media (width <= 48rem) {
+  .mobile-navbar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 2rem;
+    background-color: #172554ee;
+    backdrop-filter: blur(8px);
+    padding: 1rem 1.6rem;
+    font-size: 2rem;
+    color: var(--blue-50);
+    border-radius: 9999px;
+    gap: 0.8rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+  }
+
+  .mobile-navbar .active {
+    color: var(--orange-500);
+    transform: scale(1.02);
+  }
+
+  .mobile-navbar .item {
+    cursor: pointer;
+  }
+  
+  .navbar {
+    display: none;
+  }
+
+  main {
+    width: 100%;
+    position: relative;
+    margin: 0;
+  }
+}
