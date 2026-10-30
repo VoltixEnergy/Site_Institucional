@@ -1,8 +1,8 @@
 var mysql = require("mysql2");
-var crypto = require('crypto');
+var uuid = require('uuid');
 
 var gerarUuid = () => {
-  return crypto.randomUUID();
+  return uuid.v4();
 };
 
 
@@ -16,6 +16,7 @@ var mySqlConfig = {
 };
 
 async function executar (query, params) {
+  console.log(mySqlConfig.host)
   try {
     const poolDB = mysql.createPool(mySqlConfig).promise()
     
