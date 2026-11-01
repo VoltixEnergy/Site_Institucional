@@ -1,95 +1,50 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
-
-
-body {
-    margin: 0;
-    padding: 0;
-    font-family: "Exo 2", sans-serif;
-    background-color: #e5e9f0;
-    color: #010814;
-}
-
-
-.content {
-    margin-left: 250px;
-    min-height: 100vh;
-    padding: 40px;
-}
-
-.page-content {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 
 .page-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .page-title h1 {
-    margin: 0;
-    font-size: 40px;
-    font-weight: 700;
+  margin: 0;
+  font-size: 40px;
+  font-weight: 700;
 }
 
 .page-title h2 {
-    margin-top: 5px;
-    font-size: 25px;
-    font-weight: 400;
-    color: #df7436;
+  margin-top: 5px;
+  font-size: 25px;
+  font-weight: 400;
+  color: #df7436;
 }
 
 .page-content hr {
-    margin-top: 25px;
-    margin-bottom: 30px;
-    border: none;
-    border-top: 1px solid #010814;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  border: none;
+  border-top: 1px solid #010814;
 }
-
-
-.add-user-button {
-    width: 45px;
-    height: 45px;
-    border: none;
-    border-radius: 10px;
-    background-color: #fb5a00;
-    color: white;
-    font-size: 30px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.add-user-button:hover {
-    transform: scale(1.05);
-    background-color: #ff6b1a;
-}
-
 
 /* Pesquisar */
-
 .user-title {
-    display: flex;
-    margin-bottom: 15px;
-    margin-top: 50px;
-    justify-content: center;
-    margin-right: 80px;
+  display: flex;
+  margin-bottom: 15px;
+  margin-top: 50px;
+  justify-content: center;
 }
 
 .user-title h1 {
     margin: 0;
-    font-size: 25px;
+    font-size: 1.5rem;
     font-weight: 600;
+    text-align: center;
 }
 
 .search-area {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 8px;
     width: 100%;
@@ -98,7 +53,8 @@ body {
 }
 
 .search-area input {
-    width: 50%;
+    width: 100%;
+    max-width: 24rem;
     height: 40px;
     padding: 0 12px;
     border: 1px solid #a9a9cc;
@@ -106,28 +62,27 @@ body {
     outline: none;
     background-color: #ffffff;
     color: black;
-    font-family: "Exo 2", sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 .search-area input::placeholder {
-    color: #9d927e;
+    color: #ad9b8f;
 }
 
-.search-area input:hover {
-    border-color: #ffa600;
+.search-area input:hover, 
+.search-area input:focus {
+    border-color: #fb5a00;
 }
 
 .search-area button {
     height: 40px;
-    width: 10%;
+    width: fit-content;
     padding: 0 14px;
     border: none;
     border-radius: 20px;
     background-color: #fb5a00;
     color: white;
-    font-family: "Exo 2", sans-serif;
-    font-size: 12px;
+    font-size: 0.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -151,32 +106,30 @@ body {
 }
 
 .user-list-header {
-    display: grid;
-    grid-template-columns: 1fr 300px 100px;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #3b465c;
-    color: #140901;
-    font-size: 14px;
-    font-weight: 600;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  align-items: center safe;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #3b465c;
+  color: #140901;
+  font-size: 14px;
+  font-weight: 600;
 }
-
 
 .user {
-    display: grid;
-    grid-template-columns: 1fr 320px 100px;
-    align-items: center;
-    min-height: 75px;
-    padding: 12px 20px;
-    border-bottom: 1px solid #303a4d;
-    transition: 0.2s;
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  align-items: center; 
+  min-height: 5rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #303a4d;
+  transition: 0.2s;
 }
 
-
 .infosUser {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 #userAvatar {
@@ -305,7 +258,6 @@ body {
     border-radius: 8px;
     background-color: #0f172a;
     color: white;
-    font-family: "Exo 2", sans-serif;
     text-align: left;
     cursor: pointer;
     transition: 0.2s;
@@ -347,7 +299,6 @@ body {
     background-color: #fb5a00;
     color: white;
 
-    font-family: "Exo 2", sans-serif;
     cursor: pointer;
 }
 
@@ -399,7 +350,6 @@ body {
     outline: none;
     background-color: #0f172a;
     color: white;
-    font-family: "Exo 2", sans-serif;
 }
 
 .midInputs input:focus {
@@ -421,7 +371,6 @@ body {
     border-radius: 7px;
     background-color: #fb5a00;
     color: white;
-    font-family: "Exo 2", sans-serif;
     cursor: pointer;
 }
 
@@ -455,9 +404,8 @@ body {
 
 #userCargo {
     width: fit-content;
-    min-width: 120px;
     margin: 0;
-    padding: 7px 14px;
+    padding: 8px 16px !important;
     border: 1px solid #fb5a00;
     border-radius: 20px;
     background-color: rgba(251, 90, 0, 0.10);
@@ -478,4 +426,23 @@ body {
     background-color: #a6323e;
 }
 
+@media (width <= 48rem) { 
+  .user-title h1 {
+    font-size: 1.4rem;
+  }
 
+  .infosUser {
+    gap: 0.5rem;
+    padding-right: 4px;
+  }
+
+  .infosUser .userName {
+    font-size: 0.85rem;
+  }
+
+  .user #userCargo {
+    font-size: 0.7rem !important;
+    padding: 8px !important;
+    margin-right: 2px;
+  }
+}

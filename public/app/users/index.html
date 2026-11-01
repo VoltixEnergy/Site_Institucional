@@ -29,6 +29,18 @@
 
 </head>
 <body onload="buscarUsuarios(); carregarInformacoesUsuario(); loadCompanyName();">
+  <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+  </header>
   <nav class="mobile-navbar">
     <a href="../" class="item">
       <i class="ph ph-chart-line"></i>
@@ -75,10 +87,10 @@
 
 
         <div class="user-data">
-            <div class="icon" id="avatarUsuario"></div>
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
             <div class="info">
-                <span class="name" id="nomeUsuario"></span>
-                <span class="email" id="emailUsuario"></span>
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
             </div>
 
             <i
@@ -89,7 +101,6 @@
     </aside>
 
     <main class="content">
-        <div class="page-content">
             <div class="page-title">
 
                 <div>
@@ -98,11 +109,7 @@
                         @ Empresa
                     </h2>
                 </div>
-                <button
-                    class="add-user-button"
-                    onclick="window.location.href='../servers'">
-                    +
-                </button>
+          
             </div>
 
             <hr>
@@ -238,8 +245,7 @@
                         Apagar Usuário
                     </button>
                 </div>
-            </div>
-        </div>   
+            </div>   
 
         <div id="toast-container"></div>
 
