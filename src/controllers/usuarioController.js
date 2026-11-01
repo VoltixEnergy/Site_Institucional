@@ -26,7 +26,7 @@ async function autenticar(req, res) {
   }
 
   try {
-    const resultadoAutenticar = await usuarioModel.autenticar(email, senha);
+    const resultadoAutenticar = await usuarioModel.autenticar(email);
 
     if (resultadoAutenticar.length === 1) {
 
@@ -37,7 +37,7 @@ async function autenticar(req, res) {
         return res.status(403).json(responseBody);
       }
 
-      const senhaCorreta = await bcrypt.compare(senha, usuario.senha); // bcrypt --> comparando a senha fornecida com a senha armazenada no banco de dados
+      const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
       if (!senhaCorreta) {
         responseBody.message = "E-mail e/ou senha inválidos";

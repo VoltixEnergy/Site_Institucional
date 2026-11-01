@@ -1,8 +1,8 @@
 var mysql = require("mysql2");
-var crypto = require('crypto');
+var uuid = require('uuid');
 
 var gerarUuid = () => {
-  return crypto.randomUUID();
+  return uuid.v4();
 };
 
 
@@ -16,6 +16,7 @@ var mySqlConfig = {
 };
 
 async function executar (query, params) {
+  console.log(mySqlConfig.host)
   try {
     const poolDB = mysql.createPool(mySqlConfig).promise()
     
@@ -24,7 +25,20 @@ async function executar (query, params) {
     console.log("Parâmetros: " + params)
   
     const response = await poolDB.execute(query, params)
-    console.log(response[0])
+
+    const result = {
+      ...response[0],
+    };
+  
+    console.log(query.trim().toUpperCase().startsWith("INSERT"), params[0])
+    if (query.trim().toUpperCase().startsWith("INSERT")) {
+      result.uuid = params[0]
+      console.log(result)
+      await poolDB.end()
+      return result
+    }
+
+    console.log(result)
   
     await poolDB.end()
   
