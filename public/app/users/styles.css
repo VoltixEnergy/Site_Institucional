@@ -1,33 +1,3 @@
-* {
-  box-sizing: border-box;
-}
-
-.page-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.page-title h1 {
-  margin: 0;
-  font-size: 40px;
-  font-weight: 700;
-}
-
-.page-title h2 {
-  margin-top: 5px;
-  font-size: 25px;
-  font-weight: 400;
-  color: #df7436;
-}
-
-.page-content hr {
-  margin-top: 25px;
-  margin-bottom: 30px;
-  border: none;
-  border-top: 1px solid #010814;
-}
-
 /* Pesquisar */
 .user-title {
   display: flex;
