@@ -77,7 +77,7 @@ function buscarUsuarios() {
                         </div>
                         <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
                         <button class="mudarNome" onclick="abrirEditor('${item.id}')">
-                            <img src="../../assets/imgs/edit.png">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
@@ -92,7 +92,6 @@ function buscarUsuarios() {
 
 function Pesquisar() {
     var nome = document.getElementById("input_pesquisa").value;
-    var idUsuario = sessionStorage.ID_USUARIO;
 
     if (nome == "") {
         buscarUsuarios();
@@ -156,7 +155,7 @@ function Pesquisar() {
                         </div>
                         <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
                         <button class="mudarNome" onclick="abrirEditor('${item.id}')">
-                            <img src="../../assets/imgs/edit.png">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
