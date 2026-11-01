@@ -33,7 +33,9 @@
   --highlight: var(--orange-500);
 }
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -62,7 +64,7 @@ body {
 
   background: var(--slate-900);
   color: var(--slate-200);
-  
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -130,7 +132,7 @@ body {
   align-self: center;
   align-items: center;
   padding: 0.8rem;
-  background: var(--slate-700);
+  background: var(--slat-700);
   border-radius: 0.4rem;
   gap: 0.5rem;
 }

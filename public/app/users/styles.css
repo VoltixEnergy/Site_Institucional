@@ -399,40 +399,4 @@
 }
 
 
-.mudarNome {
-  background: transparent;
-  border: transparent;
-  cursor: pointer;
-}
 
-.mudarNome:hover i {
-  background: #ff6b1a;
-  color: #0f172a;
-}
-
-i {
-  font-size: 1.5rem;
-  border-radius: 9999px;
-  padding: 2px;
-}
-
-@media (width <= 48rem) { 
-  .user-title h1 {
-    font-size: 1.4rem;
-  }
-
-  .infosUser {
-    gap: 0.5rem;
-    padding-right: 4px;
-  }
-
-  .infosUser .userName {
-    font-size: 0.85rem;
-  }
-
-  .user #userCargo {
-    font-size: 0.7rem !important;
-    padding: 8px !important;
-    margin-right: 2px;
-  }
-}

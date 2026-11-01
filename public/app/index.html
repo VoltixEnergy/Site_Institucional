@@ -22,11 +22,8 @@
   <!-- scripts do Chart.js - 2022-1 -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-  />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
 <body onload="carregarInformacoesUsuario()">
@@ -49,7 +46,7 @@
     </nav>
   <aside class="navbar">
     <div class="logo">
-      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
+      <img src="../assets/icon/Logo.png"><span>Voltix</span>
     </div>
 
     <nav class="navbar-items">
@@ -87,26 +84,525 @@
 
   </aside>
 
-  <div class="em_breve">
+  <div class="content">
+    <div class="conteiner">
+      <div class="em_breve">
+        <div class="Tkpis">
+          <div class="KPI-alert">
+            <i class="ph ph-hard-drives" style="font-size: 32px;"></i>
+            <h2>Servidores Ativos</h2>
+            <span>8/9</span>
+          </div>
+          <div class="KPI-perigo">
+            <i class="ph ph-warning" style="font-size: 32px;"></i>
+            <h2>Servidores Alertas</h2>
+            <span>4/8</span>
+          </div>
+          <div class="KPI-perigo">
+            <i class="ph ph-map-pin" style="font-size: 32px;"></i>
+            <h2>Menor Eficiencia</h2>
+            <span>São Paulo</span>
+          </div>
+          <div class="KPI">
+            <i class="ph ph-map-pin" style="font-size: 32px;"></i>
+            <h2>Maior Termômetro</h2>
+            <span>Piracicaba</span>
+          </div>
+          <div class="KPI-perigo">
+            <i class="ph ph-warning" style="font-size: 32px;"></i>
+            <h2>Alertas Hoje</h2>
+            <span>6</span>
+          </div>
 
-    <div class="mensagem_em_breve">
+        </div>
 
-      <div class="icone_breve">
-        <img src="../assets/imgs/icone_cadeado.png">
-      </div>
+        <div class="dados">
+          <div class="server">
+            <div class="server-conteudo">
+              <div class="page-title">
+                <div class="pesquisar">
+                  <div class="user-title">
+                    <h1>Pesquisar Servidor</h1>
+                  </div>
 
-      <h2>Em breve!</h2>
+                  <div class="search-area">
+                    <input type="text" id="input_pesquisa" placeholder="Insira o servidor">
 
-      <span>Esta funcionalidade estará disponível em breve.</span>
+                    <button onclick="Pesquisar()">
+                      <i class="ph ph-magnifying-glass" style="font-size: 22px;"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-      <div class="aguarde_breve">
-        <img src="../assets/imgs/icone_tempo.png">
-        Aguarde novidades
+
+              <div class="filter">
+                <select name="filtro" id="filter">
+                  <option value="ipt_filter">FILTRAR</option>
+                </select>
+              </div>
+
+              <div class="server-scroll">
+
+
+                <div class="conteiner-box">
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>São Paulo</span>
+                      <div class="ordem">
+                        <div class="componentes-alert">
+                          <p>CPU</p>
+                          <p>86%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>65%</p>
+                        </div>
+                        <div class="componentes-alert">
+                          <p>DISCO</p>
+                          <p>95%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>67KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>67KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Campinas</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>55%</p>
+                        </div>
+                        <div class="componentes-medio">
+                          <p>RAM</p>
+                          <p>62%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>50%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>38KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>38KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Jundiaí</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>43%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>32%</p>
+                        </div>
+                        <div class="componentes-medio">
+                          <p>DISCO</p>
+                          <p>60%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>20KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>20KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                    </div>
+                  </div>
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Sorocaba</span>
+                      <div class="ordem">
+                        <div class="componentes-alert">
+                          <p>CPU</p>
+                          <p>82%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>54%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>48%</p>
+                        </div>
+                        <div class="componentes-baixo">
+                          <p>Enviado</p>
+                          <p>2KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>2KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Santos</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>53%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>45%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>42%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>45KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>45KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>São José dos Campos</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>47%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>50%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>58%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>60KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>60KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                      
+                    </div>
+                  </div>
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Piracicaba</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>37%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>25%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>12%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>12KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>12KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                      
+                    </div>
+                  </div>
+
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status"></div>
+                      <div class="nome-ativo">
+                        <p>ATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados">
+                      <span>Ribeirão Preto</span>
+                      <div class="ordem">
+                        <div class="componentes">
+                          <p>CPU</p>
+                          <p>12%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>RAM</p>
+                          <p>32%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>DISCO</p>
+                          <p>45%</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Enviado</p>
+                          <p>25KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Recebido</p>
+                          <p>25KB/s</p>
+                        </div>
+                        <div class="componentes">
+                          <p>Perdido</p>
+                          <p>0KB/s</p>
+                        </div>
+                      </div>
+                      <p>Última atualização:03/11/2026 - 10h</p>
+                      
+                    </div>
+                  </div>
+
+
+                  <div class="box">
+                    <div class="status-box">
+                      <div class="button-add-status-inativo"></div>
+                      <div class="nome-inativo">
+                        <p>INATIVO</p>
+                      </div>
+                    </div>
+
+                    <div class="server-dados-inativo">
+                      <span>Americana</span>
+                      <p>Desde: 10/08/2026 - 14h</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="alert">
+            <h2>Alertas - 03/11/2026</h2>
+            <div class="alert-scroll">
+
+              <div class="alert-dados">
+                <div class="dados-alertas">
+                  <div class="valor-critico">
+                    <h4>São Paulo</h4>
+                    <div class="valor-critico2">
+                      <span>CPU - 86%</span>
+                    </div>
+                  </div>
+                  <div class="obs-critico">
+                    <span>03/11/2026 - 9h33</span>
+                    <div class="obs-critico2">
+                      <span>CPU Crítica</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert-dados-amarelo">
+                <div class="dados-alertas">
+                  <div class="valor-alto">
+                    <h4>Campinas</h4>
+                    <div class="valor-alto2">
+                      <span>RAM - 62%</span>
+                    </div>
+                  </div>
+                  <div class="obs-alto">
+                    <span>03/11/2026 - 9h13</span>
+                    <div class="obs-alto2">
+                      <span>RAM Alta</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert-dados-amarelo">
+                <div class="dados-alertas">
+                  <div class="valor-alto">
+                    <h4>Jundiaí</h4>
+                    <div class="valor-alto2">
+                      <span>Disco - 60%</span>
+                    </div>
+                  </div>
+                  <div class="obs-alto">
+                    <span>03/11/2026 - 9h</span>
+                    <div class="obs-alto2">
+                      <span>Disco Alto</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert-dados">
+                <div class="dados-alertas">
+                  <div class="valor-critico">
+                    <h4>São Paulo</h4>
+                    <div class="valor-critico2">
+                      <span>Disco - 95%</span>
+                    </div>
+                  </div>
+                  <div class="obs-critico">
+                    <span>03/11/2026 - 8h33</span>
+                    <div class="obs-critico2">
+                      <span>Disco Crítica</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert-dados">
+                <div class="dados-alertas">
+                  <div class="valor-critico">
+                    <h4>Sorocaba</h4>
+                    <div class="valor-critico2">
+                      <span>CPU - 82%</span>
+                    </div>
+                  </div>
+                  <div class="obs-critico">
+                    <span>03/11/2026 - 7h48</span>
+                    <div class="obs-critico2">
+                      <span>CPU Alta</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="alert-dados-azul">
+                <div class="dados-alertas">
+                  <div class="valor-baixo">
+                    <h4>Sorocaba</h4>
+                    <div class="valor-baixo2">
+                      <span>Rede Enviada - 2Kb/s</span>
+                    </div>
+                  </div>
+                  <div class="obs-baixo">
+                    <span>03/11/2026 - 7h45</span>
+                    <div class="obs-baixo2">
+                      <span>Rede Enviada baixa</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
     </div>
-
   </div>
+
+
 
   <!-- <div class="perfil_celular">
 
