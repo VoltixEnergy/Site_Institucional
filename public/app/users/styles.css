@@ -152,9 +152,6 @@
     transition: 0.2s;
 }
 
-.mudarNome:hover {
-    background-color: #bbbec5;
-}
 
 .mudarNome img {
     width: 18px;
@@ -213,12 +210,16 @@
 .update-options {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
     gap: 10px;
     margin-top: 20px;
 }
 
 .update-option {
     width: 100%;
+    max-width: 8rem;
     min-height: 65px;
     padding: 12px 15px;
     display: flex;
@@ -330,6 +331,7 @@
 .functionsButtons {
     display: flex;
     flex-direction: row;
+
     gap: 10px;
     margin-top: 25px;
 }
@@ -394,6 +396,24 @@
 
 #deletarUsuario:hover {
     background-color: #a6323e;
+}
+
+
+.mudarNome {
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
+}
+
+.mudarNome:hover i {
+  background: #ff6b1a;
+  color: #0f172a;
+}
+
+i {
+  font-size: 1.5rem;
+  border-radius: 9999px;
+  padding: 2px;
 }
 
 @media (width <= 48rem) { 
