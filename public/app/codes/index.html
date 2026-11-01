@@ -37,7 +37,37 @@
   />
 </head>
 
-<body onload="carregarInformacoesUsuario(); getCodes();">
+<body onload="carregarInformacoesUsuario(); getCodes(); loadCompanyName();">
+  <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+  </header>
+  <nav class="mobile-navbar">
+    <a href="../" class="item">
+      <i class="ph ph-chart-line"></i>
+    </a>
+
+    <a href="../users" class="item">
+      <i class="ph ph-users-three"></i>
+    </a>
+
+    <a href="../servers" class="item">
+      <i class="ph ph-hard-drives"></i>
+    </a>
+
+    <a href="./" class="item active">
+      <i class="ph ph-numpad"></i>
+    </a>
+  </nav>
+
   <aside class="navbar">
     <div class="logo">
       <img src="../../assets/icon/Logo.png"><span>Voltix</span>
@@ -59,18 +89,18 @@
         Servidores
       </a>
 
-      <a href="./" class="item active">
+      <a href="../codes" class="item active">
         <i class="ph ph-numpad"></i>
         Códigos
       </a>
     </nav>
 
     <div class="user-data">
-      <div class="icon" id="avatarUsuario"></div>
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
 
       <div class="info">
-        <span class="name" id="nomeUsuario"></span>
-        <span class="email" id="emailUsuario"></span>
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
       </div>
 
       <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
@@ -81,9 +111,15 @@
     <div id="dialogContainer" class="dialog-container">
       <div id="dialogContent" class="dialog-content"></div>
     </div>
-    <header class="header">
-      <h1 class="title">Códigos</h1>
+    <header class="page-title">
+      <div class="">
+        <h1 class="title">Códigos</h1>
+        <h2 id="companyName">
+          @ Empresa
+        </h2>
+      </div>
     </header>
+    <hr>
     <div class="create-code-container">
       <h1>Gerar novo código</h1>
       <div class="divider"></div>
@@ -97,8 +133,8 @@
             <option value="2">Analista NOC</option>
           </select>
         </div>
-        <input type="email" id="newEmailReceiver" placeholder="Digite o email a receber o código">
-        <div class="action-buttons">
+        <div class="email-container">
+          <input type="email" id="newEmailReceiver" placeholder="Digite o email a receber o código">
           <i onclick="sendCode()" id="sendCodeConfirmed" tabindex="0" class="ph-bold ph-paper-plane-tilt pointer"></i>
         </div>
       </div>

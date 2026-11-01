@@ -1,11 +1,4 @@
 // TODO: substituir alerts por toasts
-function loadCompanyName(){
-  const companyName = sessionStorage.getItem("COMPANY_NAME")
-  const companyNameElement = document.getElementById("companyName")
-
-  companyNameElement.innerText = `@ ${companyName}`
-}
-
 async function tratarResposta(resposta) {
     const body = await resposta.json();
 
@@ -76,15 +69,15 @@ function buscarUsuarios() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
-                            <img src="../../assets/imgs/edit.png">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
@@ -99,7 +92,6 @@ function buscarUsuarios() {
 
 function Pesquisar() {
     var nome = document.getElementById("input_pesquisa").value;
-    var idUsuario = sessionStorage.ID_USUARIO;
 
     if (nome == "") {
         buscarUsuarios();
@@ -155,15 +147,15 @@ function Pesquisar() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
-                            <img src="../../assets/imgs/edit.png">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
