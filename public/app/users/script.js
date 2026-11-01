@@ -69,14 +69,14 @@ function buscarUsuarios() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
                             <img src="../../assets/imgs/edit.png">
                         </button>
                     </div>
@@ -148,14 +148,14 @@ function Pesquisar() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
                             <img src="../../assets/imgs/edit.png">
                         </button>
                     </div>
