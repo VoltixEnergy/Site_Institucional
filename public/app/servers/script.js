@@ -45,6 +45,19 @@ function buscarServidores() {
                 `;
         return;
       }
+      else{
+        lista.innerHTML = `<div class="user-list-header">
+          <span>Nome</span>
+          <span>CPU <br> <span>(mín. - máx.)</span></span>
+          <span>RAM <br> <span>(mín. - máx.)</span></span>
+          <span>Disco <br> <span>(mín. - máx.)</span></span>
+          <span>Perda de pacotes <br> <span>(máx.)</span></span>
+          <span>Rede Enviada <br> <span>(mín.)</span></span>
+          <span>Rede Recebido <br> <span>(mín.)</span></span>
+          <span>Status</span>
+          <span>Atualizar</span>
+        </div>`
+      }
 
       var servidores = []
 
@@ -84,11 +97,11 @@ function buscarServidores() {
 
         }
         if (servidor[i]['componente'] == 'network_sent'&& (servidor[i]['min'] || servidor[i]['max'])) {
-          rede_enviada = servidor[i]['componente'] == 'network_sent' ? (servidor[i]['min']) + 'KB/s ' : "";
+          rede_enviada = servidor[i]['componente'] == 'network_sent' ? (servidor[i]['min']) + 'Kbps ' : "";
 
         }
         if (servidor[i]['componente'] == 'network_received'&& (servidor[i]['min'] || servidor[i]['max'])) {
-          rede_recebida = servidor[i]['componente'] == 'network_received' ? (servidor[i]['min']) + 'KB/s ' : "";
+          rede_recebida = servidor[i]['componente'] == 'network_received' ? (servidor[i]['min']) + 'Kbps ' : "";
 
         }
 
@@ -117,8 +130,7 @@ function buscarServidores() {
           <span>${rede_recebida}</span>
           <span id="status" class = "cor">${servidor[i]['status'] == '1' ? 'Ativo' : "Inativo"}</span>
 
-          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><img src="../../assets/imgs/edit.png"
-              width="18px"></button>
+          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><i class="ph-bold ph-dots-three-vertical"></i></button>
 
         </div>`
 
@@ -150,13 +162,13 @@ function buscarServidores() {
         //   lista.innerHTML += `<span>${servidor[i]['min']}% - ${servidor[i]['max']}%</span>`
         // }
         // if(servidor[i]['componente'] == 'package_drop_total'){
-        //   lista.innerHTML += `<span>${servidor[i]['max']}KB/s</span>`
+        //   lista.innerHTML += `<span>${servidor[i]['max']}Kbps</span>`
         // }
         // if(servidor[i]['componente'] == 'network_sent'){
-        //   lista.innerHTML += `<span>${servidor[i]['min']}%KB/s</span>`
+        //   lista.innerHTML += `<span>${servidor[i]['min']}%Kbps</span>`
         // }
         // if(servidor[i]['componente'] == 'network_received'){
-        //   lista.innerHTML += `<span>${servidor[i]['min']}KB/s</span>`
+        //   lista.innerHTML += `<span>${servidor[i]['min']}Kbps</span>`
         // }
         // if(servidor[i]['status'] == '1'){
         //   lista.innerHTML += `<span>Ativo</span>
@@ -193,7 +205,7 @@ function Pesquisar() {
     // var empresaId = sessionStorage.ID_EMPRESA;
 
     if (nome == "") {
-        buscarUsuarios();
+        buscarServidores()
         return;
     }
 
@@ -211,13 +223,13 @@ function Pesquisar() {
         .then(function (servidor) {
             var lista = document.getElementById("listarUsuarios");
           lista.innerHTML = `<div class="user-list-header">
-          <span>Região</span>
-          <span>CPU</span>
-          <span>RAM</span>
-          <span>Disco</span>
-          <span>Perda de pacotes</span>
-          <span>Rede Enviada</span>
-          <span>Rede Recebida</span>
+          <span>Nome</span>
+          <span>CPU <br> <span>(mín. - máx.)</span></span>
+          <span>RAM <br> <span>(mín. - máx.)</span></span>
+          <span>Disco <br> <span>(mín. - máx.)</span></span>
+          <span>Perda de pacotes <br> <span>(máx.)</span></span>
+          <span>Rede Enviada <br> <span>(mín.)</span></span>
+          <span>Rede Recebido <br> <span>(mín.)</span></span>
           <span>Status</span>
           <span>Atualizar</span>
         </div>`
@@ -228,24 +240,24 @@ function Pesquisar() {
           cpu = servidor[i]['componente'] == 'cpu_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
-        if (servidor[i]['componente'] == 'ram_total_percent') {
-          ram = servidor[i]['componente'] == 'ram_total_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
+        if (servidor[i]['componente'] == 'ram_use_percent') {
+          ram = servidor[i]['componente'] == 'ram_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
-        if (servidor[i]['componente'] == 'disk_free_percent') {
-          disco = servidor[i]['componente'] == 'disk_free_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
+        if (servidor[i]['componente'] == 'disk_use_percent') {
+          disco = servidor[i]['componente'] == 'disk_use_percent' ? servidor[i]['min'] + '% - ' + servidor[i]['max'] + '%' : '';
 
         }
         if (servidor[i]['componente'] == 'package_drop_total') {
-          perda_pacote = servidor[i]['componente'] == 'package_drop_total' ? (servidor[i]['max']) + 'KB/s' : '';
+          perda_pacote = servidor[i]['componente'] == 'package_drop_total' ? (servidor[i]['max']) + ' pacotes/s' : '';
 
         }
         if (servidor[i]['componente'] == 'network_sent') {
-          rede_enviada = servidor[i]['componente'] == 'network_sent' ? (servidor[i]['min']) + 'KB/s ' : "";
+          rede_enviada = servidor[i]['componente'] == 'network_sent' ? (servidor[i]['min']) + 'Kbps ' : "";
 
         }
         if (servidor[i]['componente'] == 'network_received') {
-          rede_recebida = servidor[i]['componente'] == 'network_received' ? (servidor[i]['min']) + 'KB/s ' : "";
+          rede_recebida = servidor[i]['componente'] == 'network_received' ? (servidor[i]['min']) + 'Kbps ' : "";
 
         }
 
@@ -267,8 +279,7 @@ function Pesquisar() {
           <span>${rede_recebida}</span>
           <span id="status" class = "cor">${servidor[i]['status'] == '1' ? 'Ativo' : "Inativo"}</span>
 
-          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><img src="../../assets/imgs/edit.png"
-              width="18px"></button>
+          <button onclick="abrirEditor('${servidor[i]['instancia_id']}')" id="img_atualizar"><i class="ph-bold ph-dots-three-vertical"></i></button>
 
         </div>`
 
