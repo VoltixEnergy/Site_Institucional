@@ -17,26 +17,23 @@
     background-color: #ff6b1a;
 }
 
-
 /* Pesquisar */
-
 .user-title {
-    display: flex;
-    margin-bottom: 15px;
-    margin-top: 50px;
-    justify-content: center;
-    margin-right: 80px;
+  display: flex;
+  margin-bottom: 15px;
+  margin-top: 50px;
+  justify-content: center;
 }
 
 .user-title h1 {
     margin: 0;
-    font-size: 25px;
+    font-size: 1.5rem;
     font-weight: 600;
+    text-align: center;
 }
 
 .search-area {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 8px;
     width: 100%;
@@ -45,7 +42,8 @@
 }
 
 .search-area input {
-    width: 50%;
+    width: 100%;
+    max-width: 24rem;
     height: 40px;
     padding: 0 12px;
     border: 1px solid #a9a9cc;
@@ -53,28 +51,27 @@
     outline: none;
     background-color: #ffffff;
     color: black;
-    font-family: "Exo 2", sans-serif;
-    font-size: 18px;
+    font-size: 1rem;
 }
 
 .search-area input::placeholder {
-    color: #9d927e;
+    color: #ad9b8f;
 }
 
-.search-area input:hover {
-    border-color: #ffa600;
+.search-area input:hover, 
+.search-area input:focus {
+    border-color: #fb5a00;
 }
 
 .search-area button {
     height: 40px;
-    width: 10%;
+    width: fit-content;
     padding: 0 14px;
     border: none;
     border-radius: 20px;
     background-color: #fb5a00;
     color: white;
-    font-family: "Exo 2", sans-serif;
-    font-size: 12px;
+    font-size: 0.8rem;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -98,52 +95,35 @@
 }
 
 .user-list-header {
-    display: grid;
-     grid-template-columns:
-    100px
-    100px
-    100px
-    100px
-    100px
-    80px
-    80px
-    80px
-    80px;
-    gap: 45px;
-    align-items: center;
-    padding: 15px 20px;
-    border-bottom: 1px solid #3b465c;
-    color: #140901;
-    font-size: 14px;
-    font-weight: 600;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 0.5fr;
+  align-items: center safe;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #3b465c;
+  color: #140901;
+  font-size: 0.8rem;
+  font-weight: 600;
 }
 
+.user-list-header > span {
+  margin: auto;
+}
 
 .user {
-    display: grid ;
-     grid-template-columns:
-    200px
-    150px
-    150px
-    150px
-    120px
-    120px
-    120px
-    150px
-    60px;
-    gap: 15px;
-    align-items: center;
-    min-height: 75px;
-    padding: 12px 20px;
-    border-bottom: 1px solid #303a4d;
-    transition: 0.2s;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  align-items: center; 
+  min-height: 5rem;
+  padding: 1rem 1.4rem;
+  border-bottom: 1px solid #303a4d;
+  transition: 0.2s;
 }
 
-
 .infosUser {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 #userAvatar {
@@ -183,28 +163,22 @@
     font-size: 13px;
 }
 
-.mudarNome {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #010814;
-    border-radius: 8px;
-    background-color: transparent;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.2s;
+#img_atualizar {
+  background: transparent;
+  border: transparent;
+  cursor: pointer;
 }
 
-.mudarNome:hover {
-    background-color: #bbbec5;
+#img_atualizar:hover i {
+  background: #ff6b1a;
+  color: #0f172a;
 }
 
-.mudarNome img {
-    width: 18px;
-    height: 18px;
+i {
+  font-size: 1.5rem;
+  border-radius: 9999px;
+  padding: 2px;
 }
-
 
 /* Fundo Atualizar */
 
@@ -226,15 +200,15 @@
 
 #editor,
 #addUser {
-
-    /* width: 220px; */
-    width: 100%;
-    height: fit-content;
-    padding: 0;
-    border-radius: 12px;
-    background-color: #1e2536;
-    border: 1px solid #3b465c;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  /* width: 220px; */
+  width: 100%;
+  height: fit-content;
+  padding: 0;
+  border-radius: 12px;
+  background-color: #1e2536;
+  border: 1px solid #3b465c;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
 }
 
 
@@ -243,7 +217,7 @@
 #addUser h2 {
     margin-top: 5px;
     margin-bottom: 8px;
-    font-size: 30px;
+    font-size: 1rem;
     color: #c1c6d1;
 }
 
@@ -252,11 +226,11 @@
 
 
 .update-options {
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .update-option {
@@ -442,7 +416,8 @@
 
 /* ADICIONAR SERVIDOR */
 
-.geral {
+.geral,
+.geral_editor {
   position: fixed;
   top: 0;
   left: 0;
@@ -459,6 +434,7 @@
 
 #editor {
   width: 100%;
+  max-height: 90vh;
   max-width: 60dvw;
   background-color: #1e2536;
   border-radius: 1rem;
@@ -469,6 +445,7 @@
   border: 1px solid #3b465c;
   color: white;
   padding: 2rem;
+  overflow-y: auto !important;
 }
 
 #editor input {
@@ -607,11 +584,13 @@
 
 .cards-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   width: 100%;
 }
 
 .card {
+  min-width: 12rem;
   flex: 1;
   background-color: #0f172a;
   border: 1px solid #3b465c;
@@ -716,32 +695,8 @@
   cursor: pointer;
 }
 
-.mudarNome {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-.mudarNome img {
-  width: 1.5rem;
-}
-
-#img_atualizar{
-width: 40px;
-height: 40px;
-border: #010814 1px solid;
-border-radius: 10px;
-background-color: #e5e9f0;
-cursor: pointer;
-}
-
-#img_atualizar:hover {
-    background-color: #bbbec5;
-}
-
 #status{
 color: #0ac800;
-height: 25px;
 font-weight: bold;
 }
 
@@ -773,4 +728,56 @@ font-weight: bold;
 
 input:disabled {
   color: #ffffff88 !important;
+}
+
+@media (width <= 48rem) { 
+  .user-title h1 {
+    font-size: 1.4rem;
+  }
+
+  .infosUser {
+    gap: 0.5rem;
+    padding-right: 4px;
+  }
+
+  .infosUser .userName {
+    font-size: 0.85rem;
+  }
+
+  .user #userCargo {
+    font-size: 0.7rem !important;
+    padding: 8px !important;
+    margin-right: 2px;
+  }
+
+  .user-list-header {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  }
+
+  .user-list-header span {
+    padding: 12px 0;
+    font-size: 0.7rem !important;
+  }
+
+  #editor {
+    width: 100%;
+    max-width: 90dvw;
+    background-color: #1e2536;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    border: 1px solid #3b465c;
+    color: white;
+    padding: 2rem;
+    overflow-y: scroll !important;
+    z-index: 100;
+  }
+
+  .add-user-button {
+    position: fixed;
+    bottom: 3rem;
+    right: 1rem;
+  }
 }

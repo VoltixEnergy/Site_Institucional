@@ -18,6 +18,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
 
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
@@ -27,6 +28,18 @@
 </head>
 
 <body onload="buscarServidores(); carregarInformacoesUsuario(); loadCompanyName();">
+  <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
+    </div>
+  </header>
   <nav class="mobile-navbar">
     <a href="../" class="item">
       <i class="ph ph-chart-line"></i>
@@ -73,10 +86,10 @@
 
 
     <div class="user-data">
-      <div class="icon" id="avatarUsuario"></div>
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
       <div class="info">
-        <span class="name" id="nomeUsuario"></span>
-        <span class="email" id="emailUsuario"></span>
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
       </div>
 
       <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'">
