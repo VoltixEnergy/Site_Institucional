@@ -33,17 +33,6 @@
   --highlight: var(--orange-500);
 }
 
-.content {
-  justify-self: center;
-  max-width: 60rem;
-  position: relative;
-  gap: 1rem;
-}
-
-.header {
-  padding: 0 !important;
-}
-
 .create-code-container {
   display: flex;
   flex-direction: column;
@@ -69,7 +58,7 @@
 
 .create-code-container .form-row {
   display: flex;
-  justify-content: space-around;
+  gap: 0.8rem;
   align-items: center;
   padding: 1rem 0 0 0;
 }
@@ -84,6 +73,15 @@
   justify-content: center;
   align-items: center;
   gap: .6rem;
+  width: 100%;
+}
+
+.create-code-container .form-row .email-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: .6rem;
+  width: 100%;
 }
 
 .create-code-container .form-row select,
@@ -94,10 +92,7 @@
   flex: 1;
   font-size: 0.9rem;
   outline: none;
-}
-
-.create-code-container .form-row input {
-  margin: 0 0.5rem;
+  width: 100%;
 }
 
 .create-code-container .form-row select:focus,
@@ -350,5 +345,66 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media (width <= 54rem) {
+  .code-card select {
+    font-size: 0.9rem ;
+  }
+
+  .code-card .ph,
+  .code-card .ph-bold {
+    font-size: 1.2rem ;
+  }
+
+  .code-card .card-actions {
+    gap: 4px;
+  }
+
+  .code-card .code-title{
+    font-size: 1.2rem;
+  }
+  
+  .info-row p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (width <= 48rem) {
+  .form-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .form-row .ph,
+  .form-row .ph-bold {
+    font-size: 1.4rem !important;
+  }
+  .form-row input,
+  .form-row select {
+    padding: 0.6rem 0.8rem !important;
+
+  }
+
+  .code-card select {
+    font-size: 0.9rem;
+  }
+
+  .code-card .ph,
+  .code-card .ph-bold {
+    font-size: 1.2rem;
+  }
+
+  .code-card .card-actions {
+    gap: 4px;
+  }
+
+  .code-card .code-title{
+    font-size: 1.2rem;
+  }
+
+  .info-row p {
+    font-size: 0.9rem;
   }
 }
