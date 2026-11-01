@@ -47,3 +47,13 @@
 .hidden {
   display: none;
 }
+
+@media (width <= 48rem) {
+  .toast-container {
+    width: 18rem;
+    top: 2rem;
+    left: 2rem;
+    right: inherit;
+    bottom: inherit;
+  }
+}
