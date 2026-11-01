@@ -21,6 +21,9 @@ services:
       DB_HOST: voltix-db  
     ports:
       - "3333:3333"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     restart: always
     depends_on:
       - voltix-db
