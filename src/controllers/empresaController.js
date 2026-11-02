@@ -1,4 +1,6 @@
 const empresaModel = require("../models/empresaModel")
+const codeModel = require("../models/codeModel")
+const codeController = require("./codigoController")
 
 async function buscarPorCnpj(req, res) {
   const { cnpj } = req.query
@@ -74,81 +76,83 @@ async function buscarPorId(req, res) {
 }
 
 async function cadastrarEmpresa(req, res) {
-  const { cnpj, nomeFantasia, razaoSocial } = req.body
+  const { cnpj, tradeName, legalName, code } = req.body
 
-  const retorno = { 
-    mensagem: "", 
-    dados: {} 
+  const responseBody = { 
+    message: "", 
+    data: {} 
   }
 
-  if (!cnpj) {
-    retorno.mensagem = "CNPJ inválido."
-    return res.status(400).json(retorno)
+  if (!legalName) {
+    responseBody.message = "Razão social inválido."
+    return res.status(400).json(responseBody)
   }
-  if (!nomeFantasia) {
-    retorno.mensagem = "Nome fantasia inválido."
-    return res.status(400).json(retorno)
+  if (!tradeName) {
+    responseBody.message = "Nome fantasia inválido."
+    return res.status(400).json(responseBody)
   }
-  if (!razaoSocial) {
-    retorno.mensagem = "Razão social inválido."
-    return res.status(400).json(retorno)
+
+  const isCnpjValid = !(/^[A-Z0-9]{2}\.?[A-Z0-9]{3}\.?[A-Z0-9]{3}\/?[A-Z0-9]{4}-?\d{2}$/.test(cnpj))
+  if (!cnpj || isCnpjValid) {
+    responseBody.message = "CNPJ inválido."
+    return res.status(400).json(responseBody)
+  }
+
+  if (!code || code.length !== 6) {
+    responseBody.message = "Código de ativação inválido."
+    return res.status(400).json(responseBody)
   }
 
   try {
-    const consultaCnpj = await empresaModel.buscarPorCnpj(cnpj)
+    const cleanCnpj = cnpj.replace(/[^A-Z0-9]/gi, "");
+
+    const consultaCnpj = await empresaModel.buscarPorCnpj(cleanCnpj)
 
     if (consultaCnpj.length > 0) {
-      retorno.mensagem = "CNPJ inválido."
-      return res.status(400).json(retorno)
+      responseBody.message = "CNPJ inválido."
+      return res.status(400).json(responseBody)
     }
 
-    const consultaCadastrarEmpresa = await empresaModel.cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial)
+    const getCodeQuery = await codeModel.getCompanyAndRoleByCode(code)
+    
+    console.log("a: " + getCodeQuery)
+    if (!getCodeQuery) {
+      responseBody.message = "Código inválido."
+      return res.status(400).json(responseBody)
+    }
+
+    if(getCodeQuery[0].empresa_id !== "f5ae3d95-02da-49f6-ba72-4a3913bb6c67" && getCodeQuery[0].cargo != 0) {
+      responseBody.message = "Código de validação não é registro de empresa."
+      return res.status(400).json(responseBody)
+    }
+    
+    const consultaCadastrarEmpresa = await empresaModel.cadastrarEmpresa(cleanCnpj, tradeName, legalName)
     if (consultaCadastrarEmpresa.affectedRows !== 1) {
-      retorno.mensagem = "A empresa não foi cadastrada. Tente novamente mais tarde."
-      return res.status(500).json(retorno)
+      responseBody.message = "A empresa não foi cadastrada. Tente novamente mais tarde."
+      return res.status(500).json(responseBody)
     }
 
-    retorno.mensagem = "Empresa cadastrada com sucesso!"
-    retorno.dados = { 
-      id: consultaCadastrarEmpresa.insertId 
+    const setCodeQuery = await codeModel.setCodeUsedByCode(getCodeQuery[0].codigo)
+
+    if (setCodeQuery.affectedRows !== 1)
+      throw new Error()
+
+    console.log(consultaCadastrarEmpresa.uuid)
+    const admCode = await codeController.createCode(consultaCadastrarEmpresa.uuid, 1)
+
+    if (!admCode)
+      throw new Error()
+
+    responseBody.message = "Empresa cadastrada com sucesso!"
+    responseBody.data = { 
+      admCode: admCode
     }
 
-    return res.status(200).json(retorno)
+    return res.status(201).json(responseBody)
   } catch (e) {
     console.error(e)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
-  }
-}
-
-async function desativarCodigo(req, res) {
-  const { codigoServer } = req.body
-
-  const retorno = { 
-    mensagem: "", 
-    dados: {} 
-  }
-
-  if (!codigoServer) {
-    retorno.mensagem = "Código inválido."
-    return res.status(400).json(retorno)
-  }
-
-  try {
-    const resultado = await empresaModel.desativarCodigo(codigoServer)
-
-    if (resultado.affectedRows && resultado.affectedRows >= 1) {
-      retorno.mensagem = "Código desativado com sucesso."
-      retorno.dados = resultado
-      return res.status(200).json(retorno)
-    }
-
-    retorno.mensagem = "Não foi possível desativar o código."
-    return res.status(500).json(retorno)
-  } catch (e) {
-    console.error(e)
-    retorno.mensagem = "Algo deu errado. Tente novamente mais tarde."
-    return res.status(500).json(retorno)
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde."
+    return res.status(500).json(responseBody)
   }
 }
 

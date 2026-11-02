@@ -15,10 +15,14 @@ const sendCode = async (req, res) => {
       return res.status(401).json(responseBody)
     }
 
+    if (codeRole === 0 && !companyId === "f5ae3d95-02da-49f6-ba72-4a3913bb6c67"){
+      responseBody.message = "Somente a Voltix pode gerar códigos de regitro de empresas."
+      return res.status(401).json(responseBody)
+    }
+
     console.log("email: " + email, "companyId: " + companyId, "role: " + role)
 
     const code = generateCode()
-
 
     if (!email || !companyId || codeRole == null) {
       responseBody.message = "Credenciais inválidas.";
@@ -45,7 +49,7 @@ const sendCode = async (req, res) => {
 
         const infoEmail = await mailerController.sendVerificationCode(email, code, companyName, codeRole);
         
-        if (infoEmail.rejected && infoEmail.rejected.length > 0) {
+        if (!infoEmail || infoEmail.rejected && infoEmail.rejected.length > 0) {
             responseBody.message = "Não foi possível enviar o e-mail.";
             return res.status(500).json(responseBody);
         }
@@ -66,6 +70,29 @@ const sendCode = async (req, res) => {
         return res.status(500).json(responseBody);
     }
 };
+
+const createCode = async (companyId, role) => {
+  try {
+    let code = null
+    let verifyCodeQuery = null
+
+    do {
+      code = generateCode()
+      verifyCodeQuery = await codeModel.getCompanyAndRoleByCode(code)
+      console.log(verifyCodeQuery)
+    } while (!verifyCodeQuery)
+
+    const insertCodeQuery = await codeModel.create(code, companyId, role)
+
+    if (insertCodeQuery.affectedRows !== 1)
+      throw new Error()
+
+    return code
+  } catch (e) {
+    console.error(e)
+    return null
+  }
+}
 
 const generateCode = () => {
   const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -233,5 +260,6 @@ module.exports = {
   sendCode,
   editCode,
   disableCode,
-  getAllCodes
+  getAllCodes,
+  createCode
 }
