@@ -1,0 +1,46 @@
+p.detail-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #fb923c;
+}
+
+
+.resend-button,
+.cancel-button,
+.confirm-button,
+.disable-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0;
+  margin-top: 0.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 150ms ease;
+}
+
+.button-label {
+  font-weight: 500;
+}
+
+.confirm-button {
+  outline: 1px solid #2563eb;
+  background-color: #2563eb;
+}
+
+.confirm-button:hover {
+  background-color: #1d4ed8;
+}
+
+.details-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
