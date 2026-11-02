@@ -37,7 +37,7 @@
   />
 </head>
 
-<body onload="carregarInformacoesUsuario(); getCodes(); loadCompanyName();">
+<body onload="carregarInformacoesUsuario(); getCodes(); loadCompanyName(); fillRolesAtNewCode()">
   <header class="mobile-header">
     <div class="user-data">
       <div class="icon avatarUsuario" id="avatarUsuario"></div>
@@ -128,7 +128,7 @@
           <i class="ph-bold ph-briefcase"></i>
           <select id="newRoleSelect">
             <option value="" selected disabled>Selecione um cargo</option>
-            <option value="0" id="newPartnerOpt">Novo parceiro</option>
+            <option value="0" id="newPartnerOpt" class="hidden">Novo parceiro</option>
             <option value="1">Gestor TI</option>
             <option value="2">Analista NOC</option>
           </select>

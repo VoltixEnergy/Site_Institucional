@@ -7,10 +7,9 @@ const roleHash = {
 const fillRolesAtNewCode = () => {
   const newPartnerOpt = document.getElementById("newPartnerOpt")
 
-  const userRole = sessionStorage.getItem("ID_USUARIO")
   const userCompanyId = sessionStorage.getItem("ID_EMPRESA")
 
-  if (userRole == 1 && userCompanyId == 1) 
+  if (userCompanyId === "f5ae3d95-02da-49f6-ba72-4a3913bb6c67") 
     newPartnerOpt.classList.remove("hidden")
   
 }
@@ -43,8 +42,8 @@ const getCodes = async () => {
 
   const codesContainer = document.getElementById("codesContainer")
 
-  const userRole = sessionStorage.getItem("ID_USUARIO")
   const userCompanyId = sessionStorage.getItem("ID_EMPRESA")
+  const isFromVoltix = userCompanyId === "f5ae3d95-02da-49f6-ba72-4a3913bb6c67"
   data.forEach(code => {
     const { atualizado_em, cargo, codigo, criado_em, deletado_em, expira_em, id, usado_em } = code
 
@@ -57,7 +56,7 @@ const getCodes = async () => {
           <div class="role-select-group">
             <i class="ph-bold ph-briefcase role-icon"></i>
             <select id="roleSelect-${elementId}" class="role-select" onchange="editRole('${elementId}')">
-              <option value="0" ${cargo === 0 ? "selected" : ""} ${userRole == 1 && userCompanyId == 1 ? "" : "hidden disabled"}>Novo parceiro</option>
+              <option value="0" ${cargo === 0 ? "selected" : ""} ${isFromVoltix ? "" : "hidden disabled"}>Novo parceiro</option>
               <option value="1" ${cargo === 1 ? "selected" : ""}>Gestor TI</option>
               <option value="2" ${cargo === 2 ? "selected" : ""}>Analista NOC</option>
             </select>
