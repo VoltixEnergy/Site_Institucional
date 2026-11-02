@@ -8,10 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Voltix | Dashboard</title>
 
-    <link rel="stylesheet" href="../../css/dashboard-layout.css" />
+    <link rel="stylesheet" href="../css/dashboard-layout.css" />
     <link rel="stylesheet" href="./styles.css" />
-    <script src="../../js/sessao.js"></script>
-    <script src="../../js/alerta.js"></script>
+    <script src="../js/sessao.js"></script>
+    <script src="../js/alerta.js"></script>
+    <script src="./script.js"></script>
 
     <link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -25,43 +26,73 @@
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
-<body onload="carregarInformacoesUsuario()">
-    <aside class="navbar">
-        <div class="logo">
-            <img src="../assets/icon/Logo.png" /><span>Voltix</span>
-        </div>
+<body onload="carregarInformacoesUsuario(); redirectByRole()">
+    <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
 
-        <nav class="navbar-items">
-            <a href="./" class="item active">
-                <i class="ph ph-chart-line"></i>
-                Dashboard
-            </a>
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
 
-            <a href="./users" class="item">
-                <i class="ph ph-users-three"></i>
-                Funcionários
-            </a>
+      <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+    </div>
+  </header>
+  <nav class="mobile-navbar">
+      <a href="./" class="item active">
+        <i class="ph ph-chart-line"></i>
+      </a>
 
-            <a href="./servers" class="item">
-                <i class="ph ph-hard-drives"></i>
-                Servidores
-            </a>
+      <a href="./users" class="item">
+        <i class="ph ph-users-three"></i>
+      </a>
 
-            <a href="./codes" class="item">
-                <i class="ph ph-numpad"></i>
-                Códigos
-            </a>
-        </nav>
+      <a href="./servers" class="item">
+        <i class="ph ph-hard-drives"></i>
+      </a>
 
-        <div class="user-data">
-            <div class="icon" id="avatarUsuario"></div>
+      <a href="./codes" class="item">
+        <i class="ph ph-numpad"></i>
+      </a>
+    </nav>
+  <aside class="navbar">
+    <div class="logo">
+      <img src="../assets/icon/Logo.png"><span>Voltix</span>
+    </div>
 
+    <nav class="navbar-items">
+      <a href="./" class="item active" id="navDashboard">
+        <i class="ph ph-chart-line"></i>
+        Dashboard
+      </a>
+
+      <a href="./users" class="item" id="navUser">
+        <i class="ph ph-users-three"></i>
+        Funcionários
+      </a>
+
+      <a href="./servers" class="item" id="navServer">
+        <i class="ph ph-hard-drives"></i>
+        Servidores
+      </a>
+
+      <a href="./codes" class="item" id="navCode">
+        <i class="ph ph-numpad"></i>
+        Códigos
+      </a>
+    </nav>
+    <div class="user-data">
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
             <div class="info">
-                <span class="name" id="nomeUsuario"></span>
-                <span class="email" id="emailUsuario"></span>
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
             </div>
 
-            <i class="ph ph-sign-out exit-button" onclick="window.location.href = '../../index.html'"></i>
+            <i
+                class="ph ph-sign-out exit-button"
+                onclick="limparSessao()">
+            </i>
         </div>
     </aside>
 
