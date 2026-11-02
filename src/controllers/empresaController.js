@@ -115,8 +115,8 @@ async function cadastrarEmpresa(req, res) {
 
     const getCodeQuery = await codeModel.getCompanyAndRoleByCode(code)
     
-    console.log("a: " + getCodeQuery)
-    if (!getCodeQuery) {
+    console.log("getCodeQuery: " + getCodeQuery)
+    if (!getCodeQuery || getCodeQuery.length !== 1) {
       responseBody.message = "Código inválido."
       return res.status(400).json(responseBody)
     }
