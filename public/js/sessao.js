@@ -52,6 +52,21 @@ function carregarInformacoesUsuario () {
                         nome[0].toUpperCase() + nome[1].toUpperCase() :
                         nameSplitted[0][0] + nameSplitted[nameSplitted.length -1][0]
   });
+
+  const role = sessionStorage.getItem("CARGO")
+
+  if (role == 1)
+    return
+  
+  const items = {
+    user: document.querySelector("#navUser"),
+    server: document.querySelector("#navServer"),
+    code: document.querySelector("#navCode")
+  }
+
+  items.user.classList.add("hidden")
+  items.server.classList.add("hidden")
+  items.code.classList.add("hidden")
 }
 
 function abrir_navbar() {

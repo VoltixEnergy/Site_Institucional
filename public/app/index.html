@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="./styles.css">
   <script src="../js/sessao.js"></script>
   <script src="./../js/alerta.js"></script>
+  <script src="./script.js"></script>
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link
@@ -26,7 +27,7 @@
     href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
-<body onload="carregarInformacoesUsuario()">
+<body onload="carregarInformacoesUsuario(); redirectByRole()">
   <header class="mobile-header">
     <div class="user-data">
       <div class="icon avatarUsuario" id="avatarUsuario"></div>
@@ -62,22 +63,22 @@
     </div>
 
     <nav class="navbar-items">
-      <a href="./" class="item active">
+      <a href="./" class="item active" id="navDashboard">
         <i class="ph ph-chart-line"></i>
         Dashboard
       </a>
 
-      <a href="./users" class="item">
+      <a href="./users" class="item" id="navUser">
         <i class="ph ph-users-three"></i>
         Funcionários
       </a>
 
-      <a href="./servers" class="item">
+      <a href="./servers" class="item" id="navServer">
         <i class="ph ph-hard-drives"></i>
         Servidores
       </a>
 
-      <a href="./codes" class="item">
+      <a href="./codes" class="item" id="navCode">
         <i class="ph ph-numpad"></i>
         Códigos
       </a>
