@@ -132,7 +132,7 @@ body {
   align-self: center;
   align-items: center;
   padding: 0.8rem;
-  background: var(--slat-700);
+  background: var(--slate-700);
   border-radius: 0.4rem;
   gap: 0.5rem;
 }
@@ -220,7 +220,8 @@ hr {
   border-top: 1px solid var(--slate-900);
 }
 
-.mobile-header {
+.mobile-header,
+.mobile-navbar {
   display: none;
 }
 
