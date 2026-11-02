@@ -122,6 +122,14 @@
             <span class="grafic-title">Comparação quantidade de alertas com ultimo mês</span>
             <canvas id="stackedLineChart"></canvas>
         </div>
+        <div class="grafic">
+            <span class="grafic-title">Capacidade do hardware</span>
+            <canvas id="graficoTermometro"></canvas>
+        </div>
+        <div class="grafic">
+            <span class="grafic-title">???</span>
+            <canvas id="graficolinha2"></canvas>
+        </div>
     </div>
 </body>
 <script>
@@ -210,5 +218,79 @@
             },
         },
     });
+
+    const termometro = document
+        .getElementById("graficoTermometro")
+        .getContext("2d");
+
+    const graficoTermometro = new Chart(termometro, {
+        type: "line",
+        data: {
+            labels: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            datasets: [
+                {
+                    label: "Temperatura",
+                    data: [
+                        73, 14, 89, 42, 5, 61, 98, 23, 50, 37, 81, 19, 64, 8, 92, 45,
+                        27, 70, 3, 58, 84, 16, 91, 33, 76, 29, 62, 11, 87, 54, 40
+                    ],
+                    borderColor: "#ea580c",
+                    backgroundColor: "#fb923c",
+                    borderWidth: 3,
+                    order: 1, // Prioridade maior (aparece na frente)
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+    const linha2 = document
+        .getElementById("graficolinha2")
+        .getContext("2d");
+
+    const graficolinha2 = new Chart(linha2, {
+        type: "line",
+        data: {
+            labels: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            datasets: [
+                {
+                    label: "Temperatura",
+                    data: [
+                        73, 14, 89, 42, 5, 61, 98, 23, 50, 37, 81, 19, 64, 8, 92, 45,
+                        27, 70, 3, 58, 84, 16, 91, 33, 76, 29, 62, 11, 87, 54, 40
+                    ],
+                    borderColor: "#1d4ed8",
+                    backgroundColor: "#2563eb",
+                    borderWidth: 3,
+                    order: 1, // Prioridade maior (aparece na frente)
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
 </script>
+
 </html>
