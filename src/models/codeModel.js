@@ -42,7 +42,7 @@ const disableCodeById = async (id) => {
 }
 
 const getAllCodesByUserAndCompanyId = async (userId, companyId) => {
-  const query = "select c.id, c.codigo, c.cargo, c.criado_em, c.expira_em, c.usado_em, c.atualizado_em, c.deletado_em from codigo_ativacao c join empresa e on c.empresa_id = e.id join usuario u on u.empresa_id = e.id where u.id = ? and u.cargo = 1 and e.id = ? and c.deletado_em is null"
+  const query = "select c.id, c.codigo, c.cargo, c.criado_em, c.expira_em, c.usado_em, c.atualizado_em, c.deletado_em from codigo_ativacao c join empresa e on c.empresa_id = e.id join usuario u on u.empresa_id = e.id where u.id = ? and u.cargo = 1 and e.id = ? and c.deletado_em is null order by c.criado_em desc"
 
   return await database.executar(query, [userId, companyId])
 }

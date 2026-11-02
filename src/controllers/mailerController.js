@@ -234,8 +234,7 @@ const sendVerificationCode = async (email, code, companyName, role) => {
       return infoEmail;
   } catch (e) {
     console.error(e)
-    responseBody.message = "Algo deu errado. Tente novamente mais tarde"
-    res.status(500).json(responseBody)
+    return null;
   }
   
 };

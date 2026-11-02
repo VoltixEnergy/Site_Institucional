@@ -369,13 +369,13 @@ const sendCode = () => {
 }
 
 const sendCodeConfirmed = async () => {
-  const button = document.getElementById("sendCodeConfirmed")
+  const button = document.getElementById("sendCodeConfirmedButton")
   const roleSelected = document.getElementById("newRoleSelect").value
   const newEmailReceiver = document.getElementById("newEmailReceiver").value.trim()
 
   console.log(roleSelected, newEmailReceiver)
 
-  toggleDisableButton(button)
+  toggleLoadingSendButton(button)
 
   const body = { 
     "codeRole": roleSelected, 
@@ -395,7 +395,7 @@ const sendCodeConfirmed = async () => {
     const responseJson = await response.json()
     console.log(responseJson)
   
-    toggleDisableButton(button)
+    toggleLoadingSendButton(button)
     if (response.status === 500) 
       return showToast(responseJson.message, "error")
   
@@ -406,6 +406,8 @@ const sendCodeConfirmed = async () => {
       return showToast(responseJson.message, "error")
 
     showToast(responseJson.message, "success")
+
+    setTimeout(() => window.location.reload(), 2000)
     
     closeDialog()
   } catch (e) {

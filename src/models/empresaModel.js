@@ -19,19 +19,19 @@ async function buscarPorCnpj(cnpj) {
 }
 
 async function cadastrar(razaoSocial, cnpj) {
-  const instrucaoSql = `INSERT INTO empresa (id, razao_social, cnpj) VALUES (?, ?)`;
+  const instrucaoSql = `INSERT INTO empresa (id, razao_social, cnpj) VALUES (?, ?, ?)`;
 
-  return await database.executar(instrucaoSql, [gerarUuid(),razaoSocial, cnpj]);
+  return await database.executar(instrucaoSql, [database.gerarUuid(),razaoSocial, cnpj]);
 }
 
 async function cadastrarEmpresa(cnpj, nomeFantasia, razaoSocial) {
     const instrucaoSql = `
-        INSERT INTO empresa (cnpj, nome_fantasia, razao_social) VALUES (?, ?, ?);
+        INSERT INTO empresa (id, cnpj, nome_fantasia, razao_social) VALUES (?, ?, ?, ?);
     `
   
     console.log("Executando a instrução SQL: \n" + instrucaoSql);
     
-    return await database.executar(instrucaoSql, [cnpj, nomeFantasia, razaoSocial]);
+    return await database.executar(instrucaoSql, [database.gerarUuid(), cnpj, nomeFantasia, razaoSocial]);
 }
 
 async function buscarNomePeloId (id) {
