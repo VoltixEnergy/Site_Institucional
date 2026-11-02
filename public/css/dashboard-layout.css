@@ -60,7 +60,7 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 90;
 
   background: var(--slate-900);
   color: var(--slate-200);
