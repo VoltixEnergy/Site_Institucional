@@ -406,6 +406,8 @@ const sendCodeConfirmed = async () => {
       return showToast(responseJson.message, "error")
 
     showToast(responseJson.message, "success")
+
+    setTimeout(() => window.location.reload(), 2000)
     
     closeDialog()
   } catch (e) {
