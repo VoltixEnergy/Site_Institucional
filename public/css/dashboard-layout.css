@@ -188,7 +188,7 @@ body {
   max-width: 60rem;
   margin-left: 18rem;
   min-height: 100dvh;
-  display: flex;
+  display: flex;  
   flex-direction: column;
   padding: 3rem;
   justify-self: center;
