@@ -192,7 +192,7 @@ i {
     align-items: center;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.65);
-    z-index: 1000;
+    z-index: 99;
 }
 
 
@@ -421,7 +421,7 @@ i {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 100;
+  z-index: 99;
   display: none;
   align-items: center;
   justify-content: center;
@@ -772,7 +772,19 @@ input:disabled {
     color: white;
     padding: 2rem;
     overflow-y: scroll !important;
-    z-index: 100;
+  }
+
+  .add-user-button {
+    width: 45px;
+    height: 45px;
+    border: none;
+    border-radius: 10px;
+    background-color: #fb5a00;
+    color: white;
+    font-size: 30px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s;
   }
 
   .add-user-button {
