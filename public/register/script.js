@@ -56,8 +56,6 @@ function cadastrar() {
         setTimeout(() => {
           window.location = "../login";
         }, 2000);
-
-        limparFormulario();
       } else {
         throw "Houve um erro ao tentar realizar o cadastro!";
       }
