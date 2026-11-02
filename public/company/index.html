@@ -61,15 +61,15 @@
       <span class="subtitulo">Preencha os dados abaixo para começar.</span>
       <div class="cadastro_geral">
         <div class="coluna_cadastro1">
-          <span>Nome Comercial:</span><input id="nomeCom_input" type="text" placeholder="Voltix">
-          <span>Nome Jurídico:</span><input id="nomeJur_input" type="text" placeholder="Voltix Energy">
-          <span>CNPJ:</span><input id="cnpj_input" type="text" placeholder="00.000.000/0000-00">
+          <span>Nome Comercial:</span><input id="tradeName" type="text" placeholder="Voltix">
+          <span>Nome Jurídico:</span><input id="legalName" type="text" placeholder="Voltix Energy">
+          <span>CNPJ:</span><input id="cnpj" type="text" placeholder="00.000.000/0000-00">
+          <span>Código de Ativação:</span><input type="text" placeholder="000000" id="code">
         </div>
       </div>
-      <button id="botao_cadastrar" onclick="cadastrar()">Cadastrar</button>
+      <button id="botao_cadastrar" onclick="registerCompany()">Cadastrar</button>
       <a href="../login" class="ir_cadastro">Já tem conta? Faça login</a>
     </div>
-  </div>
   <div id="toast-container" class="toast-container"></div>
 </body>
 </html>
