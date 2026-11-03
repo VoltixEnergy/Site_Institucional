@@ -12,7 +12,6 @@
   <title>Voltix | Servidores</title>
 
   <link rel="stylesheet" href="../../css/dashboard-layout.css">
-  <link rel="stylesheet" href="../../css/toast.css">
   <link rel="stylesheet" href="./styles.css">
   <link rel="preconnect" href="https://fonts.gstatic.com">
 
@@ -23,7 +22,7 @@
 
   <script src="../../js/sessao.js"></script>
   <script src="../../js/alerta.js"></script>
-  <script src="../../js/toast.js"></script>
+  <!-- <script src="../../js/toast.js"></script> -->
   <script src="script.js"></script>
 
 </head>
@@ -38,7 +37,7 @@
         <span class="email emailUsuario" id="emailUsuario"></span>
       </div>
 
-      <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
     </div>
   </header>
   <nav class="mobile-navbar">
@@ -93,7 +92,7 @@
         <span class="email emailUsuario" id="emailUsuario"></span>
       </div>
 
-      <i class="ph ph-sign-out exit-button" onclick="limparSessao()">
+      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'">
       </i>
     </div>
   </aside>
@@ -446,8 +445,9 @@
       </div>
       <!-- FECHAR ATUALIZAR SERVIDOR -->
 
+      <div id="toast-container"></div>
+
   </main>
-  <div id="toast-container" class="toast-container"></div>
 </body>
 
 </html>

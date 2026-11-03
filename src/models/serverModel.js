@@ -12,7 +12,8 @@ function AddComponentes(
         JOIN instancia i ON m.instancia_id = i.id
         where i.empresa_id = ?
           AND i.deletado_em IS NULL
-          AND m.deletado_em IS NULL;
+          AND m.deletado_em IS NULL
+        ORDER BY i.nome, i.id;
     `;
 
     return database.executar(
@@ -205,7 +206,8 @@ async function pesquisar(nome, empresaId) {
             where i.empresa_id = ? and i.nome
             like ?
                AND i.deletado_em IS NULL
-              AND m.deletado_em IS NULL;
+              AND m.deletado_em IS NULL
+              ORDER BY i.nome, i.id;
     `;
 
     return await database.executar(

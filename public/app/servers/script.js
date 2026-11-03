@@ -5,42 +5,6 @@ var perda_pacote = '-';
 var rede_enviada = '-';
 var rede_recebida = '-';
 
-function tipoToastPorStatus(status) {
-  if (status >= 200 && status < 300) return "success";
-  if (status >= 400 && status < 500) return "warning";
-  return "error";
-}
-
-function mensagemDoBody(body) {
-  return body.mensagem || body.message || body.erro;
-}
-
-async function tratarResposta(resposta) {
-  var texto = await resposta.text();
-  var body = {};
-
-  try {
-    body = JSON.parse(texto);
-  } catch (e) {
-    body = {};
-  }
-
-  if (!resposta.ok) {
-    console.error(texto);
-    var erro = new Error(mensagemDoBody(body) || "Erro na requisição.");
-    erro.status = resposta.status;
-    throw erro;
-  }
-
-  return { ...body, status: resposta.status };
-}
-
-function recarregarPagina() {
-  setTimeout(function () {
-    window.location.reload();
-  }, 2000);
-}
-
 function buscarServidores() {
   // var idEmpresa = sessionStorage.ID_EMPRESA;
 
@@ -148,7 +112,7 @@ function buscarServidores() {
 
 
 
-        if (i == servidor.length - 1 || servidor[i]['regiao'] != servidor[i + 1]['regiao']) {
+        if (i == servidor.length - 1 || servidor[i]['instancia_id'] != servidor[i + 1]['instancia_id']) {
           console.log(cpu)
           console.log(ram)
           console.log(disco)
@@ -297,7 +261,7 @@ function Pesquisar() {
 
         }
 
-        if (i == servidor.length - 1 || servidor[i]['regiao'] != servidor[i + 1]['regiao']) {
+        if (i == servidor.length - 1 || servidor[i]['instancia_id'] != servidor[i + 1]['instancia_id']) {
           console.log(cpu)
           console.log(ram)
           console.log(disco)
@@ -369,26 +333,18 @@ async function abrirEditor(id) {
   let rede_enviadaVar = document.getElementById("ipt_rede_enviada_edit");
   let rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
 
-  let responseJson;
+  const response = await fetch("/server/dados-instancia/" + idServidorEditar, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
 
-  try {
-    const response = await fetch("/server/dados-instancia/" + idServidorEditar, {
-      credentials: "include",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    });
-
-    responseJson = await tratarResposta(response);
-  } catch (erro) {
-    console.log("Erro ao buscar dados da instância:", erro);
-    showToast(
-      erro.message || "Não foi possível carregar os dados da instância.",
-      tipoToastPorStatus(erro.status)
-    );
-    return;
-  }
+  if (response.status != 200) 
+    return alert("algo de errado");
+  
+  const responseJson = await response.json();
 
   const data = responseJson.data;
   console.log(data);
@@ -461,11 +417,7 @@ function deletarServidor() {
   var idServidor = idServidorEditar;
   console.log(idServidor)
   if (idServidor == null) {
-    showToast("Nenhum servidor selecionado!", "warning");
-    return;
-  }
-
-  if (!confirm("Deseja realmente excluir esta instância?")) {
+    alert("Nenhum servidor selecionado!");
     return;
   }
 
@@ -476,23 +428,16 @@ function deletarServidor() {
       "Content-Type": "application/json"
     }
   })
-    .then(function (resposta) {
-      return tratarResposta(resposta);
+    .then(response => {
+      if (response.ok) {
+        alert("Conta deletada com sucesso!");
+
+        window.location.reload();
+      } else {
+        response.json().then(erro => alert(erro.erro || "Erro ao deletar"));
+      }
     })
-    .then(function (resultado) {
-      showToast(
-        mensagemDoBody(resultado) || "Servidor deletado com sucesso!",
-        tipoToastPorStatus(resultado.status)
-      );
-      recarregarPagina();
-    })
-    .catch(function (erro) {
-      console.error("Erro na requisição:", erro);
-      showToast(
-        erro.message || "Erro ao deletar servidor.",
-        tipoToastPorStatus(erro.status)
-      );
-    });
+    .catch(erro => console.error("Erro na requisição:", erro));
 }
 
 
@@ -561,32 +506,24 @@ async function cadastrar() {
     }
   }
 
-  try {
-    const registerResponse = await fetch("/server/cadastrar-instancia", {
-      credentials: "include",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    })
+  const registerResponse = await fetch("/server/cadastrar-instancia", {
+    credentials: "include",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  })
 
-    const responseJson = await tratarResposta(registerResponse)
+  if (registerResponse.status != 201) 
+    return alert("algo de errado")
+  
+  const responseJson = await registerResponse.json()
 
-    showToast(
-      mensagemDoBody(responseJson) || "Servidor cadastrado com sucesso!",
-      tipoToastPorStatus(responseJson.status)
-    )
-    console.log(responseJson)
+  alert(responseJson.mensagem)
+  console.log(responseJson)
 
-    recarregarPagina()
-  } catch (erro) {
-    console.error("Erro no cadastro:", erro)
-    showToast(
-      erro.message || "Não foi possível cadastrar o servidor.",
-      tipoToastPorStatus(erro.status)
-    )
-  }
+  setInterval(() => window.location.reload(), 3000)
 }
 
 function buttonDesativar() {
@@ -594,11 +531,7 @@ function buttonDesativar() {
   var idServidor = idServidorEditar;
   console.log(idServidor)
   if (idServidor == null) {
-    showToast("Nenhum servidor selecionado!", "warning");
-    return;
-  }
-
-  if (!confirm("Deseja realmente desativar esta instância?")) {
+    alert("Nenhum servidor selecionado!");
     return;
   }
 
@@ -610,21 +543,18 @@ function buttonDesativar() {
     }
   })
     .then(function (resposta) {
-      return tratarResposta(resposta);
-    })
-    .then(function (resultado) {
-      showToast(
-        mensagemDoBody(resultado) || "Desativado com sucesso!",
-        tipoToastPorStatus(resultado.status)
-      );
-      recarregarPagina();
+      if (resposta.ok) {
+        alert("Desativado com sucesso!");
+        window.location.reload();
+      } else {
+        return resposta.text().then(function (texto) {
+          console.error(texto);
+          alert("Erro ao desativar instância");
+        });
+      }
     })
     .catch(function (erro) {
       console.log("Erro na requisição:", erro);
-      showToast(
-        erro.message || "Erro ao desativar instância",
-        tipoToastPorStatus(erro.status)
-      );
     });
 }
 
@@ -632,11 +562,7 @@ function buttonAtivar() {
   var idServidor = idServidorEditar;
   console.log(idServidor)
   if (idServidor == null) {
-    showToast("Nenhum servidor selecionado!", "warning");
-    return;
-  }
-
-  if (!confirm("Deseja realmente ativar esta instância?")) {
+    alert("Nenhum servidor selecionado!");
     return;
   }
 
@@ -648,21 +574,18 @@ function buttonAtivar() {
     }
   })
     .then(function (resposta) {
-      return tratarResposta(resposta);
-    })
-    .then(function (resultado) {
-      showToast(
-        mensagemDoBody(resultado) || "Ativado com sucesso!",
-        tipoToastPorStatus(resultado.status)
-      );
-      recarregarPagina();
+      if (resposta.ok) {
+        alert("Ativado com sucesso!");
+        window.location.reload();
+      } else {
+        return resposta.text().then(function (texto) {
+          console.error(texto);
+          alert("Erro ao ativar instância");
+        });
+      }
     })
     .catch(function (erro) {
       console.log("Erro na requisição:", erro);
-      showToast(
-        erro.message || "Erro ao ativar instância",
-        tipoToastPorStatus(erro.status)
-      );
     });
 }
 
@@ -670,7 +593,7 @@ async function updateMetrics () {
   const serverId = idServidorEditar
 
   if (serverId == null) {
-    showToast("Nenhum servidor selecionado!", "warning");
+    alert("Nenhum servidor selecionado!");
     return;
   }
 
@@ -686,90 +609,82 @@ async function updateMetrics () {
   let rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
 
   if (regiaoVar.value.trim() == "") {
-    showToast("O nome da instância não pode ficar vazio.", "warning");
-    return;
+    return alert("O nome da instância não pode ficar vazio.");
   }
 
-  try {
-    const response = await fetch("/server/dados-instancia/" + serverId, {
-      credentials: "include",
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      },
-    });
+  const response = await fetch("/server/dados-instancia/" + serverId, {
+    credentials: "include",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json"
+    },
+  });
 
-    const responseJson = await tratarResposta(response);
-    const data = responseJson.data
+  if (response.status != 200)
+    return alert("algo de errado");
 
-    const body = {}
+  const responseJson = await response.json();
+  const data = responseJson.data
 
-    if (regiaoVar.value != data[0].regiao) {
-      body.name = regiaoVar.value
+  const body = {}
+
+  if (regiaoVar.value != data[0].regiao) {
+    body.name = regiaoVar.value
+  }
+
+  for (let i = 0; i < data.length; i++) {
+    const comp = data[i].componente;
+    switch (comp) {
+      case "cpu_use_percent":
+        if (Number(cpu_minVar.value) != Number(data[i].min) || Number(cpu_maxVar.value) != Number(data[i].max)) {
+          body.cpu = { min: cpu_minVar.value, max: cpu_maxVar.value }
+        }
+        break;
+      case "ram_use_percent":
+        if (Number(ram_minVar.value) != Number(data[i].min) || Number(ram_maxVar.value) != Number(data[i].max)) {
+          body.ram = { min: ram_minVar.value, max: ram_maxVar.value }
+        }
+        break;
+      case "disk_use_percent":
+        if (Number(disco_minVar.value) != Number(data[i].min) || Number(disco_maxVar.value) != Number(data[i].max)) {
+          body.disk = { min: disco_minVar.value, max: disco_maxVar.value }
+        }
+        break;
+      case "network_sent":
+        if (Number(rede_enviada_minVar.value) != Number(data[i].min)) {
+          body.networkSent = { min: rede_enviada_minVar.value }
+        }
+        break;
+      case "network_received":
+        if (Number(rede_recebida_minVar.value) != Number(data[i].min)) {
+          body.networkRecv = { min: rede_recebida_minVar.value }
+        }
+        break;
+      case "package_drop_total":
+        if (Number(perda_pacotes_maxVar.value) != Number(data[i].max)) {
+          body.packageDrop = { max: perda_pacotes_maxVar.value }
+        }
+        break;
     }
+  }
 
-    for (let i = 0; i < data.length; i++) {
-      const comp = data[i].componente;
-      switch (comp) {
-        case "cpu_use_percent":
-          if (Number(cpu_minVar.value) != Number(data[i].min) || Number(cpu_maxVar.value) != Number(data[i].max)) {
-            body.cpu = { min: cpu_minVar.value, max: cpu_maxVar.value }
-          }
-          break;
-        case "ram_use_percent":
-          if (Number(ram_minVar.value) != Number(data[i].min) || Number(ram_maxVar.value) != Number(data[i].max)) {
-            body.ram = { min: ram_minVar.value, max: ram_maxVar.value }
-          }
-          break;
-        case "disk_use_percent":
-          if (Number(disco_minVar.value) != Number(data[i].min) || Number(disco_maxVar.value) != Number(data[i].max)) {
-            body.disk = { min: disco_minVar.value, max: disco_maxVar.value }
-          }
-          break;
-        case "network_sent":
-          if (Number(rede_enviada_minVar.value) != Number(data[i].min)) {
-            body.networkSent = { min: rede_enviada_minVar.value }
-          }
-          break;
-        case "network_received":
-          if (Number(rede_recebida_minVar.value) != Number(data[i].min)) {
-            body.networkRecv = { min: rede_recebida_minVar.value }
-          }
-          break;
-        case "package_drop_total":
-          if (Number(perda_pacotes_maxVar.value) != Number(data[i].max)) {
-            body.packageDrop = { max: perda_pacotes_maxVar.value }
-          }
-          break;
-      }
-    }
+  if (Object.keys(body).length == 0) {
+    return alert("Nenhuma alteração foi feita.");
+  }
 
-    if (Object.keys(body).length == 0) {
-      showToast("Nenhuma alteração foi feita.", "warning");
-      return;
-    }
+  const updateResponse = await fetch(`/server/atualizar/${serverId}`, {
+    credentials: "include",
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
 
-    const updateResponse = await fetch(`/server/atualizar/${serverId}`, {
-      credentials: "include",
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    });
-
-    const updateJson = await tratarResposta(updateResponse);
-
-    showToast(
-      mensagemDoBody(updateJson) || "Métricas atualizadas com sucesso",
-      tipoToastPorStatus(updateJson.status)
-    );
-    recarregarPagina();
-  } catch (erro) {
-    console.error("Erro ao atualizar métricas:", erro);
-    showToast(
-      erro.message || "Erro ao atualizar métricas.",
-      tipoToastPorStatus(erro.status)
-    );
+  if (updateResponse.ok) {
+    alert("Métricas atualizadas com sucesso");
+    window.location.reload();
+  } else {
+    alert("Erro ao atualizar métricas.");
   }
 }
