@@ -1,0 +1,9 @@
+services:
+  web-application:
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile.prod
+    container_name: web-application
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

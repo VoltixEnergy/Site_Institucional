@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../css/dashboard-layout.css">
     <link rel="stylesheet" href="./styles.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="../../css/toast.css"></link>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -21,6 +22,7 @@
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
 
     <script src="../../js/sessao.js"></script>
     <script src="../../js/alerta.js"></script>
@@ -29,6 +31,36 @@
 
 </head>
 <body onload="buscarUsuarios(); carregarInformacoesUsuario(); loadCompanyName();">
+  <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+    </div>
+  </header>
+  <nav class="mobile-navbar">
+    <a href="../" class="item">
+      <i class="ph ph-chart-line"></i>
+    </a>
+
+    <a href="../users" class="item active">
+      <i class="ph ph-users-three"></i>
+    </a>
+
+    <a href="../servers" class="item">
+      <i class="ph ph-hard-drives"></i>
+    </a>
+
+    <a href="../codes" class="item">
+      <i class="ph ph-numpad"></i>
+    </a>
+  </nav>
+
     <aside class="navbar">
         <div class="logo">
             <img src="../../assets/icon/Logo.png">
@@ -57,21 +89,20 @@
 
 
         <div class="user-data">
-            <div class="icon" id="avatarUsuario"></div>
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
             <div class="info">
-                <span class="name" id="nomeUsuario"></span>
-                <span class="email" id="emailUsuario"></span>
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
             </div>
 
             <i
                 class="ph ph-sign-out exit-button"
-                onclick="window.location.href='../../index.html'">
+                onclick="limparSessao()">
             </i>
         </div>
     </aside>
 
     <main class="content">
-        <div class="page-content">
             <div class="page-title">
 
                 <div>
@@ -80,11 +111,7 @@
                         @ Empresa
                     </h2>
                 </div>
-                <button
-                    class="add-user-button"
-                    onclick="window.location.href='../servers'">
-                    +
-                </button>
+          
             </div>
 
             <hr>
@@ -220,11 +247,10 @@
                         Apagar Usuário
                     </button>
                 </div>
-            </div>
-        </div>   
+            </div>   
 
-        <div id="toast-container"></div>
-
+            
     </main>
+  <div id="toast-container" class="toast-container"></div>
 </body>
 </html>

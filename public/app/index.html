@@ -1,132 +1,296 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 
 <head>
-  <link rel="shortcut icon" href="../assets/icon/Logo.ico" type="image/x-icon">
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voltix | Dashboard</title>
+    <link rel="shortcut icon" href="../assets/icon/Logo.ico" type="image/x-icon" />
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voltix | Dashboard</title>
 
+    <link rel="stylesheet" href="../../css/dashboard-layout.css" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="../../js/sessao.js"></script>
+    <script src="../../js/alerta.js"></script>
 
-  <link rel="stylesheet" href="../css/dashboard-layout.css">
-  <link rel="stylesheet" href="./styles.css">
-  <script src="../js/sessao.js"></script>
-  <script src="./../js/alerta.js"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet" />
 
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-    rel="stylesheet">
+    <!-- scripts do Chart.js - 2022-1 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- scripts do Chart.js - 2022-1 -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <link
-    rel="stylesheet"
-    type="text/css"
-    href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
-  />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
 </head>
 
 <body onload="carregarInformacoesUsuario()">
+    <aside class="navbar">
+        <div class="logo">
+            <img src="../assets/icon/Logo.png" /><span>Voltix</span>
+        </div>
 
-  <aside class="navbar">
-    <div class="logo">
-      <img src="../../assets/icon/Logo.png"><span>Voltix</span>
+        <nav class="navbar-items">
+            <a href="./" class="item">
+                <i class="ph ph-chart-line"></i>
+                Dashboard
+            </a>
+
+            <a href="./users" class="item">
+                <i class="ph ph-users-three"></i>
+                Funcionários
+            </a>
+
+            <a href="./servers" class="item">
+                <i class="ph ph-hard-drives"></i>
+                Servidores
+            </a>
+
+            <a href="./codes" class="item">
+                <i class="ph ph-numpad"></i>
+                Códigos
+            </a>
+        </nav>
+
+        <div class="user-data">
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+            <div class="info">
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
+            </div>
+
+            <i class="ph ph-sign-out exit-button" onclick="window.location.href = '../../index.html'"></i>
+        </div>
+    </aside>
+
+    <div class="dash-content">
+        <div class="titulo">
+            <p> Concentração de Alertas por Subsistemas </p>
+        </div>
+
+        <div class="kpis-conteiner">
+            <div class="kpi">
+                <div class="kpi-title-div">
+                    <span class="kpi-title">Total (novembro)</span>
+                </div>
+                <div class="kpi-value-div">
+                    <span class="kpi-value" id="totalServidores">10</span>
+                </div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-title-div">
+                    <span class="kpi-title">CPU</span>
+                </div>
+                <div class="kpi-value-div">
+                    <span class="kpi-value" id="totalServidores">40%</span>
+                </div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-title-div">
+                    <span class="kpi-title">RAM</span>
+                </div>
+                <div class="kpi-value-div">
+                    <span class="kpi-value" id="totalServidores">10%</span>
+                </div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-title-div">
+                    <span class="kpi-title">Disco</span>
+                </div>
+                <div class="kpi-value-div">
+                    <span class="kpi-value" id="totalServidores">40%</span>
+                </div>
+            </div>
+            <div class="kpi">
+                <div class="kpi-title-div">
+                    <span class="kpi-title">Enviado/Recebido</span>
+                </div>
+                <div class="kpi-value-div">
+                    <span class="kpi-value" id="totalServidores">10 </span>
+                    <span class="kpi-value" id="totalServidores">/0%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grafic1">
+            <span class="grafic1-title">Distribuição dos alertas nos mêses</span>
+            <canvas id="stackedBarChart"></canvas>
+        </div>
+        <div class="grafic2">
+            <span class="grafic2-title">Comparação quantidade de alertas com ultimo mês</span>
+            <canvas id="stackedLineChart"></canvas>
+        </div>
+        <div class="grafic3">
+            <span class="grafic3-title">Capacidade do hardware</span>
+            <canvas id="graficoTermometro"></canvas>
+        </div>
+        <div class="grafic4">
+            <span class="grafic4-title">???</span>
+            <canvas id="graficolinha2"></canvas>
+        </div>
     </div>
-
-    <nav class="navbar-items">
-      <a href="./" class="item active">
-        <i class="ph ph-chart-line"></i>
-        Dashboard
-      </a>
-
-      <a href="./users" class="item">
-        <i class="ph ph-users-three"></i>
-        Funcionários
-      </a>
-
-      <a href="./servers" class="item">
-        <i class="ph ph-hard-drives"></i>
-        Servidores
-      </a>
-
-      <a href="./codes" class="item">
-        <i class="ph ph-numpad"></i>
-        Códigos
-      </a>
-    </nav>
-
-    <div class="user-data">
-      <div class="icon" id="avatarUsuario"></div>
-
-      <div class="info">
-        <span class="name" id="nomeUsuario"></span>
-        <span class="email" id="emailUsuario"></span>
-      </div>
-
-      <i class="ph ph-sign-out exit-button" onclick="window.location.href='../../index.html'"></i>
-    </div>
-
-  </aside>
-
-  <div class="em_breve">
-
-    <div class="mensagem_em_breve">
-
-      <div class="icone_breve">
-        <img src="../assets/imgs/icone_cadeado.png">
-      </div>
-
-      <h2>Em breve!</h2>
-
-      <span>Esta funcionalidade estará disponível em breve.</span>
-
-      <div class="aguarde_breve">
-        <img src="../assets/imgs/icone_tempo.png">
-        Aguarde novidades
-      </div>
-
-    </div>
-
-  </div>
-
-  <!-- <div class="perfil_celular">
-
-    <div class="logo_celular" onclick="abrir_navbar()">
-      <img src="../assets/icon/Logo.png" alt="">
-    </div>
-
-    <div class="usuario_celular">
-      <div class="avatar_usuario" id="avatarUsuario_celular"></div>
-    </div>
-
-  </div>
-
-  <div id="navbar_celular" class="navbar_celular">
-
-    <a href="./">
-      <img src="../assets/imgs/icone_dashboard.png">
-    </a>
-
-    <a href="./users">
-      <img src="../assets/imgs/icone_funcionario.png">
-    </a>
-
-    <a href="./servers">
-      <img src="../assets/imgs/icone_servidor.png">
-    </a>
-
-    <a href="../index.html">
-      <img src="../assets/imgs/icone_sair.png">
-    </a>
-
-    <button class="fechar_navbar" onclick="abrir_navbar()">
-    </button>
-
-  </div> -->
-
 </body>
+<script>
+    const valueBar = document
+        .getElementById("stackedBarChart")
+        .getContext("2d");
+
+    const stackedBarChart = new Chart(valueBar, {
+        type: "bar",
+        data: {
+            labels: ["Agosto", "Setembro", "Outubro", "Novembro"],
+            datasets: [
+                {
+                    label: "A baixo do limite mínimo", // quando a demanda é muito pouca para o hardware, exemplo, pouco uso da cpu
+                    data: [10, 13, 15, 1],
+                    backgroundColor: "#2563eb",
+                },
+                {
+                    label: "Próximo ao limite máximo",
+                    data: [3, 20, 70, 4],
+                    backgroundColor: "#FFEC8B",
+                },
+                {
+                    label: "Acima do limite máximo",
+                    data: [19, 3, 15, 5],
+                    backgroundColor: "#ea580c",
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true,
+                },
+                y: {
+                    stacked: true,
+                },
+            },
+        },
+    });
+
+    const valueLine = document
+        .getElementById("stackedLineChart")
+        .getContext("2d");
+
+    const stackedLineChart = new Chart(valueLine, {
+        type: "line",
+        data: {
+            labels: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            datasets: [
+
+                {
+                    label: "Novembro",
+                    data: [
+                        3, 1, 6, 
+                    ],
+                    borderColor: "#ea580c",
+                    backgroundColor: "#ea580c",
+                    borderWidth: 3,
+                    order: 1, // Prioridade menor (fica atrás)
+                },
+                {
+                    label: "Outubro",
+                    data: [
+                        2, 5, 1, 4, 3, 6, 2, 1, 5, 3, 4, 2, 7, 1, 3, 5, 2, 4, 1, 6, 3, 2,
+                        5, 4, 1, 3, 2, 5, 4, 3, 1
+                    ],
+                    borderColor: "#1d4ed8",
+                    backgroundColor: "#1d4ed8",
+                    borderWidth: 2,
+                    order: 2, // Prioridade maior (aparece na frente)
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+    const termometro = document
+        .getElementById("graficoTermometro")
+        .getContext("2d");
+
+    const graficoTermometro = new Chart(termometro, {
+        type: "line",
+        data: {
+            labels: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            datasets: [
+                {
+                    label: "Temperatura",
+                    data: [
+                        73, 14, 89, 42, 5, 61, 98, 23, 50, 37, 81, 19, 64, 8, 92, 45,
+                        27, 70, 3, 58, 84, 16, 91, 33, 76, 29, 62, 11, 87, 54, 40
+                    ],
+                    borderColor: "#ea580c",
+                    backgroundColor: "#fb923c",
+                    borderWidth: 3,
+                    order: 1, // Prioridade maior (aparece na frente)
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+    const linha2 = document
+        .getElementById("graficolinha2")
+        .getContext("2d");
+
+    const graficolinha2 = new Chart(linha2, {
+        type: "line",
+        data: {
+            labels: [
+                '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
+                '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
+                '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'
+            ],
+            datasets: [
+                {
+                    label: "Temperatura",
+                    data: [
+                        73, 14, 89, 42, 5, 61, 98, 23, 50, 37, 81, 19, 64, 8, 92, 45,
+                        27, 70, 3, 58, 84, 16, 91, 33, 76, 29, 62, 11, 87, 54, 40
+                    ],
+                    borderColor: "#1d4ed8",
+                    backgroundColor: "#2563eb",
+                    borderWidth: 3,
+                    order: 1, // Prioridade maior (aparece na frente)
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
+</script>
 
 </html>

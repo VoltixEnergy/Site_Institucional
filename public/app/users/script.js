@@ -1,19 +1,25 @@
-// TODO: substituir alerts por toasts
-function loadCompanyName(){
-  const companyName = sessionStorage.getItem("COMPANY_NAME")
-  const companyNameElement = document.getElementById("companyName")
-
-  companyNameElement.innerText = `@ ${companyName}`
+function tipoToastPorStatus(status) {
+    if (status >= 200 && status < 300) return "success";
+    if (status >= 400 && status < 500) return "warning";
+    return "error";
 }
 
 async function tratarResposta(resposta) {
-    const body = await resposta.json();
+    var body = {};
 
-    if (!resposta.ok) {
-        throw new Error(body.message || "Erro na requisição.");
+    try {
+        body = await resposta.json();
+    } catch (e) {
+        body = {};
     }
 
-    return body;
+    if (!resposta.ok) {
+        var erro = new Error(body.message || "Erro na requisição.");
+        erro.status = resposta.status;
+        throw erro;
+    }
+
+    return { ...body, status: resposta.status };
 }
 
 
@@ -76,15 +82,15 @@ function buscarUsuarios() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
-                            <img src="../../assets/imgs/edit.png">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
@@ -99,7 +105,6 @@ function buscarUsuarios() {
 
 function Pesquisar() {
     var nome = document.getElementById("input_pesquisa").value;
-    var idUsuario = sessionStorage.ID_USUARIO;
 
     if (nome == "") {
         buscarUsuarios();
@@ -155,15 +160,15 @@ function Pesquisar() {
                 lista.innerHTML += `
                     <div class="user">
                         <div class="infosUser">
-                            <p id="userAvatar">${primeiraLetra}${segundaLetra}</p>
+                            <p id="userAvatar" class="userAvatar">${primeiraLetra}${segundaLetra}</p>
                             <div>
-                                <p id="userName">${item.nome}</p>
-                                <span>${item.email}</span>
+                                <p id="userName" class="userName">${item.nome}</p>
+                                <span class="userEmail">${item.email}</span>
                             </div>
                         </div>
-                        <p id="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
-                        <button class="mudarNome" onclick="abrirEditor(${item.id})">
-                            <img src="../../assets/imgs/edit.png">
+                        <p id="userCargo" class="userCargo" style="border: 1px solid white; padding: 0.5rem; border-radius: 1rem;">${nomeCargo}</p>
+                        <button class="mudarNome" onclick="abrirEditor('${item.id}')">
+                            <i class="ph-bold ph-dots-three-vertical"></i>
                         </button>
                     </div>
                 `;
@@ -233,17 +238,17 @@ function mudarNome() {
     var novoNome = novoNomeInput.value.trim();
 
     if (novoNome == "") {
-        alert("Digite um novo nome.");
+        showToast("Digite um novo nome.", "warning");
         return;
     }
 
     if (novoNome.length < 3) {
-        alert("O nome deve ter ao menos 3 caracteres.");
+        showToast("O nome deve ter ao menos 3 caracteres.", "warning");
         return;
     }
 
     if (idUsuarioEditar == null) {
-        alert("Nenhum usuário selecionado.");
+        showToast("Nenhum usuário selecionado.", "warning");
         return;
     }
 
@@ -266,13 +271,19 @@ function editarNome(novoNome, idUsuario) {
             return tratarResposta(resposta);
         })
         .then(function (resultado) {
-            alert(resultado.message || "Nome atualizado com sucesso!");
+            showToast(
+                resultado.message || "Nome atualizado com sucesso!",
+                tipoToastPorStatus(resultado.status)
+            );
             sairEditor();
             buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro:", erro);
-            alert(erro.message || "Não foi possível atualizar o nome.");
+            showToast(
+                erro.message || "Não foi possível atualizar o nome.",
+                tipoToastPorStatus(erro.status)
+            );
         });
 }
 
@@ -282,12 +293,12 @@ function mudarCargo() {
     var novoCargo = novoCargoInput.value.trim();
 
     if (novoCargo == "") {
-        alert("Digite um novo cargo.");
+        showToast("Digite um novo cargo.", "warning");
         return;
     }
 
     if (idUsuarioEditar == null) {
-        alert("Nenhum usuário selecionado.");
+        showToast("Nenhum usuário selecionado.", "warning");
         return;
     }
 
@@ -307,20 +318,22 @@ function editarCargo(novoCargo, idUsuario) {
         })
     })
         .then(function (resposta) {
-            if (resposta.ok) {
-                alert("Cargo atualizado com sucesso!");
-                sairEditor();
-                buscarUsuarios();
-            } else {
-                return resposta.text().then(function (texto) {
-                    console.error(texto);
-                    throw new Error("Erro ao atualizar cargo.");
-                });
-            }
+            return tratarResposta(resposta);
+        })
+        .then(function (resultado) {
+            showToast(
+                resultado.message || "Cargo atualizado com sucesso!",
+                tipoToastPorStatus(resultado.status)
+            );
+            sairEditor();
+            buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro:", erro);
-            alert("Não foi possível atualizar o cargo.");
+            showToast(
+                erro.message || "Não foi possível atualizar o cargo.",
+                tipoToastPorStatus(erro.status)
+            );
         });
 }
 
@@ -330,17 +343,17 @@ function mudarEmail() {
     var novoEmail = novoEmailInput.value.trim();
 
     if (novoEmail == "") {
-        alert("Digite um novo e-mail.");
+        showToast("Digite um novo e-mail.", "warning");
         return;
     }
 
     if (!novoEmail.includes("@")) {
-        alert("Digite um e-mail válido.");
+        showToast("Digite um e-mail válido.", "warning");
         return;
     }
 
     if (idUsuarioEditar == null) {
-        alert("Nenhum usuário selecionado.");
+        showToast("Nenhum usuário selecionado.", "warning");
         return;
     }
 
@@ -364,13 +377,19 @@ function editarEmail(novoEmail, idUsuario) {
             return tratarResposta(resposta);
         })
         .then(function (resultado) {
-            alert(resultado.message || "E-mail atualizado com sucesso!");
+            showToast(
+                resultado.message || "E-mail atualizado com sucesso!",
+                tipoToastPorStatus(resultado.status)
+            );
             sairEditor();
             buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro:", erro);
-            alert(erro.message || "Não foi possível atualizar o e-mail.");
+            showToast(
+                erro.message || "Não foi possível atualizar o e-mail.",
+                tipoToastPorStatus(erro.status)
+            );
         });
 }
 
@@ -380,7 +399,7 @@ function deletarUsuario() {
     var idUsuario = idUsuarioEditar;
 
     if (idUsuario == null) {
-        alert("Nenhum usuário selecionado!");
+        showToast("Nenhum usuário selecionado!", "warning");
         return;
     }
 
@@ -399,13 +418,19 @@ function deletarUsuario() {
             return tratarResposta(resposta);
         })
         .then(function (resultado) {
-            alert(resultado.message || "Conta deletada com sucesso!");
+            showToast(
+                resultado.message || "Conta deletada com sucesso!",
+                tipoToastPorStatus(resultado.status)
+            );
             sairEditor();
             buscarUsuarios();
         })
         .catch(function (erro) {
             console.log("Erro na requisição:", erro);
-            alert(erro.message || "Erro ao deletar usuário.");
+            showToast(
+                erro.message || "Erro ao deletar usuário.",
+                tipoToastPorStatus(erro.status)
+            );
         });
 }
 
@@ -425,22 +450,22 @@ function cadastrar() {
     var empresaIdVar = sessionStorage.ID_EMPRESA;
 
     if (nomeVar == "" || emailVar == "" || senhaVar == "") {
-        alert("Preencha todos os campos.");
+        showToast("Preencha todos os campos.", "warning");
         return false;
     }
 
     if (nomeVar.length < 3) {
-        alert("O nome deve ter ao menos 3 caracteres.");
+        showToast("O nome deve ter ao menos 3 caracteres.", "warning");
         return false;
     }
 
     if (senhaVar.length < 6) {
-        alert("A senha deve ter ao menos 6 caracteres.");
+        showToast("A senha deve ter ao menos 6 caracteres.", "warning");
         return false;
     }
 
     if (senhaVar != confirmacaoSenhaVar) {
-        alert("As senhas não coincidem.");
+        showToast("As senhas não coincidem.", "warning");
         return false;
     }
 
@@ -462,7 +487,10 @@ function cadastrar() {
         })
         .then(function (resultado) {
             console.log("Usuário cadastrado:", resultado);
-            alert(resultado.message || "Usuário cadastrado com sucesso!");
+            showToast(
+                resultado.message || "Usuário cadastrado com sucesso!",
+                tipoToastPorStatus(resultado.status)
+            );
             document.getElementById("iptNome").value = "";
             document.getElementById("iptEmail").value = "";
             document.getElementById("iptSenha").value = "";
@@ -472,7 +500,10 @@ function cadastrar() {
         })
         .catch(function (erro) {
             console.log("Erro no cadastro:", erro);
-            alert(erro.message || "Não foi possível cadastrar o usuário.");
+            showToast(
+                erro.message || "Não foi possível cadastrar o usuário.",
+                tipoToastPorStatus(erro.status)
+            );
         });
 
     return false;

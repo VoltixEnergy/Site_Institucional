@@ -1,3 +1,12 @@
+const loadCodeFromLocalStorage = () => {
+  const code = localStorage.getItem("ADM_CODE")
+
+  if (!code)
+    return
+
+  codigo_ativacao_input.value = code
+} 
+
 function cadastrar() {
   // aguardar();
 
@@ -53,11 +62,10 @@ function cadastrar() {
       if (resposta.ok) {
         showToast("Cadastro realizado com sucesso! Redirecionando para tela de Login...", "success");
 
+        localStorage.removeItem("ADM_CODE")
         setTimeout(() => {
           window.location = "../login";
         }, 2000);
-
-        limparFormulario();
       } else {
         throw "Houve um erro ao tentar realizar o cadastro!";
       }

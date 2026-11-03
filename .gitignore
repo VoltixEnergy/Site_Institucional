@@ -3,4 +3,6 @@ node_modules
 package-lock.json
 .env
 .env.dev
+.env.database
 .github
+init.sql

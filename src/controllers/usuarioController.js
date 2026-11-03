@@ -26,7 +26,7 @@ async function autenticar(req, res) {
   }
 
   try {
-    const resultadoAutenticar = await usuarioModel.autenticar(email, senha);
+    const resultadoAutenticar = await usuarioModel.autenticar(email);
 
     if (resultadoAutenticar.length === 1) {
 
@@ -37,7 +37,7 @@ async function autenticar(req, res) {
         return res.status(403).json(responseBody);
       }
 
-      const senhaCorreta = await bcrypt.compare(senha, usuario.senha); // bcrypt --> comparando a senha fornecida com a senha armazenada no banco de dados
+      const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
 
       if (!senhaCorreta) {
         responseBody.message = "E-mail e/ou senha inválidos";
@@ -140,7 +140,7 @@ async function cadastrar(req, res) {
 
     if (codeUpdateResponse.affectedRows !== 1) {
       responseBody.message = "Não foi possível cadastrar o usuário. Tente novamente mais tarde"
-      res.status(500).json(responseBody)
+      return res.status(500).json(responseBody)
     }
 
     responseBody.message = "Cadastro realizado com sucesso! Faça login para prosseguir"
@@ -368,7 +368,7 @@ function editarEmail(req, res) {
 
     if (role !== 1) {
         return res.status(403).json({
-            mensagem: "Acesso negado. Apenas gestores de TI podem editar e-mails."
+            message: "Acesso negado. Apenas gestores de TI podem editar e-mails."
         });
     }
 
@@ -377,7 +377,7 @@ function editarEmail(req, res) {
 
     if (!email) {
         return res.status(400).json({
-            mensagem: "Informe o novo e-mail"
+            message: "Informe o novo e-mail"
         });
     }
 
@@ -388,7 +388,9 @@ function editarEmail(req, res) {
     )
         .then(function (resultado) {
 
-            res.status(200).json(resultado);
+            res.status(200).json({
+              message: "Email alterado com sucesso!"
+            });
 
         })
         .catch(function (erro) {
@@ -407,7 +409,7 @@ function editarCargo(req, res) {
 
     if (role !== 1) {
         return res.status(403).json({
-            mensagem: "Acesso negado. Apenas gestores de TI podem editar cargos."
+            message: "Acesso negado. Apenas gestores de TI podem editar cargos."
         });
     }
 
@@ -416,7 +418,7 @@ function editarCargo(req, res) {
 
     if (!novoCargo) {
         return res.status(400).json({
-            mensagem: "Informe o novo cargo"
+            message: "Informe o novo cargo"
         });
     }
 
@@ -426,7 +428,9 @@ function editarCargo(req, res) {
         companyId
     )
         .then(function (resultado) {
-            res.status(200).json(resultado);
+            res.status(200).json({
+              message: "Cargo alterado com sucesso!"
+            });
         })
         .catch(function (erro) {
             console.log(erro);

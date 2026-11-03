@@ -4,7 +4,7 @@
   bottom: 1rem;
   right: 1rem;
   pointer-events: none;
-  z-index: 90;
+  z-index: 100 !important;
   max-height: calc(100dvh - 8rem);
   display: flex;
   flex-direction: column-reverse;
@@ -46,4 +46,14 @@
 
 .hidden {
   display: none;
+}
+
+@media (width <= 48rem) {
+  .toast-container {
+    width: 18rem;
+    top: 2rem;
+    left: 2rem;
+    right: inherit;
+    bottom: inherit;
+  }
 }
