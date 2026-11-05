@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "npx @tailwindcss/cli -i ./public/tailwind/input.css -o ./public/tailwind/output.css & node app.js",
     "dev": "concurrently \"npx @tailwindcss/cli -i ./public/tailwind/input.css -o ./public/tailwind/output.css --watch\" \"nodemon --exec node app.js\"",
     "docker": "docker compose up -d --build && docker exec -it voltix-app sh"
   },
