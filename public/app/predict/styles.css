@@ -1,0 +1,64 @@
+.container-kpi {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.container-kpi .kpi {
+  background: var(--slate-50);
+  flex: 1;
+  min-width: 12rem;
+  min-height: 8rem;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 2px solid var(--slate-950);
+}
+
+.container-kpi .kpi div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+}
+
+.container-kpi .kpi h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.container-kpi span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-kpi .quantitativa {
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.container-kpi .perigo {
+  border: 2px solid var(--danger);
+  color: var(--danger);
+}
+
+.container-kpi .alerta {
+  border: 2px solid var(--orange-400);
+  color: var(--orange-400);
+}
+
+.container-kpi .seguro {
+  border: 2px solid var(--safe);
+  color: var(--safe);
+}
+
+.container-kpi .baixo {
+  border: 2px solid var(--under);
+  color: var(--under);
+}
