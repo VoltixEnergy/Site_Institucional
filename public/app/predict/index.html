@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../css/dashboard-layout.css">
+    <link rel="stylesheet" href="../../css/toast.css"></link>
+    <link rel="stylesheet" href="../../tailwind/output.css  ">
+    <link rel="stylesheet" href="./styles.css">
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+
+    <script src="../../js/sessao.js"></script>
+    <script src="../../js/alerta.js"></script>
+    <script src="../../js/toast.js"></script>
+    <script src="./script.js"></script>
+</head>
+
+<body onload="carregarInformacoesUsuario();">
+  <header class="mobile-header">
+    <div class="user-data">
+      <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+      <div class="info">
+        <span class="name nomeUsuario" id="nomeUsuario"></span>
+        <span class="email emailUsuario" id="emailUsuario"></span>
+      </div>
+
+      <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+    </div>
+  </header>
+  <nav class="mobile-navbar">
+    <a href="../" class="item">
+      <i class="ph ph-chart-line"></i>
+    </a>
+
+    <a href="../users" class="item active">
+      <i class="ph ph-users-three"></i>
+    </a>
+
+    <a href="../servers" class="item">
+      <i class="ph ph-hard-drives"></i>
+    </a>
+
+    <a href="../codes" class="item">
+      <i class="ph ph-numpad"></i>
+    </a>
+  </nav>
+
+    <aside class="navbar">
+        <div class="logo">
+            <img src="../../assets/icon/Logo.png">
+            <span>Voltix</span>
+        </div>
+
+
+        <nav class="navbar-items">
+            <a href="../" class="item">
+                <i class="ph ph-chart-line"></i>
+                Dashboard
+            </a>
+            <a href="./" class="item active">
+                <i class="ph ph-users-three"></i>
+                Funcionários
+            </a>
+            <a href="../servers" class="item">
+                <i class="ph ph-hard-drives"></i>
+                Servidores
+            </a>
+            <a href="../codes" class="item">
+              <i class="ph ph-numpad"></i>
+              Códigos
+            </a>
+        </nav>
+
+
+        <div class="user-data">
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
+            <div class="info">
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
+            </div>
+
+            <i
+                class="ph ph-sign-out exit-button"
+                onclick="limparSessao()">
+            </i>
+        </div>
+    </aside>
+
+    <main class="content">
+
+        <div class="container-kpi">
+        <div class="kpi quantitativa">
+          <div>
+            <h2>CPU prevista</h2>
+            <i class="ph ph-cpu" style="font-size: 32px;"></i>
+          </div>
+          <span id="kpiCpu">40%</span>
+        </div>
+        <div class="kpi quantitativa">
+          <div>
+            <h2>RAM prevista</h2>
+            <i class="ph ph-memory" style="font-size: 32px;"></i>
+          </div>
+          <span id="kpiRam">10%</span>
+        </div>
+        <div class="kpi quantitativa">
+          <div>
+            <h2>Disco previsto</h2>
+            <i class="ph ph-hard-drive" style="font-size: 32px;"></i>
+          </div>
+          <span id="kpiDisco">40%</span>
+        </div>
+      </div>
+        
+    </main>
+
+
+        
+    </body>
+
+</html>
