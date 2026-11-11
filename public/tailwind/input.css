@@ -1,1 +1,13 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+@theme inline {
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@theme {
+  --color-background: oklch(92.9% 0.013 255.508);
+  --color-foreground: oklch(12.9% 0.042 264.695);
+  --color-primary: oklch(37.9% 0.146 265.522);
+  --color-highlight: oklch(70.5% 0.213 47.604);
+}

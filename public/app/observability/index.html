@@ -20,14 +20,18 @@
     type="text/css"
     href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css"
   />
+  <link rel="stylesheet" type='text/css' href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Importações Internas -->
-  <link rel="stylesheet" href="../../css/dashboard-layout.css">
+  <link rel="stylesheet" href="../../css/dashboard-layout-tailwind.css">
+  <link rel="stylesheet" href="../../tailwind/output.css">
+
   <script src="script.js"></script>
   <script src="../../js/sessao.js"></script>
 </head>
 
-<body onload="carregarInformacoesUsuario()">
+<body onload="carregarInformacoesUsuario(); loadCharts();">
   <header class="mobile-header">
     <div class="user-data">
       <div class="icon avatarUsuario" id="avatarUsuario"></div>
@@ -58,20 +62,148 @@
         Dashboard
       </a>
     </nav>
-
+    
     <div class="user-data">
       <div class="icon avatarUsuario" id="avatarUsuario"></div>
-
+      
       <div class="info">
         <span class="name nomeUsuario" id="nomeUsuario"></span>
         <span class="email emailUsuario" id="emailUsuario"></span>
       </div>
-
+      
       <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
     </div>
   </aside>
   <main class="content">
-    <div></div>
+    <p class="text-xs text-slate-500 absolute top-2 right-2 ">Última atualização em 07/11/2026 às 15:09</p>
+    <div class="w-full flex flex-col gap-2">
+      <div class="w-full h-10 flex gap-1 justify-between">
+        <input 
+          type="text" 
+          class="w-full h-full rounded-full px-4 outline-none bg-slate-100" 
+          id="" 
+          placeholder="Buscar servidor"
+        >
+        <button class="max-h-10 max-w-10 w-full h-full bg-primary flex justify-center items-center rounded-full cursor-pointer">
+          <i class="ph ph-magnifying-glass text-2xl text-slate-50"></i>
+        </button>
+      </div>
+      <div class="w-full flex gap-2">
+        <div class="w-full max-h-48 overflow-y-auto flex flex-col px-4 py-4 bg-slate-100 rounded-md *:border-b *:border-b-slate-200 *:first:border-b-0 *:first:-mt-10 *:last:border-b-0 relative *:rounded-sm *:focus:bg-slate-300 *:pl-2 *:outline-none *:aria-selected:bg-slate-300">
+          <i class="sticky -top-1 ml-auto w-12 text-3xl ph ph-hard-drives"></i>
+          
+          <span tabindex="1" aria-selected="true">teste</span>
+          <span tabindex="2">teste</span>
+          <span tabindex="3">teste</span>
+          <span tabindex="4">teste</span>
+          <span tabindex="5">teste</span>
+          <span tabindex="6">teste</span>  
+          <span tabindex="7">teste</span>
+          <span tabindex="8">teste</span>
+        </div>
+        <div class="group w-full max-h-48 overflow-y-auto flex flex-col px-4 py-2 bg-slate-100 rounded-md *:border-b *:border-b-slate-200 *:first:border-b-0 *:first:-mt-10 *:last:border-b-0 relative *:aria-disabled:text-slate-300 *:rounded-sm *:focus:bg-slate-300 *:focus:aria-selected:bg-slate-300 *:outline-none *:aria-disabled:pointer-events-none">
+          <i aria-disabled="true" class="devicon-docker-plain sticky top-0 ml-auto w-12 text-4xl"></i>
+          
+          <span tabindex="9" aria-disabled="true">teste</span>
+          <span tabindex="10" aria-disabled="true">teste</span>
+          <span tabindex="11" aria-disabled="true">teste</span>
+          <span tabindex="12" aria-disabled="true">teste</span>
+          <span tabindex="13" aria-disabled="true">teste</span>
+          <span tabindex="14" aria-disabled="true">teste</span>  
+          <span tabindex="15" aria-disabled="true">teste</span>
+          <span tabindex="16" aria-disabled="true">teste</span>
+        </div>
+      </div>
+    </div>
+    <h1 class="text-lg pt-2">Gráfico de barras (muito pequenas) de quantidade de logs/errors pelo tempo</h1>
+    <p>colocar filtro de tempo</p>
+    <div class="bg-slate-100 w-full h-96 flex-1 rounded-md p-4">
+      <canvas id="logsPerTime"></canvas>
+    </div>
+    <h1 class="text-lg pt-2">Quantidade de Logs por Nível</h1>
+    <div class="w-full h-32 flex items-center justify-between gap-2">
+      <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4">
+        <div class="flex justify-between items-center">
+          <h1>Erros</h1>
+          <i class="ph ph-warning text-2xl"></i>
+        </div>
+        <div class="flex items-center justify-center h-18 text-2xl font-medium">
+          <p>2470</p>
+        </div>
+      </div>
+      <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4">
+        <div class="flex justify-between items-center">
+          <h1>Avisos</h1>
+          <i class="ph ph-warning-diamond text-2xl"></i>
+        </div>
+        <div class="flex items-center justify-center h-18 text-2xl font-medium">
+          <p>2470</p>
+        </div>
+      </div>
+      <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4">
+        <div class="flex justify-between items-center">
+          <h1>Informações</h1>
+          <i class="ph ph-warning-circle text-2xl"></i>
+        </div>
+        <div class="flex items-center justify-center h-18 text-2xl font-medium">
+          <p>2470</p>
+        </div>
+      </div>
+    </div>
+    <div class="w-full flex items-center justify-between gap-2 -mt-2 flex-wrap">
+      <div class="bg-slate-100 w-full h-72 flex-1 rounded-md p-4">
+        <canvas id="scopeByError"></canvas>
+      </div>
+      <div class="bg-slate-100 w-full h-72 flex-1 rounded-md p-4">
+       <canvas id="scopeByWarning"></canvas>
+      </div>
+      <div class="bg-slate-100 w-full h-72 flex-1 rounded-md p-4">
+        <canvas id="scopeByInfo"></canvas>
+      </div>
+    </div>
+    <h1 class="text-lg pt-2">Logs com Maior Frequência</h1>
+    <div class="w-full font-mono text-sm flex flex-col gap-6 pt-4 font-medium">
+      <div class="w-full">
+        <span class="px-4 py-4 bg-slate-100 rounded-md">1º</span>
+        <span class="px-4 py-4 bg-slate-100 rounded-md">360x</span>
+        <p class="flex-1 px-4 py-4 bg-slate-100 rounded-md"><span class="text-slate-500">></span> <span class="text-red-500">ERROR</span> | UDP Server | The provided token has expired. (Service: S3, Status Code: 400, Request ID: VCADTSPAH4Z1R00F, Extended Request ID: +SgPI1o+GS7TgNg0yAi7q82FQgPmSXx2b5KC8/5VDd13/Mez2Gf8TMDPpIoWkY8iafmIs47AaffF8UPfXK82MtR+9ZZAI6AU) (SDK Attempt Count: 1)</p>
+      </div>
+      <div class="w-full">
+        <span class="px-4 py-4 bg-slate-100 rounded-md">2º</span>
+        <span class="px-4 py-4 bg-slate-100 rounded-md">180x</span>
+        <p class="flex-1 px-4 py-4 bg-slate-100 rounded-md">> teste</p>
+      </div>
+      <div class="w-full">
+        <span class="px-4 py-4 bg-slate-100 rounded-md">3º</span>
+        <span class="px-4 py-4 bg-slate-100 rounded-md">90x</span>
+        <p class="flex-1 px-4 py-4 bg-slate-100 rounded-md">> teste</p>
+      </div>
+    </div>
+    <h1 class="text-lg pt-2">Histórico de Logs</h1>
+    <div class="w-full h-80 overflow-y-auto flex flex-col justify-end-safe px-4 py-4 bg-slate-100 rounded-md font-mono text-sm">
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+      <p>> teste</p>
+    </div>
+    <div class="size-14 bg-primary fixed bottom-4 right-4 rounded-full flex items-center justify-center cursor-pointer">
+      <i class="ph-bold ph-chat text-4xl text-slate-50"></i>
+    </div>
   </main>
 </body>
 </html>
