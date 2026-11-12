@@ -185,7 +185,7 @@ body {
 .content {
   position: relative;
   width: calc(100dvw - 18rem);
-  max-width: 60rem;
+  max-width: 80rem;
   margin-left: 18rem;
   min-height: 100dvh;
   display: flex;  
@@ -197,7 +197,7 @@ body {
 
 .page-title {
   display: flex;
-  width: 100%;
+  width: 95%;
   align-items: center;
   justify-content: space-between;
   padding: 0;
@@ -330,18 +330,4 @@ hr {
     display: none;
   }
 
-  .content {
-    width: 100dvw;
-    max-width: 100dvw;
-    position: relative;
-    margin-left: 0 !important;
-  }
-
-  .page-title h1 {
-    font-size: 1.6rem !important;
-  }
-
-  .page-title h2 {
-    font-size: 1rem !important;
-  }
 }
