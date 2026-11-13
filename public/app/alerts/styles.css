@@ -92,7 +92,14 @@
 }
 
 
-#listarAlertas > div:not(.user-list-header) {
+#listarAlertas {
+    max-height: 24rem; 
+    overflow-y: auto;
+    scrollbar-width:none;
+}
+
+
+#listarAlertas > div.alert {
     display: grid;
     grid-template-columns: 0.5fr 0.8fr 4fr 0.6fr;
     align-items: center;
@@ -101,8 +108,6 @@
     border-bottom: 1px solid #999;
     font-size: 12px;
     color: #333;
-
-    overflow-y: auto !important;
 }
 
 
@@ -128,4 +133,15 @@
     background-color: rgb(189, 209, 245);
     padding: 0.3rem;
     max-width: 43rem;
+}
+
+
+
+#listarAlertas > .mensagem-sem-alertas {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    width: 100%;
+    height: 5rem;
+    color: var(--orange-600);
 }

@@ -123,19 +123,30 @@
             <hr>
 
             <div class="filter">
-                <select name="filtro" id="filter">
-                  <option value="ipt_filter">FILTRAR</option>
+                <select name="filtro" id="filter" onchange="adicionarFiltro()">
+                    <option value="todos">Todos os alertas</option>
+                    <option value="3">Acima do máximo</option>
+                    <option value="2">Próximo ao máximo</option>
+                    <option value="1">Abaixo do mínimo</option>
+                    <option value="ram">RAM</option>
+                    <option value="cpu">CPU</option>
+                    <option value="rede">Rede</option>
+                    <option value="disco">Disco</option>
+                    <option value="perdas">Perda de pacotes</option>
+                    <option value="er">Enviados/Recebidos</option>
                 </select>
               </div>
 
 
-            <div id="listarAlertas">
+            <div class="container-alerts">
                 <div class="user-list-header">
                     <span>ID</span>  
                     <span>Servidor</span>
                     <span>Alerta</span>
                     <span>Data-hora</span>
                 </div>
+
+                <div id="listarAlertas"></div>
             </div>
         </div>
             
