@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Previsão</title>
     <link rel="stylesheet" href="../../css/dashboard-layout.css">
-    <link rel="stylesheet" href="../../css/toast.css"></link>
-    <link rel="stylesheet" href="../../tailwind/output.css  ">
+    <link rel="stylesheet" href="../../css/toast.css">
+    <link rel="stylesheet" href="../../tailwind/output.css">
     <link rel="stylesheet" href="./styles.css">
-
 
     <link
         href="https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap"
@@ -16,7 +15,10 @@
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css">
+
+    <!-- biblioteca de gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
     <script src="../../js/sessao.js"></script>
     <script src="../../js/alerta.js"></script>
@@ -24,7 +26,7 @@
     <script src="./script.js"></script>
 </head>
 
-<body onload="carregarInformacoesUsuario();">
+<body onload="carregarInformacoesUsuario(); carregarPrevisao();">
   <header class="mobile-header">
     <div class="user-data">
       <div class="icon avatarUsuario" id="avatarUsuario"></div>
@@ -42,7 +44,11 @@
       <i class="ph ph-chart-line"></i>
     </a>
 
-    <a href="../users" class="item active">
+    <a href="./" class="item active">
+      <i class="ph ph-trend-up"></i>
+    </a>
+
+    <a href="../users" class="item">
       <i class="ph ph-users-three"></i>
     </a>
 
@@ -68,6 +74,10 @@
                 Dashboard
             </a>
             <a href="./" class="item active">
+                <i class="ph ph-trend-up"></i>
+                Previsão
+            </a>
+            <a href="../users" class="item">
                 <i class="ph ph-users-three"></i>
                 Funcionários
             </a>
@@ -98,34 +108,99 @@
 
     <main class="content">
 
-        <div class="container-kpi">
+      <!-- KPIs: CPU e RAM previstas para daqui a 3 dias e servidores que devem entrar em alerta -->
+      <div class="container-kpi">
         <div class="kpi quantitativa">
           <div>
             <h2>CPU prevista</h2>
             <i class="ph ph-cpu" style="font-size: 32px;"></i>
           </div>
-          <span id="kpiCpu">40%</span>
+          <span id="kpiCpu">--</span>
         </div>
         <div class="kpi quantitativa">
           <div>
             <h2>RAM prevista</h2>
             <i class="ph ph-memory" style="font-size: 32px;"></i>
           </div>
-          <span id="kpiRam">10%</span>
+          <span id="kpiRam">--</span>
         </div>
         <div class="kpi quantitativa">
           <div>
-            <h2>Disco previsto</h2>
-            <i class="ph ph-hard-drive" style="font-size: 32px;"></i>
+            <h2>Servidores em alerta</h2>
+            <i class="ph ph-warning" style="font-size: 32px;"></i>
           </div>
-          <span id="kpiDisco">40%</span>
+          <span id="kpiAlerta">--</span>
         </div>
       </div>
-        
+
+      <section class="painel">
+
+        <!-- gráfico de previsão, com botões para alternar o componente -->
+        <article class="previsao-card painel-grafico">
+          <div class="painel-topo">
+            <div>
+              <h3 id="tituloGrafico">Previsão de CPU</h3>
+              <span class="previsao-nota">Linha cheia: medido (a cada 12 h). Linha pontilhada: previsto para os próximos 3 dias.</span>
+            </div>
+            <div class="alternador" role="group" aria-label="Componente do gráfico">
+              <button type="button" class="ativo" data-componente="cpu" aria-pressed="true">CPU</button>
+              <button type="button" data-componente="ram" aria-pressed="false">RAM</button>
+            </div>
+          </div>
+          <div class="previsao-grafico"><canvas id="graficoPrevisao"></canvas></div>
+          <p class="previsao-aviso" id="avisoPrevisao"></p>
+        </article>
+
+        <div class="coluna-direita">
+
+        <!-- tabela para filtrar a previsão por servidor -->
+        <article class="previsao-card">
+          <h3>Servidores</h3>
+          <span class="previsao-nota">Clique em um servidor para filtrar o gráfico e os KPIs de CPU e RAM.</span>
+          <div class="tabela-rolagem tabela-servidores">
+            <table class="tabela-alertas">
+              <thead>
+                <tr>
+                  <th>Servidor</th>
+                  <th>CPU</th>
+                  <th>RAM</th>
+                </tr>
+              </thead>
+              <tbody id="corpoServidores"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <!-- alertas previstos de toda a empresa e botão de e-mail -->
+        <article class="previsao-card painel-alertas">
+          <h3>Alertas previstos</h3>
+          <div class="tabela-rolagem">
+            <table class="tabela-alertas">
+              <thead>
+                <tr>
+                  <th>Previsto para</th>
+                  <th>Servidor</th>
+                  <th>Mensagem</th>
+                </tr>
+              </thead>
+              <tbody id="corpoAlertas"></tbody>
+            </table>
+          </div>
+          <div class="alertas-rodape">
+            <button type="button" class="botao-email" id="botaoEmail">
+              <i class="ph ph-envelope-simple"></i>
+              Enviar por e-mail
+            </button>
+            <span class="status-email" id="statusEmail" role="status"></span>
+          </div>
+        </article>
+
+        </div>
+
+      </section>
+
     </main>
 
-
-        
-    </body>
+</body>
 
 </html>
