@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="shortcut icon" href="../assets/icon/Logo.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltix | Dashboard</title>
+
+    <link rel="stylesheet" href="../../css/dashboard-layout.css">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="../../js/sessao.js"></script>
+    <script src="../../js/toast.js"></script>
+    <script src="../../js/dialog.js"></script>
+    <link rel="stylesheet" href="../../css/toast.css">
+    </link>
+    <link rel="stylesheet" href="../../css/dialog.css">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- scripts do Chart.js - 2022-1 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="./script.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/bold/style.css" />
+</head>
+
+<body onload="carregarInformacoesUsuario(); getCodes(); loadCompanyName(); fillRolesAtNewCode()">
+    <header class="mobile-header">
+        <div class="user-data">
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+            <div class="info">
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
+            </div>
+
+            <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+        </div>
+    </header>
+    <nav class="mobile-navbar">
+        <a href="../" class="item">
+            <i class="ph ph-chart-line"></i>
+        </a>
+
+        <a href="../users" class="item">
+            <i class="ph ph-users-three"></i>
+        </a>
+
+        <a href="../servers" class="item">
+            <i class="ph ph-hard-drives"></i>
+        </a>
+
+        <a href="./" class="item active">
+            <i class="ph ph-numpad"></i>
+        </a>
+    </nav>
+
+    <aside class="navbar">
+        <div class="logo">
+            <img src="../../assets/icon/Logo.png"><span>Voltix</span>
+        </div>
+
+        <nav class="navbar-items">
+            <a href="../" class="item active">
+                <i class="ph ph-chart-line"></i>
+                Dashboard
+            </a>
+        </nav>
+
+        <div class="user-data">
+            <div class="icon avatarUsuario" id="avatarUsuario"></div>
+
+            <div class="info">
+                <span class="name nomeUsuario" id="nomeUsuario"></span>
+                <span class="email emailUsuario" id="emailUsuario"></span>
+            </div>
+
+            <i class="ph ph-sign-out exit-button" onclick="limparSessao()"></i>
+        </div>
+
+    </aside>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="container">
+
+        <!-- Título -->
+
+        <div class="titulo">
+
+            <h1>Comparação da Última MDM</h1>
+
+            <span>
+                Análise das variações de recurso entre a penúltima(T-1) e a última(T₀) execução da ETL
+            </span>
+
+        </div>
+
+
+        <!-- Seleção servidor -->
+
+        <div class="servidor">
+
+    <div class="servidor-info">
+
+        <i class="ph ph-hard-drives" style="font-size: 32px;"></i>
+
+        <div>
+
+            <select class="select-servidor">
+
+                <option value="1">
+                    Servidor MDM.01
+                </option>
+
+                <option value="2">
+                    Servidor MDM.02
+                </option>
+
+                <option value="3">
+                    Servidor MDM.03
+                </option>
+
+                <option value="4">
+                    Servidor MDM.04
+                </option>
+
+            </select>
+
+
+            <div class="status-servidor">
+
+                <span class="online">
+                    Online
+                </span>
+
+                <p>
+                    Última atualização: 10/11/2026 às 14:56
+                </p>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+        <!-- Conteúdo -->
+
+        <div class="conteudo">
+
+
+            <!-- Hardware -->
+
+            <div class="hardware">
+
+                <h2>Hardware</h2>
+
+                <div class="cards">
+
+                    <div class="card">
+
+                        <h3>CPU</h3>
+
+                        <p>Atual: <span>95%</span></p>
+
+                        <p>Penúltima: <span>45%</span></p>
+
+                        <p>Dispersão:
+                            <span class="vermelho">
+                                +50%
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h3>RAM</h3>
+
+                        <p>Atual: <span>95%</span></p>
+
+                        <p>Penúltima: <span>45%</span></p>
+
+                        <p>Dispersão:
+                            <span class="vermelho">
+                                +50%
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <div class="card">
+
+                        <h3>Disco</h3>
+
+                        <p>Atual: <span>95%</span></p>
+
+                        <p>Penúltima: <span>45%</span></p>
+
+                        <p>Dispersão:
+                            <span class="vermelho">
+                                +50%
+                            </span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <h3>Comparação entre Coletas</h3>
+
+                <div class="grafico">
+
+                    <canvas id="graficoHardware" width="400" height="250"></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Rede -->
+
+            <div class="rede">
+
+                <h2>Rede</h2>
+
+                <div class="cards">
+
+                    <div class="card rede-card">
+
+                        <h3>Pacotes</h3>
+
+                        <p>Atual: <span>240 KB/s</span></p>
+
+                        <p>Penúltima: <span>100 KB/s</span></p>
+
+                        <p>
+                            Dispersão:
+                            <span class="verde">
+                                -140 KB/s
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <div class="card rede-card">
+
+                        <h3>Recebida</h3>
+
+                        <p>Atual: <span>240 KB/s</span></p>
+
+                        <p>Penúltima: <span>100 KB/s</span></p>
+
+                        <p>
+                            Dispersão:
+                            <span class="verde">
+                                -140 KB/s
+                            </span>
+                        </p>
+
+                    </div>
+
+                    <div class="card rede-card">
+
+                        <h3>Enviada</h3>
+
+                        <p>Atual: <span>100 KB/s</span></p>
+
+                        <p>Penúltima: <span>80 KB/s</span></p>
+
+                        <p>
+                            Dispersão:
+                            <span class="vermelho">
+                                +20 KB/s
+                            </span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <h3>Comparação entre Coletas</h3>
+
+                <div class="grafico">
+
+                    <canvas id="graficoRede"></canvas>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Alterações -->
+
+            <div class="alteracoes">
+
+                <h3>Alterações Identificadas</h3>
+
+                <div class="lista">
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>CPU</b>
+
+                            <p>45% → 95%</p>
+
+                        </div>
+
+                        <span class="metrica-negativa">+50%</span>
+
+                    </div>
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>RAM</b>
+
+                            <p>45% → 95%</p>
+
+                        </div>
+
+                        <span class="metrica-negativa">+50%</span>
+
+                    </div>
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>Disco</b>
+
+                            <p>45% → 95%</p>
+
+                        </div>
+
+                        <span class="metrica-negativa">+50%</span>
+
+                    </div>
+
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>Pacotes</b>
+
+                            <p>240 KB/s → 100 KB/s</p>
+
+                        </div>
+
+                        <span class="metrica-positiva">-140 KB/s</span>
+
+                    </div>
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>Recebida</b>
+
+                            <p>240 KB/s → 100 KB/s</p>
+
+                        </div>
+
+                        <span class="metrica-positiva">-140 KB/s</span>
+
+                    </div>
+
+                    <div class="item-metrica">
+
+                        <div>
+
+                            <b>Enviada</b>
+
+                            <p>80 KB/s → 100 KB/s</p>
+
+                        </div>
+
+                        <span class="metrica-negativa">+20 KB/s</span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="dashboard.js"></script>
+
+    </main>
+</body>
+
+</html>
