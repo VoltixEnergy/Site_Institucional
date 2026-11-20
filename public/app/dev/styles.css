@@ -1,5 +1,5 @@
 .container {
-    width: (100% - 15.5%);
+    width: calc(100% - 15.5%);
     margin-left: 15.5%;
     padding: 25px 30px;
     box-sizing: border-box;
@@ -317,6 +317,194 @@
 }
 
 
+
+
+/* NOTEBOOK */
+
+@media (min-width:769px) and (max-width:1400px){
+
+
+    .container{
+
+        padding:20px;
+
+    }
+
+
+
+    .conteudo{
+
+        grid-template-columns:
+        minmax(280px,1fr)
+        minmax(280px,1fr)
+        280px;
+
+        gap:15px;
+
+    }
+
+
+
+    .hardware h2,
+    .rede h2{
+
+        font-size:18px;
+
+    }
+
+
+    .card span{
+
+        font-size:14px;
+
+    }
+
+
+}
+
+
 /* ===============================
-   RESPONSIVO
+   RESPONSIVO MOBILE
 ================================ */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: 100%;
+        margin-left: 0;
+        padding: 20px 12px;
+    }
+
+
+    /* TÍTULO */
+
+    .titulo h1 {
+        font-size: 24px;
+    }
+
+    .titulo span {
+        font-size: 14px;
+    }
+
+
+
+    /* SERVIDOR */
+
+    .servidor {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        box-sizing: border-box;
+
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    .servidor-info {
+        min-width: 0;
+        flex: 1;
+    }
+
+
+    .select-servidor {
+        width: 100%;
+        max-width: 150px;
+        font-size: 15px;
+    }
+
+
+    .status-servidor {
+        flex-shrink: 0;
+    }
+
+
+
+    .conteudo {
+        display:flex;
+        flex-direction:column;
+        gap:15px;
+        width:100%;
+    }
+
+
+    .hardware,
+    .rede,
+    .alteracoes {
+        width:100%;
+        box-sizing:border-box;
+    }
+
+
+    .cards {
+        display:flex;
+        flex-direction:column;
+        gap:10px;
+    }
+
+
+    .card {
+        width:100%;
+        box-sizing:border-box;
+    }
+
+
+    .grafico {
+        width:100%;
+        min-height:250px;
+        padding:10px;
+        box-sizing:border-box;
+    }
+
+
+    .grafico canvas {
+        width:100% !important;
+        height:auto !important;
+        padding:0;
+    }
+
+
+
+    /* ALTERAÇÕES */
+
+    .alteracoes {
+        height:auto;
+    }
+
+
+    .item-metrica {
+        width:100%;
+        box-sizing:border-box;
+    }
+
+}
+
+
+@media(max-width:480px){
+
+
+    .servidor {
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+
+    .status-servidor {
+        width:100%;
+        justify-content:space-between;
+    }
+
+
+    .select-servidor {
+        max-width:100%;
+    }
+
+
+    .hardware h2,
+    .rede h2 {
+        font-size:18px;
+    }
+
+
+}

@@ -60,6 +60,7 @@ body {
 /* Navbar */
 .navbar {
   width: 18rem;
+  flex-shrink:0;
   height: 100dvh;
   position: fixed;
   top: 0;
@@ -183,18 +184,19 @@ body {
 
 /* Content */
 .content {
-  position: relative;
-  width: calc(100dvw - 18rem);
-  max-width: 60rem;
-  margin-left: 18rem;
-  min-height: 100dvh;
-  display: flex;  
-  flex-direction: column;
-  padding: 3rem;
-  justify-self: center;
-  gap: 1rem;
-}
+    position: relative;
+    width: calc(100% - 18rem);
+    margin-left: 18rem;
+    min-height: 100vh;
 
+    display:flex;
+    flex-direction:column;
+
+    padding:3rem;
+    gap:1rem;
+
+    box-sizing:border-box;
+}
 .page-title {
   display: flex;
   width: 100%;
