@@ -1,4 +1,4 @@
-// ====== CONFIGURAÇÃO (troque pelas rotas do seu back-end) ======
+// ====== CONFIGURAÇÃO======
 // Formato esperado, valores em % e um ponto a cada 12 horas:
 // { servidores: [ { id, nome, labels: [ISO...], cpu: [], ram: [] } ] }
 const URL_HISTORICO = "./historico-exemplo.json";
@@ -9,6 +9,7 @@ const LIMITES = { cpu: 80, ram: 80 };
 
 const PONTOS_USADOS = 14;   // últimos pontos usados na regressão (14 x 12 h = 7 dias)
 const PONTOS_FUTUROS = 6;   // pontos previstos (6 x 12 h = 3 dias)
+const MAX_LINHAS_ALERTAS = 6; // a tabela mostra só estas linhas (o e-mail leva todos)
 const PASSO_PADRAO = 12 * 60 * 60 * 1000; // 12 horas, se não der para calcular pelo histórico
 
 const COMPONENTES = {
@@ -102,7 +103,7 @@ function calcularAlertasPrevistos() {
       lista.push({
         data: futuros[i],
         servidor: s.nome,
-        mensagem: COMPONENTES[c].nome + " deve ultrapassar o limite de " + LIMITES[c] + "% (previsto " + prev[i].toFixed(1) + "%)",
+        mensagem: COMPONENTES[c].nome + " deve passar de " + LIMITES[c] + "% (prev. " + prev[i].toFixed(1) + "%)",
       });
     });
   });
@@ -125,10 +126,11 @@ function desenharGrafico() {
   const nomeSel = selecionado === "todos" ? "todos os servidores (média)" : servidores.find((x) => x.id === selecionado).nome;
   document.getElementById("tituloGrafico").textContent = "Previsão de " + info.nome + " — " + nomeSel;
   document.getElementById("avisoPrevisao").textContent =
-    "Regressão linear nos últimos " + Math.min(PONTOS_USADOS, valores.length) + " pontos. R² = " + r2.toFixed(2) +
-    " (quanto mais perto de 1, melhor a reta explica os dados).";
+    "Regressão linear nos últimos " + Math.min(PONTOS_USADOS, valores.length) + " pontos · R² = " + r2.toFixed(2) +
+    " (perto de 1 = a reta explica bem)";
 
   if (grafico) grafico.destroy();
+  if (Chart.defaults && Chart.defaults.font) Chart.defaults.font.family = "'Exo 2', sans-serif";
   grafico = new Chart(document.getElementById("graficoPrevisao"), {
     type: "line",
     data: {
@@ -136,6 +138,8 @@ function desenharGrafico() {
       datasets: [
         { label: info.nome + " medido", data: dadosReais, borderColor: info.cor, backgroundColor: info.cor, pointRadius: 0, borderWidth: 2, tension: 0.2 },
         { label: info.nome + " previsto", data: dadosPrev, borderColor: info.cor, backgroundColor: info.cor, pointRadius: 0, borderWidth: 2, borderDash: [6, 6], tension: 0 },
+        // reta horizontal no limite do componente
+        { label: "Limite (" + LIMITES[componenteAtual] + "%)", data: new Array(rotulos.length).fill(LIMITES[componenteAtual]), borderColor: "#dc2626", backgroundColor: "#dc2626", pointRadius: 0, borderWidth: 1.5, tension: 0 },
       ],
     },
     options: {
@@ -143,9 +147,9 @@ function desenharGrafico() {
       maintainAspectRatio: false,
       scales: {
         y: { min: 0, max: 100, ticks: { callback: (v) => v + "%" } },
-        x: { ticks: { maxTicksLimit: 8 } },
+        x: { ticks: { maxTicksLimit: 7, maxRotation: 0, autoSkip: true } },
       },
-      plugins: { legend: { position: "bottom" } },
+      plugins: { legend: { position: "bottom", labels: { usePointStyle: true, boxWidth: 8, boxHeight: 8 } } },
     },
   });
 }
@@ -180,13 +184,13 @@ function mostrarServidores() {
     botao.className = "botao-servidor";
     botao.textContent = s.nome;
     botao.addEventListener("click", () => selecionarServidor(s.id));
-    tdNome.appendChild(botao);
     if (s.id !== "todos" && emAlerta.has(s.nome)) {
       const marca = document.createElement("i");
       marca.className = "ph ph-warning marca-alerta";
       marca.title = "Alerta previsto";
       tdNome.appendChild(marca);
     }
+    tdNome.appendChild(botao);
     tr.appendChild(tdNome);
 
     ["cpu", "ram"].forEach((c) => {
@@ -212,6 +216,8 @@ function serieMedia(componente) {
 function mostrarAlertas() {
   const corpo = document.getElementById("corpoAlertas");
   corpo.innerHTML = "";
+  const resto = alertasAtuais.length - MAX_LINHAS_ALERTAS;
+  document.getElementById("notaAlertas").textContent = resto > 0 ? "+ " + resto + " alerta(s) não exibido(s); todos vão no e-mail." : "";
   if (alertasAtuais.length === 0) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
@@ -219,7 +225,7 @@ function mostrarAlertas() {
     tr.appendChild(td); corpo.appendChild(tr);
     return;
   }
-  alertasAtuais.forEach((a) => {
+  alertasAtuais.slice(0, MAX_LINHAS_ALERTAS).forEach((a) => {
     const tr = document.createElement("tr");
     [dataHora(a.data), a.servidor, a.mensagem].forEach((txt) => {
       const td = document.createElement("td");
