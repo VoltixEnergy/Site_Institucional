@@ -84,7 +84,7 @@
             <a href="../servers" class="item">
                 <i class="ph ph-hard-drives"></i>
                 Servidores
-            </a>
+            </a>d
             <a href="../codes" class="item">
               <i class="ph ph-numpad"></i>
               Códigos
@@ -106,9 +106,8 @@
         </div>
     </aside>
 
-    <main class="content">
+    <main class="content tela-fixa">
 
-      <!-- KPIs: CPU e RAM previstas para daqui a 3 dias e servidores que devem entrar em alerta -->
       <div class="container-kpi">
         <div class="kpi quantitativa">
           <div>
@@ -140,7 +139,7 @@
           <div class="painel-topo">
             <div>
               <h3 id="tituloGrafico">Previsão de CPU</h3>
-              <span class="previsao-nota">Linha cheia: medido (a cada 12 h). Linha pontilhada: previsto para os próximos 3 dias.</span>
+              <span class="previsao-nota">Linha cheia: medido (12 em 12 h) · pontilhada: previsão de 3 dias</span>
             </div>
             <div class="alternador" role="group" aria-label="Componente do gráfico">
               <button type="button" class="ativo" data-componente="cpu" aria-pressed="true">CPU</button>
@@ -151,12 +150,10 @@
           <p class="previsao-aviso" id="avisoPrevisao"></p>
         </article>
 
-        <div class="coluna-direita">
-
         <!-- tabela para filtrar a previsão por servidor -->
         <article class="previsao-card">
           <h3>Servidores</h3>
-          <span class="previsao-nota">Clique em um servidor para filtrar o gráfico e os KPIs de CPU e RAM.</span>
+          <span class="previsao-nota">Clique para filtrar o gráfico e os KPIs.</span>
           <div class="tabela-rolagem tabela-servidores">
             <table class="tabela-alertas">
               <thead>
@@ -178,7 +175,7 @@
             <table class="tabela-alertas">
               <thead>
                 <tr>
-                  <th>Previsto para</th>
+                  <th>Quando</th>
                   <th>Servidor</th>
                   <th>Mensagem</th>
                 </tr>
@@ -186,6 +183,7 @@
               <tbody id="corpoAlertas"></tbody>
             </table>
           </div>
+          <p class="previsao-nota" id="notaAlertas"></p>
           <div class="alertas-rodape">
             <button type="button" class="botao-email" id="botaoEmail">
               <i class="ph ph-envelope-simple"></i>
@@ -194,8 +192,6 @@
             <span class="status-email" id="statusEmail" role="status"></span>
           </div>
         </article>
-
-        </div>
 
       </section>
 
