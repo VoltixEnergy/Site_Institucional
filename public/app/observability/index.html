@@ -83,7 +83,7 @@
           <h1>Status da Aplicação</h1>
         </div>
         <div class="flex items-center justify-center h-16 text-lg font-medium text-center">
-          <p id="status"></p>
+          <p id="status">-</p>
         </div>
       </div>
       <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4 relative">
@@ -92,7 +92,7 @@
           <h1>Taxa de erros</h1>
         </div>
         <div class="flex items-center justify-center h-16 text-2xl font-medium">
-          <p id="errorRate"></p>
+          <p id="errorRate">-</p>
         </div>
       </div>
       <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4 relative">
@@ -101,7 +101,7 @@
           <h1>Erros críticos</h1>
         </div>
         <div class="flex items-center justify-center h-16 text-2xl font-medium">
-          <p id="errorCounting"></p>
+          <p id="errorCounting">-</p>
         </div>
       </div>
     </section>
@@ -121,7 +121,7 @@
       <div class="bg-slate-100 w-full h-full flex-1 rounded-md p-4 relative">
         <div class="inline-flex gap-2">
           <i class="ph ph-hard-drives text-2xl"></i>
-          <h1>Instâncias afetadas por erros</h1>
+          <h1>Servidores afetados por erros</h1>
         </div>
         <div class="relative h-60! sm:h-96 w-full">
           <canvas id="serversWithErrors"></canvas>
@@ -134,26 +134,26 @@
         </div>
         <div class="flex items-center justify-center h-full flex-col">
           <p>Total</p>
-          <p id="logsVolume" class="text-3xl font-medium"></p>
+          <p id="logsTotal" class="text-3xl font-medium"></p>
         </div>
         <div class="flex h-full items-center justify-center gap-8 border-t border-slate-400 max-w-xs mx-auto px-4">
           <div class="flex items-center justify-center flex-col text-slate-400">
-            <p id="" class="text-xl font-medium">1904</p>
+            <p id="logsInfo" class="text-xl font-medium">-</p>
             <p>Info</p>
           </div>
           <div class="flex items-center justify-center flex-col text-orange-400">
-            <p id="" class="text-xl font-medium">10</p>
+            <p id="logsWarn" class="text-xl font-medium">-</p>
             <p>Aviso</p>
           </div>
           <div class="flex items-center justify-center flex-col text-rose-600">
-            <p id="" class="text-xl font-medium">3</p>
+            <p id="logsError" class="text-xl font-medium">-</p>
             <p>Erro</p>
           </div>
         </div>
       </div>
     </section>
     <h1 class="pt-4">Erros e Avisos com maior incidência</h1>
-    <section class="w-full flex flex-col items-center justify-between gap-2">
+    <section id="logsSection" class="w-full flex flex-col items-center justify-between gap-2">
       <div class="bg-slate-100 w-full h-fit flex-1 rounded-md p-4 relative">
         <div class="inline-flex gap-2 text-sm items-center">
           <i class="ph ph-warning text-lg"></i>
