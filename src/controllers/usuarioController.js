@@ -66,6 +66,7 @@ async function autenticar(req, res) {
 
       res.cookie('jwt', token, {
         maxAge: parseInt(process.env.JWT_EXPIRES) * 1000, // de segundos para milisegundos,
+        sameSite: "lax",
         httpOnly: true,
         secure: false // false para http, true para https
       })
