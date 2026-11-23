@@ -21,6 +21,8 @@
 
     <!-- scripts do Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Data Labels Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
 
     <link rel="stylesheet" type="text/css"
         href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
@@ -102,7 +104,8 @@
                     <span>Gerar PDF</span>
                 </button>
             </div>
-            <hr class="title-divider" /></div>
+            <hr class="title-divider" />
+        </div>
 
 
         <div class="kpi-content">
@@ -165,6 +168,7 @@
         const graficoDePizza = document.getElementById('graficoPizza').getContext('2d');
         const graficoPizza = new Chart(graficoDePizza, {
             type: 'pie',
+            plugins: [ChartDataLabels],
             data: {
                 labels: ['CPU', 'RAM', 'Disco', 'Download', 'Upload'],
                 datasets: [{
@@ -191,6 +195,17 @@
                             boxWidth: 14,
                             font: { size: 13 }
                         }
+                    },
+                    datalabels: {
+                        color: '#ffffff',
+                            textStrokeColor: '#000000',
+                            textStrokeWidth: 3,
+                        font: {
+                            weight: 'bold',
+                            size: 30
+                        },
+                        anchor: 'center',
+                        align: 'center'
                     }
                 }
             }
@@ -200,6 +215,7 @@
         const graficoDeRosca = document.getElementById('graficoRosca').getContext('2d');
         const graficoRosca = new Chart(graficoDeRosca, {
             type: 'doughnut',
+            plugins: [ChartDataLabels],
             data: {
                 labels: ['CPU', 'RAM', 'Disco', 'Download', 'Upload'],
                 datasets: [{
@@ -228,6 +244,17 @@
                             padding: 14,
                             font: { size: 13 }
                         }
+                    },
+                    datalabels: {
+                        color: '#ffffff',
+                        textStrokeColor: '#000000',
+                        textStrokeWidth: 3,
+                        font: {
+                            weight: 'bold',
+                            size: 30
+                        },
+                        anchor: 'center',
+                        align: 'center'
                     }
                 }
             }
