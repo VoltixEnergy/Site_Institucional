@@ -9,8 +9,8 @@ const LEGEND = [
 
 const chartsInstances = {}
 
-const loadData = () => {
-  const data = getData()
+const loadData = async () => {
+  const data = await getData()
 
   loadKpis(data.kpis)
   loadCharts(data.chart)
@@ -106,7 +106,7 @@ const loadCharts = (data) => {
 }
 
 const loadKpis = (data) => {
-  document.querySelector("#status").innerText = data.status
+  document.querySelector("#status").innerText = data.status.message
   document.querySelector("#errorRate").innerText = data.errorRate
   document.querySelector("#logsTotal").innerText = data.logsVolume.total
   document.querySelector("#logsInfo").innerText = data.logsVolume.infos
@@ -120,7 +120,7 @@ const loadLogs = (data) => {
   let html = ""
 
   data.forEach(log => {
-     html = `
+     html += `
       <div class="bg-slate-100 w-full h-fit flex-1 rounded-md p-4 relative">
         <div class="inline-flex gap-2 text-sm items-center">
           <i class="ph ph-warning text-lg"></i>
@@ -169,63 +169,17 @@ const loadLogs = (data) => {
   containerElement.innerHTML += html
 }
 
-const getData = () => {
-  const response = {
-    chart: {
-      historic: null,
-      server: {
-        labels: ["MDM São Paulo", "MDM Jundiaí", "MDM Campinas"],
-        data: [10, 80, 10]
-      },
-    },
-    kpis: {
-      status: "Capacidade Reduzida",
-      errorRate: "0.1%",
-      logsVolume: {
-        total: 2470,
-        infos: 2450,
-        warnings: 19,
-        errors: 1  
-      },
-      errorCounting: 1,
-    },
-    logs: [
-      {
-        level: "ERROR",
-        initialDate: "16h59",
-        endDate: "19h40",
-        scope: "UDP Server",
-        count: 247,
-        message: "The provided token is malformed or otherwise invalid. (Service: S3, Status Code: 400, Request ID: B737WWP5VXWJKZPV, Extended Request ID: gwpWj3FZ/mmfXcDuRgAal4eXywH9nuo2mqx2lSRv2azP4laRSpQGyJP8V0RQTEw9ogG2g14yMiCZrgnE/BuhfZRWXYglU5ak) (SDK Attempt Count: 1)",
-        stacktrace: `software.amazon.awssdk.services.s3.model.S3Exception: The provided token is malformed or otherwise invalid. (Service: S3, Status Code: 400, Request ID: B737WWP5VXWJKZPV, Extended Request ID: gwpWj3FZ/mmfXcDuRgAal4eXywH9nuo2mqx2lSRv2azP4laRSpQGyJP8V0RQTEw9ogG2g14yMiCZrgnE/BuhfZRWXYglU5ak) (SDK Attempt Count: 1)	at software.amazon.awssdk.services.s3.model.S3Exception$BuilderImpl.build(S3Exception.java:113)	at software.amazon.awssdk.services.s3.model.S3Exception$BuilderImpl.build(S3Exception.java:61)	at software.amazon.awssdk.core.internal.http.pipeline.stages.utils.RetryableStageHelper.retryPolicyDisallowedRetryException(RetryableStageHelper.java:251)	at software.amazon.awssdk.core.internal.http.pipeline.stages.RetryableStage.execute(RetryableStage.java:86)	at software.amazon.awssdk.core.internal.http.pipeline.stages.RetryableStage.execute(RetryableStage.java:39)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.StreamManagingStage.execute(StreamManagingStage.java:53)	at software.amazon.awssdk.core.internal.http.StreamManagingStage.execute(StreamManagingStage.java:35)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.executeWithTimer(ApiCallTimeoutTrackingStage.java:82)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.execute(ApiCallTimeoutTrackingStage.java:62)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.execute(ApiCallTimeoutTrackingStage.java:43)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ExecutionFailureExceptionReportingStage.execute(ExecutionFailureExceptionReportingStage.java:37)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ExecutionFailureExceptionReportingStage.execute(ExecutionFailureExceptionReportingStage.java:26)	at software.amazon.awssdk.core.internal.http.AmazonSyncHttpClient$RequestExecutionBuilderImpl.execute(AmazonSyncHttpClient.java:213)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.invoke(BaseSyncClientHandler.java:105)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.doExecute(BaseSyncClientHandler.java:176)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.lambda$execute$1(BaseSyncClientHandler.java:82)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.measureApiCall(BaseSyncClientHandler.java:200)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.execute(BaseSyncClientHandler.java:76)	at software.amazon.awssdk.core.client.handler.SdkSyncClientHandler.execute(SdkSyncClientHandler.java:45)	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.execute(AwsSyncClientHandler.java:53)	at software.amazon.awssdk.services.s3.DefaultS3Client.putObject(DefaultS3Client.java:13463)	at com.voltix.Mdm.main(Mdm.java:115)`,
-        instances: {
-          "MDM São Paulo": ["mdm-1", "mdm-2", "mdm-3"]
-        }
-      },
-      {
-        level: "ERROR",
-        initialDate: "16h59",
-        endDate: "19h40",
-        scope: "UDP Server",
-        count: 247,
-        message: "The provided token is malformed or otherwise invalid. (Service: S3, Status Code: 400, Request ID: B737WWP5VXWJKZPV, Extended Request ID: gwpWj3FZ/mmfXcDuRgAal4eXywH9nuo2mqx2lSRv2azP4laRSpQGyJP8V0RQTEw9ogG2g14yMiCZrgnE/BuhfZRWXYglU5ak) (SDK Attempt Count: 1)",
-        stacktrace: `software.amazon.awssdk.services.s3.model.S3Exception: The provided token is malformed or otherwise invalid. (Service: S3, Status Code: 400, Request ID: B737WWP5VXWJKZPV, Extended Request ID: gwpWj3FZ/mmfXcDuRgAal4eXywH9nuo2mqx2lSRv2azP4laRSpQGyJP8V0RQTEw9ogG2g14yMiCZrgnE/BuhfZRWXYglU5ak) (SDK Attempt Count: 1)	at software.amazon.awssdk.services.s3.model.S3Exception$BuilderImpl.build(S3Exception.java:113)	at software.amazon.awssdk.services.s3.model.S3Exception$BuilderImpl.build(S3Exception.java:61)	at software.amazon.awssdk.core.internal.http.pipeline.stages.utils.RetryableStageHelper.retryPolicyDisallowedRetryException(RetryableStageHelper.java:251)	at software.amazon.awssdk.core.internal.http.pipeline.stages.RetryableStage.execute(RetryableStage.java:86)	at software.amazon.awssdk.core.internal.http.pipeline.stages.RetryableStage.execute(RetryableStage.java:39)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.StreamManagingStage.execute(StreamManagingStage.java:53)	at software.amazon.awssdk.core.internal.http.StreamManagingStage.execute(StreamManagingStage.java:35)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.executeWithTimer(ApiCallTimeoutTrackingStage.java:82)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.execute(ApiCallTimeoutTrackingStage.java:62)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ApiCallTimeoutTrackingStage.execute(ApiCallTimeoutTrackingStage.java:43)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.pipeline.RequestPipelineBuilder$ComposingRequestPipelineStage.execute(RequestPipelineBuilder.java:206)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ExecutionFailureExceptionReportingStage.execute(ExecutionFailureExceptionReportingStage.java:37)	at software.amazon.awssdk.core.internal.http.pipeline.stages.ExecutionFailureExceptionReportingStage.execute(ExecutionFailureExceptionReportingStage.java:26)	at software.amazon.awssdk.core.internal.http.AmazonSyncHttpClient$RequestExecutionBuilderImpl.execute(AmazonSyncHttpClient.java:213)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.invoke(BaseSyncClientHandler.java:105)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.doExecute(BaseSyncClientHandler.java:176)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.lambda$execute$1(BaseSyncClientHandler.java:82)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.measureApiCall(BaseSyncClientHandler.java:200)	at software.amazon.awssdk.core.internal.handler.BaseSyncClientHandler.execute(BaseSyncClientHandler.java:76)	at software.amazon.awssdk.core.client.handler.SdkSyncClientHandler.execute(SdkSyncClientHandler.java:45)	at software.amazon.awssdk.awscore.client.handler.AwsSyncClientHandler.execute(AwsSyncClientHandler.java:53)	at software.amazon.awssdk.services.s3.DefaultS3Client.putObject(DefaultS3Client.java:13463)	at com.voltix.Mdm.main(Mdm.java:115)`,
-        instances: {
-          "MDM São Paulo": ["mdm-1", "mdm-2", "mdm-3"]
-        }
-      }
-    ]
-  }
+const getData = async () => {
+  const rawResponse = await fetch("http://localhost:8080/dashboard", {
+    method: "GET",
+    credentials: "include"
+  })
 
-  response.chart.historic = LEGEND.map(
-    _ => {
-      const legendData = []
-      for (let i = 0; i < TOTAL; i++)
-        legendData.push(Math.round(2 + Math.random() * (14 - 2)))
+  if (!rawResponse.ok)
+    return null // implementar toast
 
-      return legendData
-    }
-  )
+  const response = await rawResponse.json()
+  const data = JSON.parse(response.data)
 
-  return response
+  return data
 }
