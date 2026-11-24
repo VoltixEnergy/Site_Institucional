@@ -1,40 +1,25 @@
-const { S3Client, GetObjectCommand } = require("@aws-sdk/client-s3");
-
-const s3 = new S3Client({ region: process.env.AWS_REGION || "us-east-1" });
-
+const BUCKET_URL = process.env.S3_BUCKET_GOLD_URL || "https://voltix-s3-bucket-sptech-gold.s3.amazonaws.com";
 
 async function buscarHistorico(req, res) {
 
-  const responseBody = {
-    message: "",
-    data: {}
-  };
-
+  const responseBody = { message: "", data: {} };
   const { companyId } = req.token;
 
   try {
+    const resposta = await fetch(`${BUCKET_URL}/previsao/${companyId}.json`);
 
-    const resposta = await s3.send(new GetObjectCommand({
-      Bucket: process.env.S3_BUCKET_GOLD,
-      Key: `previsao/${companyId}.json`,
-    }));
-
-    const texto = await resposta.Body.transformToString();
-    responseBody.data = JSON.parse(texto);
-    return res.status(200).json(responseBody);
-
-  } catch (erro) {
-
-    if (erro.name === "NoSuchKey") {
-      responseBody.message = "Ainda não há histórico de previsão para essa empresa.";
+    if (resposta.status === 404 || resposta.status === 403) {
+      responseBody.message = "Ainda não há histórico de previsão para essa empresa";
       return res.status(404).json(responseBody);
     }
+    if (!resposta.ok) throw new Error(`S3 respondeu ${resposta.status}`);
 
+    responseBody.data = await resposta.json();
+    return res.status(200).json(responseBody);
+  } catch (erro) {
     console.error(erro);
-
-    responseBody.message = "Algo deu errado. Tente novamente mais tarde.";
+    responseBody.message = "Algo deu errado. Tente novamente mais tarde";
     return res.status(500).json(responseBody);
-
   }
 }
 
