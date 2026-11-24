@@ -84,7 +84,7 @@
             <a href="../servers" class="item">
                 <i class="ph ph-hard-drives"></i>
                 Servidores
-            </a>d
+            </a>
             <a href="../codes" class="item">
               <i class="ph ph-numpad"></i>
               Códigos
@@ -125,7 +125,7 @@
         </div>
         <div class="kpi quantitativa">
           <div>
-            <h2>Servidores em alerta</h2>
+            <h2>Possives Servidores em Alerta</h2>
             <i class="ph ph-warning" style="font-size: 32px;"></i>
           </div>
           <span id="kpiAlerta">--</span>
@@ -134,12 +134,12 @@
 
       <section class="painel">
 
-        <!-- gráfico de previsão, com botões para alternar o componente -->
+        <!-- gráfico de previsão, com botões para alternar o componente (os botões de cenário 24 horas | 3 dias | 7 dias são criados pelo script.js) -->
         <article class="previsao-card painel-grafico">
           <div class="painel-topo">
             <div>
               <h3 id="tituloGrafico">Previsão de CPU</h3>
-              <span class="previsao-nota">Linha cheia: medido (12 em 12 h) · pontilhada: previsão de 3 dias</span>
+              <span class="previsao-nota" id="subtituloGrafico">Linha cheia: medido · pontilhada: previsão</span>
             </div>
             <div class="alternador" role="group" aria-label="Componente do gráfico">
               <button type="button" class="ativo" data-componente="cpu" aria-pressed="true">CPU</button>
@@ -168,7 +168,7 @@
           </div>
         </article>
 
-        <!-- alertas previstos de toda a empresa e botão de e-mail -->
+        <!-- alertas previstos de toda a empresa -->
         <article class="previsao-card painel-alertas">
           <h3>Alertas previstos</h3>
           <div class="tabela-rolagem">
@@ -184,13 +184,6 @@
             </table>
           </div>
           <p class="previsao-nota" id="notaAlertas"></p>
-          <div class="alertas-rodape">
-            <button type="button" class="botao-email" id="botaoEmail">
-              <i class="ph ph-envelope-simple"></i>
-              Enviar por e-mail
-            </button>
-            <span class="status-email" id="statusEmail" role="status"></span>
-          </div>
         </article>
 
       </section>
