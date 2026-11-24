@@ -589,24 +589,37 @@ function buttonAtivar() {
     });
 }
 
-async function updateMetrics () {
-  const serverId = idServidorEditar
+
+async function updateMetrics() {
+  const serverId = idServidorEditar;
 
   if (serverId == null) {
     alert("Nenhum servidor selecionado!");
     return;
   }
 
-  let regiaoVar = document.getElementById("ipt_regiao_edit");
-  let cpu_minVar = document.getElementById("ipt_cpu_min_edit");
-  let cpu_maxVar = document.getElementById("ipt_cpu_max_edit");
-  let ram_minVar = document.getElementById("ipt_ram_min_edit");
-  let ram_maxVar = document.getElementById("ipt_ram_max_edit");
-  let disco_minVar = document.getElementById("ipt_disco_min_edit");
-  let disco_maxVar = document.getElementById("ipt_disco_max_edit");
-  let perda_pacotes_maxVar = document.getElementById("ipt_perda_pacotes_max_edit");
-  let rede_recebida_minVar = document.getElementById("ipt_rede_recebida_min_edit");
-  let rede_enviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
+  const regiaoVar = document.getElementById("ipt_regiao_edit");
+
+  const cpuVar = document.getElementById("ipt_cpu_edit");
+  const cpu_minVar = document.getElementById("ipt_cpu_min_edit");
+  const cpu_maxVar = document.getElementById("ipt_cpu_max_edit");
+
+  const ramVar = document.getElementById("ipt_ram_edit");
+  const ram_minVar = document.getElementById("ipt_ram_min_edit");
+  const ram_maxVar = document.getElementById("ipt_ram_max_edit");
+
+  const discoVar = document.getElementById("ipt_disco_edit");
+  const disco_minVar = document.getElementById("ipt_disco_min_edit");
+  const disco_maxVar = document.getElementById("ipt_disco_max_edit");
+
+  const perdaVar = document.getElementById("ipt_perda_pacotes_edit");
+  const perda_maxVar = document.getElementById("ipt_perda_pacotes_max_edit");
+
+  const redeRecebidaVar = document.getElementById("ipt_rede_recebida_edit");
+  const redeRecebida_minVar = document.getElementById("ipt_rede_recebida_min_edit");
+
+  const redeEnviadaVar = document.getElementById("ipt_rede_enviada_edit");
+  const redeEnviada_minVar = document.getElementById("ipt_rede_enviada_min_edit");
 
   if (regiaoVar.value.trim() == "") {
     return alert("O nome da instância não pode ficar vazio.");
@@ -617,60 +630,110 @@ async function updateMetrics () {
     method: "GET",
     headers: {
       "Content-Type": "application/json"
-    },
+    }
   });
 
-  if (response.status != 200)
-    return alert("algo de errado");
-
-  const responseJson = await response.json();
-  const data = responseJson.data
-
-  const body = {}
-
-  if (regiaoVar.value != data[0].regiao) {
-    body.name = regiaoVar.value
+  if (!response.ok) {
+    return alert("Erro ao buscar os dados da instância.");
   }
 
-  for (let i = 0; i < data.length; i++) {
-    const comp = data[i].componente;
-    switch (comp) {
-      case "cpu_use_percent":
-        if (Number(cpu_minVar.value) != Number(data[i].min) || Number(cpu_maxVar.value) != Number(data[i].max)) {
-          body.cpu = { min: cpu_minVar.value, max: cpu_maxVar.value }
-        }
-        break;
-      case "ram_use_percent":
-        if (Number(ram_minVar.value) != Number(data[i].min) || Number(ram_maxVar.value) != Number(data[i].max)) {
-          body.ram = { min: ram_minVar.value, max: ram_maxVar.value }
-        }
-        break;
-      case "disk_use_percent":
-        if (Number(disco_minVar.value) != Number(data[i].min) || Number(disco_maxVar.value) != Number(data[i].max)) {
-          body.disk = { min: disco_minVar.value, max: disco_maxVar.value }
-        }
-        break;
-      case "network_sent":
-        if (Number(rede_enviada_minVar.value) != Number(data[i].min)) {
-          body.networkSent = { min: rede_enviada_minVar.value }
-        }
-        break;
-      case "network_received":
-        if (Number(rede_recebida_minVar.value) != Number(data[i].min)) {
-          body.networkRecv = { min: rede_recebida_minVar.value }
-        }
-        break;
-      case "package_drop_total":
-        if (Number(perda_pacotes_maxVar.value) != Number(data[i].max)) {
-          body.packageDrop = { max: perda_pacotes_maxVar.value }
-        }
-        break;
+  const responseJson = await response.json();
+  const data = responseJson.data;
+
+  const body = {};
+
+  if (regiaoVar.value.trim() != data[0].regiao) {
+    body.name = regiaoVar.value.trim();
+  }
+
+  // Verifica se o componente já existe no banco
+  const possuiComponente = (nome) => {
+    return data.some(item => item.componente == nome);
+  };
+
+  // CPU
+  if (cpuVar.checked) {
+    if (
+      !possuiComponente("cpu_use_percent") ||
+      Number(cpu_minVar.value) != Number(data.find(item => item.componente == "cpu_use_percent")?.min) ||
+      Number(cpu_maxVar.value) != Number(data.find(item => item.componente == "cpu_use_percent")?.max)
+    ) {
+      body.cpu = {
+        min: cpu_minVar.value,
+        max: cpu_maxVar.value
+      };
+    }
+  }
+
+  // RAM
+  if (ramVar.checked) {
+    if (
+      !possuiComponente("ram_use_percent") ||
+      Number(ram_minVar.value) != Number(data.find(item => item.componente == "ram_use_percent")?.min) ||
+      Number(ram_maxVar.value) != Number(data.find(item => item.componente == "ram_use_percent")?.max)
+    ) {
+      body.ram = {
+        min: ram_minVar.value,
+        max: ram_maxVar.value
+      };
+    }
+  }
+
+  // Disco
+  if (discoVar.checked) {
+    if (
+      !possuiComponente("disk_use_percent") ||
+      Number(disco_minVar.value) != Number(data.find(item => item.componente == "disk_use_percent")?.min) ||
+      Number(disco_maxVar.value) != Number(data.find(item => item.componente == "disk_use_percent")?.max)
+    ) {
+      body.disk = {
+        min: disco_minVar.value,
+        max: disco_maxVar.value
+      };
+    }
+  }
+
+  // Perda de pacotes
+  if (perdaVar.checked) {
+    if (
+      !possuiComponente("package_drop_total") ||
+      Number(perda_maxVar.value) != Number(data.find(item => item.componente == "package_drop_total")?.max)
+    ) {
+      body.packageDrop = {
+        max: perda_maxVar.value
+      };
+    }
+  }
+
+  // Rede recebida
+  if (redeRecebidaVar.checked) {
+    if (
+      !possuiComponente("network_received") ||
+      Number(redeRecebida_minVar.value) != Number(data.find(item => item.componente == "network_received")?.min)
+    ) {
+      body.networkRecv = {
+        min: redeRecebida_minVar.value
+      };
+    }
+  }
+
+  // Rede enviada
+  if (redeEnviadaVar.checked) {
+    if (
+      !possuiComponente("network_sent") ||
+      Number(redeEnviada_minVar.value) != Number(data.find(item => item.componente == "network_sent")?.min)
+    ) {
+      body.networkSent = {
+        min: redeEnviada_minVar.value
+      };
     }
   }
 
   if (Object.keys(body).length == 0) {
     return alert("Nenhuma alteração foi feita.");
   }
+
+  console.log("DADOS ENVIADOS PARA ATUALIZAÇÃO:", body);
 
   const updateResponse = await fetch(`/server/atualizar/${serverId}`, {
     credentials: "include",
@@ -682,9 +745,11 @@ async function updateMetrics () {
   });
 
   if (updateResponse.ok) {
-    alert("Métricas atualizadas com sucesso");
+    alert("Métricas atualizadas com sucesso!");
     window.location.reload();
   } else {
+    const erro = await updateResponse.text();
+    console.error("Erro ao atualizar:", erro);
     alert("Erro ao atualizar métricas.");
   }
 }

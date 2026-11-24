@@ -22,6 +22,7 @@ const empresasRouter = require("./src/routes/empresas");
 const codigoRouter = require("./src/routes/codigo");
 const servidorRouter = require("./src/routes/server");
 const alertaRouter = require("./src/routes/alerta");
+const nocDashboardRouter = require("./src/routes/nocDashboard");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -36,6 +37,7 @@ app.use("/empresas", empresasRouter);
 app.use("/code", codigoRouter);
 app.use("/server", servidorRouter);
 app.use("/alerta", alertaRouter);
+app.use("/nocDashboard", nocDashboardRouter);
 
 app.listen(PORTA_APP, function () {
   console.log(`
