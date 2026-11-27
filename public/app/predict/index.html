@@ -111,21 +111,28 @@
       <div class="container-kpi">
         <div class="kpi quantitativa">
           <div>
-            <h2>CPU prevista</h2>
+            <h2 id="tituloKpiCpu">CPU prevista</h2>
             <i class="ph ph-cpu" style="font-size: 32px;"></i>
           </div>
           <span id="kpiCpu">--</span>
         </div>
         <div class="kpi quantitativa">
           <div>
-            <h2>RAM prevista</h2>
+            <h2 id="tituloKpiRam">RAM prevista</h2>
             <i class="ph ph-memory" style="font-size: 32px;"></i>
           </div>
           <span id="kpiRam">--</span>
         </div>
         <div class="kpi quantitativa">
           <div>
-            <h2>Possives Servidores em Alerta</h2>
+            <h2 id="tituloKpiDisco">Disco previsto</h2>
+            <i class="ph ph-hard-drive" style="font-size: 32px;"></i>
+          </div>
+          <span id="kpiDisco">--</span>
+        </div>
+        <div class="kpi quantitativa">
+          <div>
+            <h2 id="tituloKpiAlerta">Servidores em alerta</h2>
             <i class="ph ph-warning" style="font-size: 32px;"></i>
           </div>
           <span id="kpiAlerta">--</span>
@@ -134,7 +141,7 @@
 
       <section class="painel">
 
-        <!-- gráfico de previsão, com botões para alternar o componente (os botões de cenário 24 horas | 3 dias | 7 dias são criados pelo script.js) -->
+        <!-- gráfico de previsão, com botões para alternar o componente CPU | RAM | Disco (os botões de cenário 24 horas | 3 dias | 7 dias são criados pelo script.js) -->
         <article class="previsao-card painel-grafico">
           <div class="painel-topo">
             <div>
@@ -144,6 +151,7 @@
             <div class="alternador" role="group" aria-label="Componente do gráfico">
               <button type="button" class="ativo" data-componente="cpu" aria-pressed="true">CPU</button>
               <button type="button" data-componente="ram" aria-pressed="false">RAM</button>
+              <button type="button" data-componente="disco" aria-pressed="false">Disco</button>
             </div>
           </div>
           <div class="previsao-grafico"><canvas id="graficoPrevisao"></canvas></div>
@@ -161,6 +169,7 @@
                   <th>Servidor</th>
                   <th>CPU</th>
                   <th>RAM</th>
+                  <th>Disco</th>
                 </tr>
               </thead>
               <tbody id="corpoServidores"></tbody>
