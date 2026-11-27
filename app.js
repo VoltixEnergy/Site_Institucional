@@ -21,6 +21,7 @@ const usuarioRouter = require("./src/routes/usuarios");
 const empresasRouter = require("./src/routes/empresas");
 const codigoRouter = require("./src/routes/codigo");
 const servidorRouter = require("./src/routes/server");
+const devRouter = require("./src/routes/devRouter");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -34,6 +35,8 @@ app.use("/usuarios", usuarioRouter);
 app.use("/empresas", empresasRouter);
 app.use("/code", codigoRouter);
 app.use("/server", servidorRouter);
+app.use("/dev", devRouter);
+
 
 app.listen(PORTA_APP, function () {
   console.log(`

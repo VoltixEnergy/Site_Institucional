@@ -220,7 +220,7 @@
 
 .alteracoes {
     border:2px solid #222;
-    height: 53%;
+    height: 70%;
 }
 
 
@@ -241,7 +241,7 @@
 
 
 .item-metrica{
-    height:45px;
+    height:65px;
     background:#fff;
     border-radius:5px;
     display:flex;

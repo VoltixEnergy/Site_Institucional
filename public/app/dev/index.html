@@ -109,53 +109,43 @@
 
         <div class="servidor">
 
-    <div class="servidor-info">
+            <div class="servidor-info">
 
-        <i class="ph ph-hard-drives" style="font-size: 32px;"></i>
+                <i class="ph ph-hard-drives" style="font-size: 32px;"></i>
 
-        <div>
+                <div>
 
-            <select class="select-servidor">
+                    
+                    <select id="servidor" class="select-servidor">
 
-                <option value="1">
-                    Servidor MDM.01
-                </option>
+                        <option value="">Selecione um servidor</option>
 
-                <option value="2">
-                    Servidor MDM.02
-                </option>
+                        
 
-                <option value="3">
-                    Servidor MDM.03
-                </option>
-
-                <option value="4">
-                    Servidor MDM.04
-                </option>
-
-            </select>
+                    </select>
+                    
 
 
-            <div class="status-servidor">
+                    <div class="status-servidor">
 
-                <span class="online">
-                    Online
-                </span>
+                        <span class="online">
+                            Online
+                        </span>
 
-                <p>
-                    Última atualização: 10/11/2026 às 14:56
-                </p>
+                        <p>
+                            Última atualização: 10/11/2026 às 14:56
+                        </p>
+
+                    </div>
+
+
+                </div>
+
 
             </div>
 
 
         </div>
-
-
-    </div>
-
-
-</div>
 
 
         <!-- Conteúdo -->
@@ -186,7 +176,7 @@
                         </p>
 
                         <p>
-                            Prev. 14d:
+                            Prev. 7d:
                             <span class="vermelho">
                                 100%
                             </span>
@@ -209,7 +199,7 @@
                         </p>
 
                         <p>
-                            Prev. 14d:
+                            Prev. 7:
                             <span class="vermelho">
                                 100%
                             </span>
@@ -232,7 +222,7 @@
                         </p>
 
                         <p>
-                            Prev. 14d:
+                            Prev. 7d:
                             <span class="vermelho">
                                 100%
                             </span>
@@ -269,7 +259,7 @@
                         <p>Atual: <span>100 KB/s</span></p>
 
                         <p>Penúltima: <span>240 KB/s</span></p>
-                        
+
 
                         <p>
                             Dispersão:
@@ -279,7 +269,7 @@
                         </p>
 
                         <p>
-                            Prev. 14d:
+                            Prev. 7d:
                             <span class="verde">
                                 200 KB/s
                             </span>
@@ -303,7 +293,7 @@
                         </p>
 
                         <p>
-                            Prev. 14d:
+                            Prev. 7d:
                             <span class="verde">
                                 160 KB/s
                             </span>
@@ -326,8 +316,8 @@
                             </span>
                         </p>
 
-                         <p>
-                            Prev. 14d:
+                        <p>
+                            Prev. 7d:
                             <span class="verde">
                                 100 KB/s
                             </span>
@@ -457,3 +447,57 @@
 </body>
 
 </html>
+<script>
+    let dadosApi = null;
+
+    async function carregarDadosController() {
+        try {
+            // Ajuste a URL base se o front rodar em porta diferente do back-end (ex: http://localhost:3333/servidores/predicao/...)
+            const resposta = await fetch(`/dev/comparacao`);
+
+            if (!resposta.ok) {
+                throw new Error(`HTTP ${resposta.status}`);
+            }
+
+            dadosApi = await resposta.json();
+            console.log(dadosApi)
+
+        } catch (erro) {
+            console.warn("Não foi possível carregar dados do controller, mantendo dados locais:", erro);
+        } finally {
+            mudarComponente(componenteAtual);
+        }
+    }
+
+async function buscarServidor() {
+    try {
+        const resposta = await fetch("/dev/BuscarServidor");
+
+        if (!resposta.ok) {
+            throw new Error(`Erro HTTP: ${resposta.status}`);
+        }
+
+        const instancias = await resposta.json();
+        const select = document.getElementById("servidor");
+
+        if (!select) {
+            throw new Error('Elemento <select id="servidor"> não encontrado.');
+        }
+
+        select.innerHTML = '<option value="">Selecione um servidor</option>';
+
+        instancias.forEach(instancia => {
+            const option = document.createElement("option");
+            option.value = instancia.id;
+            option.textContent = instancia.nome;
+            select.appendChild(option);
+        });
+    } catch (erro) {
+        console.error("Erro ao buscar servidores:", erro);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", buscarServidor);
+    
+
+</script>
