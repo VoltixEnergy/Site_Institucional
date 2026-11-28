@@ -64,9 +64,9 @@ function obterDadosDashboard(req, res) {
                 const idx = item.posicao;
                 if (idx < 0 || idx > 3) return;
             // alterar para a saida do bd
-                if (item.tipo === "Abaixo do limite mínimo") abaixoMinimo[idx] = Number(item.total);
-                if (item.tipo === "Próximo ao limite máximo") proximoMaximo[idx] = Number(item.total);
-                if (item.tipo === "Acima do limite máximo") acimaMaximo[idx] = Number(item.total);
+                if (item.tipo === -1) abaixoMinimo[idx] = Number(item.total);
+                if (item.tipo === 0) proximoMaximo[idx] = Number(item.total);
+                if (item.tipo === 1) acimaMaximo[idx] = Number(item.total);
             });
 
             res.status(200).json({
